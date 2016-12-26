@@ -404,7 +404,7 @@ void Company::registerSuplier() {
 	if (cin.eof()) throw InvalidInput();
 
 	gotoXY(42, 12); cout << "Palavra-Passe: ";
-	
+
 
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
@@ -422,7 +422,7 @@ void Company::registerSuplier() {
 	do {
 		clearScreen();
 		gotoXY(48, 4); cout << "|| Registar ||" << endl << endl;
-		gotoXY(42, 13); cout <<  "Adicionar Alojamento (s/n)? ";
+		gotoXY(42, 13); cout << "Adicionar Alojamento (s/n)? ";
 		getline(cin, add);
 
 		if (cin.eof()) throw InvalidInput();
@@ -495,7 +495,7 @@ void Company::registerClient() {
 
 	clearScreen();
 
-	
+
 	gotoXY(48, 4);  cout << "|| Registar ||" << endl << endl;
 	gotoXY(42, 7);  cout << "Nome: ";
 	getline(cin, name);
@@ -509,7 +509,7 @@ void Company::registerClient() {
 
 
 	gotoXY(42, 9); cout << "Palavra-Passe: ";
-	
+
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
 		password.push_back(ch);
@@ -613,7 +613,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	clearScreen();
 
 	if (accomodations.size() == 0) {
-		cout << TAB << "N„o existe nenhum alojamento que verifique as condiÁıes desejadas." << endl;
+		cout << TAB << "N√£o existe nenhum alojamento que verifique as condi√ß√µes desejadas." << endl;
 		return NULL;
 	}
 
@@ -633,7 +633,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 
 
 	cout << endl << TAB << "Introduza o ID do alojamento que pertende reservar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -651,6 +651,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 		if ((*ita)->getID() == id) {
 			a = (*ita);
 			addReservationComp(a, initial_date, final_date);
+			updateDiscounts();	//TODO not sure yet se est√° no s√≠tio certo
 			return a;
 		}
 	}
@@ -683,7 +684,7 @@ int Company::cancelReservation() {
 	gotoXY(48, 4); cout << "|| Cancelar Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende cancelar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em cancelar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em cancelar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -719,12 +720,12 @@ int Company::cancelReservation() {
 
 	if (!found) throw InvalidReservationID(id);
 
-	// torna v·lidas as datas da reserva no alojamento correspondente
+	// torna v√°lidas as datas da reserva no alojamento correspondente
 	a->removeDates(ci, co);
 
 	Reservation res(id);
 
-	//remove do vetor de reservas do fornecedor respons·vel a respetiva reserva
+	//remove do vetor de reservas do fornecedor respons√°vel a respetiva reserva
 	for (its = supliers.begin(); its != supliers.end(); its++) {
 		reservations_tmp = its->getReservations();
 
@@ -755,20 +756,20 @@ int Company::cancelReservation() {
 
 	if (num_days >= 30) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
-		cout << TAB_BIG << TAB_BIG <<"A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-· devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
+		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-√° devolvida." << endl;
 
 	}
 	else if (num_days >= 15) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-· devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-√° devolvida." << endl;
 
 	}
 	else {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedÍncia n„o ser· reembolsadao." << endl;
+		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca anteced√™ncia n√£o ser√° reembolsadao." << endl;
 	}
 
 
@@ -785,7 +786,7 @@ void Company::showReservation()const {
 	gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende visualizar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em visualizar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em visualizar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -800,7 +801,7 @@ void Company::showReservation()const {
 	for (itr = reservations.begin(); itr != reservations.end(); itr++) {
 		if (itr->getID() == id) {
 			gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-			cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             PreÁo         " << endl;
+			cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Pre√ßo         " << endl;
 			cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 			cout << (*itr);
 			return;
@@ -812,29 +813,23 @@ void Company::showReservation()const {
 
 }
 
-/**
-void Company::updateDiscounts() {
-	vector<Accomodation> aux;
-	bool found = false;
-	
-	//criar vetor accomodations para teste
 
-	for (int i = 0; i < accomodations.size(); i++) {
-		for (int k = 0; k < reservations.size(); k++) {
-			if (accomodations.at(i) == (reservations.at(k))->getAccomodation())
+void Company::updateDiscounts() {
+
+	bool found = false;
+	for (int i = reservations.size(); i >= 0; i--) {
+		priority_queue<Accomodation> temp = accomodationsDiscounts;
+		for (int j = 0; j <= temp.size(); j++) {
+			if (temp.top() == *(reservations.at(i)).getAccomodation())
 				found = true;
+			temp.pop();
 		}
 
-		if (!found)
-			accomodationsDiscounts.push(accomodations.at(i));
+		if (!found) {
+			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
+			temp = accomodationsDiscounts;
+		}
 	}
 
-	for (int i = reservations.size(); i >= 0; i--) {
-		
-		//pesquisar na queue copy pop....se j· axiste accomodation e se nao exister fazer push
-		//implementar operador < para fazer push no sitio certo
+}
 
-	}
-
-
-}*/

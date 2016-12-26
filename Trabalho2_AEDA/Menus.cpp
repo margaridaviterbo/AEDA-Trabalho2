@@ -835,6 +835,9 @@ void writeAdministratorMenu(int x) {
 
 
 	gotoXY(48, 4); cout << "|| Menu Administrador ||";
+
+	//SEGUIR INFINITEBOOK
+	//TODO começar por fazer funçao para imprimir queue e chama-la aqui, depois acrescentar funcionalidades crude e fazer menu
 }
 
 void novoMenu(Company & comp){

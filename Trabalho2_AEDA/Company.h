@@ -16,6 +16,7 @@ using namespace std;
 
 class Company {	//implementar nesta classe as funcionalidades gerais do programa, os metodos para gerir a empresa
 private:
+
 	vector<Suplier> supliers; 
 	vector<Client> clients;
 	vector <Reservation> reservations;
@@ -26,6 +27,8 @@ private:
 	string reservationsFile;
 
 public:
+	
+
 	/**
 	* @brief constructor for the Company based on the files provided
 	*
