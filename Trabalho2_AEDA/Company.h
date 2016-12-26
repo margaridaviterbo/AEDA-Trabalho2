@@ -16,7 +16,7 @@ using namespace std;
 
 class Company {	//implementar nesta classe as funcionalidades gerais do programa, os metodos para gerir a empresa
 private:
-	vector<Suplier> supliers; // precisa de ser pointer??????
+	vector<Suplier> supliers; 
 	vector<Client> clients;
 	vector <Reservation> reservations;
 	priority_queue <Accomodation> accomodationsDiscounts;
@@ -87,6 +87,19 @@ public:
 	*
 	*/
 	vector<Suplier>::iterator verifyLogInSup(string username, string password);
+
+	/**
+	* @brief verifies if the username and password of a suplier are correct
+	*
+	* @param username username of the suplier
+	*
+	* @param password password of the suplier
+	*
+	* @return iterator for the suplier with the username and password given
+	*
+	*/
+
+	void showSupliers();
 
 	/**
 	* @brief verifies if the username and password of a client are correct
@@ -163,7 +176,7 @@ public:
 	*/
 	void saveReservationsChanges() const;
 
-	void updateDiscounts();
+	//void updateDiscounts();
 };
 
 

@@ -284,6 +284,7 @@ Company::Company(string clientsFile, string supliersFile, string reservationsFil
 	clientsInicialization(clientsFile);
 
 }
+
 void Company::saveClientsChanges() const
 {
 	ofstream fout;
@@ -317,7 +318,6 @@ void Company::saveSupliersChanges() const
 	fout.close();
 }
 
-
 void Company::saveReservationsChanges() const
 {
 	ofstream fout;
@@ -334,7 +334,6 @@ void Company::saveReservationsChanges() const
 
 	fout.close();
 }
-
 
 
 void Company::saveChanges() const
@@ -445,6 +444,26 @@ void Company::registerSuplier() {
 
 }
 
+
+void Company::showSupliers(){
+	sort(supliers.begin(), supliers.end());
+
+
+	gotoXY(48, 4); cout << "|| Fornecedores ||" << endl << endl << endl;
+
+	cout << "     Nome             Nome de Utilizador  NIF          Morada                                  Alojamentos             " << endl;
+	cout << " --------------------------------------------------------------------------------------------------------------------" << endl;
+
+	for (int i = 0; i < supliers.size(); i++){
+		cout << supliers.at(i);
+
+	}
+
+	pauseScreen();
+
+
+
+}
 // -------------------
 //     Client
 // -------------------
@@ -533,7 +552,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 		}
 
 	}
-	updateDiscounts();
+//	updateDiscounts();
 }
 
 
@@ -793,6 +812,7 @@ void Company::showReservation()const {
 
 }
 
+/**
 void Company::updateDiscounts() {
 	vector<Accomodation> aux;
 	bool found = false;
@@ -817,4 +837,4 @@ void Company::updateDiscounts() {
 	}
 
 
-}
+}*/
