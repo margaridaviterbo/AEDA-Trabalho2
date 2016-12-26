@@ -92,13 +92,8 @@ public:
 	vector<Suplier>::iterator verifyLogInSup(string username, string password);
 
 	/**
-	* @brief verifies if the username and password of a suplier are correct
+	* @brief displays the Company's supliers in alphabetic order
 	*
-	* @param username username of the suplier
-	*
-	* @param password password of the suplier
-	*
-	* @return iterator for the suplier with the username and password given
 	*
 	*/
 
@@ -179,7 +174,7 @@ public:
 	*/
 	void saveReservationsChanges() const;
 
-	//void updateDiscounts();
+	void updateDiscounts();
 };
 
 
