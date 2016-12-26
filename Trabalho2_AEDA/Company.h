@@ -17,15 +17,17 @@ using namespace std;
 class Company {	//implementar nesta classe as funcionalidades gerais do programa, os metodos para gerir a empresa
 private:
 
+	vector<Suplier> supliers; 
+	vector<Client> clients;
+	vector <Reservation> reservations;
+	priority_queue <Accomodation> accomodationsDiscounts;
+
 	string clientsFile;
 	string supliersFile;
 	string reservationsFile;
 
 public:
-	vector<Suplier> supliers; // precisa de ser pointer??????
-	vector<Client> clients;
-	vector <Reservation> reservations;
-	priority_queue <Accomodation> accomodationsDiscounts;
+	
 
 	/**
 	* @brief constructor for the Company based on the files provided
@@ -88,6 +90,14 @@ public:
 	*
 	*/
 	vector<Suplier>::iterator verifyLogInSup(string username, string password);
+
+	/**
+	* @brief displays the Company's supliers in alphabetic order
+	*
+	*
+	*/
+
+	void showSupliers();
 
 	/**
 	* @brief verifies if the username and password of a client are correct

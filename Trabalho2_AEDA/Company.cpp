@@ -284,6 +284,7 @@ Company::Company(string clientsFile, string supliersFile, string reservationsFil
 	clientsInicialization(clientsFile);
 
 }
+
 void Company::saveClientsChanges() const
 {
 	ofstream fout;
@@ -317,7 +318,6 @@ void Company::saveSupliersChanges() const
 	fout.close();
 }
 
-
 void Company::saveReservationsChanges() const
 {
 	ofstream fout;
@@ -334,7 +334,6 @@ void Company::saveReservationsChanges() const
 
 	fout.close();
 }
-
 
 
 void Company::saveChanges() const
@@ -445,6 +444,26 @@ void Company::registerSuplier() {
 
 }
 
+
+void Company::showSupliers(){
+	sort(supliers.begin(), supliers.end());
+
+
+	gotoXY(48, 4); cout << "|| Fornecedores ||" << endl << endl << endl;
+
+	cout << "     Nome             Nome de Utilizador  NIF          Morada                                  Alojamentos             " << endl;
+	cout << " --------------------------------------------------------------------------------------------------------------------" << endl;
+
+	for (int i = 0; i < supliers.size(); i++){
+		cout << supliers.at(i);
+
+	}
+
+	pauseScreen();
+
+
+
+}
 // -------------------
 //     Client
 // -------------------
@@ -533,7 +552,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 		}
 
 	}
-	updateDiscounts();
+//	updateDiscounts();
 }
 
 
@@ -594,7 +613,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	clearScreen();
 
 	if (accomodations.size() == 0) {
-		cout << TAB << "N„o existe nenhum alojamento que verifique as condiÁıes desejadas." << endl;
+		cout << TAB << "N√£o existe nenhum alojamento que verifique as condi√ß√µes desejadas." << endl;
 		return NULL;
 	}
 
@@ -614,7 +633,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 
 
 	cout << endl << TAB << "Introduza o ID do alojamento que pertende reservar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -632,7 +651,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 		if ((*ita)->getID() == id) {
 			a = (*ita);
 			addReservationComp(a, initial_date, final_date);
-			updateDiscounts();	//TODO not sure yet se est· no sÌtio certo
+			updateDiscounts();	//TODO not sure yet se est√° no s√≠tio certo
 			return a;
 		}
 	}
@@ -665,7 +684,7 @@ int Company::cancelReservation() {
 	gotoXY(48, 4); cout << "|| Cancelar Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende cancelar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em cancelar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em cancelar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -701,12 +720,12 @@ int Company::cancelReservation() {
 
 	if (!found) throw InvalidReservationID(id);
 
-	// torna v·lidas as datas da reserva no alojamento correspondente
+	// torna v√°lidas as datas da reserva no alojamento correspondente
 	a->removeDates(ci, co);
 
 	Reservation res(id);
 
-	//remove do vetor de reservas do fornecedor respons·vel a respetiva reserva
+	//remove do vetor de reservas do fornecedor respons√°vel a respetiva reserva
 	for (its = supliers.begin(); its != supliers.end(); its++) {
 		reservations_tmp = its->getReservations();
 
@@ -738,19 +757,19 @@ int Company::cancelReservation() {
 	if (num_days >= 30) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-· devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-√° devolvida." << endl;
 
 	}
 	else if (num_days >= 15) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-· devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-√° devolvida." << endl;
 
 	}
 	else {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedÍncia n„o ser· reembolsadao." << endl;
+		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca anteced√™ncia n√£o ser√° reembolsadao." << endl;
 	}
 
 
@@ -767,7 +786,7 @@ void Company::showReservation()const {
 	gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende visualizar." << endl;
-	cout << TAB << "Caso n„o esteja interessado em visualizar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso n√£o esteja interessado em visualizar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -782,7 +801,7 @@ void Company::showReservation()const {
 	for (itr = reservations.begin(); itr != reservations.end(); itr++) {
 		if (itr->getID() == id) {
 			gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-			cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             PreÁo         " << endl;
+			cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Pre√ßo         " << endl;
 			cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 			cout << (*itr);
 			return;
@@ -813,3 +832,4 @@ void Company::updateDiscounts() {
 	}
 
 }
+
