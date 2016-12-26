@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
 #include <ctime>
 #include <conio.h>
 #include <windows.h>
@@ -18,6 +19,7 @@ private:
 	vector<Suplier> supliers; // precisa de ser pointer??????
 	vector<Client> clients;
 	vector <Reservation> reservations;
+	queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
