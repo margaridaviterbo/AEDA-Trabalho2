@@ -827,6 +827,16 @@ void writeOptionStartMenu(int x) {
 	}
 }
 
+void writeAdministratorMenu(int x) {
+	clearScreen();
+
+	//int menu_item = 0, x = 7;
+	bool running = true;
+
+
+	gotoXY(48, 4); cout << "|| Menu Administrador ||";
+}
+
 void novoMenu(Company & comp){
 
 	clearScreen();
@@ -885,7 +895,7 @@ void novoMenu(Company & comp){
 				break;
 			case 2: 
 				gotoXY(43, 16);
-				cout << "You chose Option 4...     ";  // implementar menu administrador
+				writeAdministratorMenu(1);  // implementar menu administrador
 				break;
 			case 3: 
 				guestMenu(comp);

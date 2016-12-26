@@ -73,10 +73,12 @@ void writeClientMenu(int x);
 
 void writeGuestMenu(int x);
 
-void writeOptionMainMenu(int);
+void writeOptionMainMenu(int x);
 
-void writeOptionStartMenu(int);
+void writeOptionStartMenu(int x);
 
-void writeSuplierMenu(int);
+void writeSuplierMenu(int x);
+
+void writeAdministratorMenu(int x);
 
 void novoMenu(Company & comp);
