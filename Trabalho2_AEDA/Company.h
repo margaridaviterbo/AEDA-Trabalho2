@@ -19,7 +19,7 @@ private:
 	vector<Suplier> supliers; // precisa de ser pointer??????
 	vector<Client> clients;
 	vector <Reservation> reservations;
-	queue <Accomodation> accomodationsDiscounts;
+	priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
@@ -162,6 +162,8 @@ public:
 	*
 	*/
 	void saveReservationsChanges() const;
+
+	void updateDiscounts();
 };
 
 
