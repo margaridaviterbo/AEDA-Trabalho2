@@ -1,0 +1,19 @@
+   24
+    monteiro175   xoninhas2000     Joao Monteiro      302354244        - Rua DR Eduardo Santos Silva, Porto - 
+   12   BEDROOM   20  120  400        Aveiro         -    06/08/2017 18/08/2017    12/03/2017 17/03/2017    -    SINGLE     HOTEL
+   21 APARTMENT   40  200  600       Coimbra         -    12/07/2017 20/07/2017    12/03/2017 17/03/2017    -    3        NAO
+   11      FLAT   10  100  300     Vila Real         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017    -
+-------
+       areias12      lelito12d        Nuno Lucas      309823420        - Rua DR Eduardo Santos Silva, Porto - 
+    1   BEDROOM   20  120  400        Aveiro         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017    -    SINGLE   SHARED_HOUSE
+    7 APARTMENT   40  200  600       Coimbra         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017    -    3        NAO
+   13      FLAT   10  100  300     Vila Real         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017    -
+-------
+       pedroso1        psdfole       Pedro Silva      309823423        - Rua DR Eduardo Santos Silva, Porto - 
+    8   BEDROOM   20  120  400        Aveiro         -    14/08/2017 15/08/2017    12/03/2017 17/03/2017    -    SINGLE   BED_AND_BREAKFAST
+   17 APARTMENT   40  200  600       Coimbra         -    16/08/2017 20/08/2017    12/03/2017 17/03/2017    -    3        SIM
+    5      FLAT   10  100  300     Vila Real         -    16/08/2017 09/09/2017    12/03/2017 17/03/2017    -
+-------
+      dolfander            123    Daniel Machado      123123123        - Rua Principal 200 - 
+   24   BEDROOM   23   23   23         Porto         -    02/07/2010 13/07/2010    -    SINGLE     HOTEL
+-------
