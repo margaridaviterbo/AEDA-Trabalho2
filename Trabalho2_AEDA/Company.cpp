@@ -405,7 +405,7 @@ void Company::registerSuplier() {
 	if (cin.eof()) throw InvalidInput();
 
 	gotoXY(42, 12); cout << "Palavra-Passe: ";
-	
+
 
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
@@ -423,7 +423,7 @@ void Company::registerSuplier() {
 	do {
 		clearScreen();
 		gotoXY(48, 4); cout << "|| Registar ||" << endl << endl;
-		gotoXY(42, 13); cout <<  "Adicionar Alojamento (s/n)? ";
+		gotoXY(42, 13); cout << "Adicionar Alojamento (s/n)? ";
 		getline(cin, add);
 
 		if (cin.eof()) throw InvalidInput();
@@ -476,7 +476,7 @@ void Company::registerClient() {
 
 	clearScreen();
 
-	
+
 	gotoXY(48, 4);  cout << "|| Registar ||" << endl << endl;
 	gotoXY(42, 7);  cout << "Nome: ";
 	getline(cin, name);
@@ -490,7 +490,7 @@ void Company::registerClient() {
 
 
 	gotoXY(42, 9); cout << "Palavra-Passe: ";
-	
+
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
 		password.push_back(ch);
@@ -632,6 +632,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 		if ((*ita)->getID() == id) {
 			a = (*ita);
 			addReservationComp(a, initial_date, final_date);
+			updateDiscounts();	//TODO not sure yet se está no sítio certo
 			return a;
 		}
 	}
@@ -736,7 +737,7 @@ int Company::cancelReservation() {
 
 	if (num_days >= 30) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
-		cout << TAB_BIG << TAB_BIG <<"A sua reserva foi cancelada com sucesso." << endl << endl;
+		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-á devolvida." << endl;
 
 	}
@@ -793,28 +794,22 @@ void Company::showReservation()const {
 
 }
 
-void Company::updateDiscounts() {
-	vector<Accomodation> aux;
-	bool found = false;
-	
-	//criar vetor accomodations para teste
 
-	for (int i = 0; i < accomodations.size(); i++) {
-		for (int k = 0; k < reservations.size(); k++) {
-			if (accomodations.at(i) == (reservations.at(k))->getAccomodation())
+void Company::updateDiscounts() {
+
+	bool found = false;
+	for (int i = reservations.size(); i >= 0; i--) {
+		priority_queue<Accomodation> temp = accomodationsDiscounts;
+		for (int j = 0; j <= temp.size(); j++) {
+			if (temp.top() == *(reservations.at(i)).getAccomodation())
 				found = true;
+			temp.pop();
 		}
 
-		if (!found)
-			accomodationsDiscounts.push(accomodations.at(i));
+		if (!found) {
+			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
+			temp = accomodationsDiscounts;
+		}
 	}
-
-	for (int i = reservations.size(); i >= 0; i--) {
-		
-		//pesquisar na queue copy pop....se já axiste accomodation e se nao exister fazer push
-		//implementar operador < para fazer push no sitio certo
-
-	}
-
 
 }

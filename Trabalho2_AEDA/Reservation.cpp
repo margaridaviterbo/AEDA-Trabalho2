@@ -14,6 +14,7 @@ void Reservation::setResLastID(unsigned int id) {
 Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT) {
 	this->ID = ID;
 	this->accomodation = accomodation;
+	accomodation->setLastReservationID(ID);
 	this->checkIN = checkIN;
 	this->checkOUT = checkOUT;
 
@@ -32,14 +33,15 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
+	accomodation->setLastReservationID(ID);
 }
 
 float Reservation::getTotalPrice()const {
 
-	int IN = checkIN.convert_date_int();
-	int OUT = checkOUT.convert_date_int();
+	int in = checkIN.convert_date_int();
+	int out = checkOUT.convert_date_int();
 
-	int numDays = OUT - IN;
+	int numDays = out - in;
 
 	float total = 0;
 

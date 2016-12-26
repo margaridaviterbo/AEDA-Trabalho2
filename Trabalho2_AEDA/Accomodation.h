@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <ctime>
 
 #include "Date.h"
 
@@ -19,6 +20,7 @@ private:
 	float price_month;
 	string location;
 	unsigned int id;
+	int lastReservationID = 0;
 	static unsigned int lastID;
 	vector<pair<Date, Date>> unavailable_dates;
 	float fee;
@@ -65,6 +67,9 @@ public:
 	*
 	* @return price_night
 	*/
+
+	void setLastReservationID(int id) { lastReservationID = id;}
+
 	float getPriceNight()const { return price_night; };
 
 	/**
@@ -176,6 +181,8 @@ public:
 	* @return true is accomodations have the same id, false otherwise
 	*/
 	bool operator == (const Accomodation &acc) const;
+
+	bool operator < (const Accomodation &ac) const;
 };
 
 class Bedroom : public Accomodation {
@@ -344,4 +351,5 @@ public:
 	*/
 	virtual void saveAccomodation(ofstream & out);
 };
+
 
