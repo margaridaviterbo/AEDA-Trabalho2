@@ -533,6 +533,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 		}
 
 	}
+	updateDiscounts();
 }
 
 
@@ -788,6 +789,32 @@ void Company::showReservation()const {
 	}
 
 	throw InvalidReservationID(id);
+
+
+}
+
+void Company::updateDiscounts() {
+	vector<Accomodation> aux;
+	bool found = false;
+	
+	//criar vetor accomodations para teste
+
+	for (int i = 0; i < accomodations.size(); i++) {
+		for (int k = 0; k < reservations.size(); k++) {
+			if (accomodations.at(i) == (reservations.at(k))->getAccomodation())
+				found = true;
+		}
+
+		if (!found)
+			accomodationsDiscounts.push(accomodations.at(i));
+	}
+
+	for (int i = reservations.size(); i >= 0; i--) {
+		
+		//pesquisar na queue copy pop....se já axiste accomodation e se nao exister fazer push
+		//implementar operador < para fazer push no sitio certo
+
+	}
 
 
 }
