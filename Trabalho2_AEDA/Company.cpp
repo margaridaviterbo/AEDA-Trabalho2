@@ -146,7 +146,8 @@ void Company::supliersInicialization(string supliersFile)
 
 }
 
-void Company::reservationsInicialization(string reservationsFile){
+void Company::reservationsInicialization(string reservationsFile)
+{
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -166,7 +167,6 @@ void Company::reservationsInicialization(string reservationsFile){
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
-		
 
 
 		ss >> name;
@@ -192,8 +192,7 @@ void Company::reservationsInicialization(string reservationsFile){
 				{
 					accomodation = *it2;
 					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
-					reservations.push_back(reserv);  //adiciona ao vetor de reservas
-					reservationsBST.insert(reserv);
+					reservations.push_back(reserv);
 					it->addReservation(reserv);
 
 					break;
@@ -206,7 +205,8 @@ void Company::reservationsInicialization(string reservationsFile){
 	name_reservations.close();
 }
 
-void Company::clientsInicialization(string clientsFile){
+void Company::clientsInicialization(string clientsFile)
+{
 	ifstream name_clients;
 	string line_c;
 
@@ -253,14 +253,11 @@ void Company::clientsInicialization(string clientsFile){
 }
 
 
-Company::Company(string clientsFile, string supliersFile, string reservationsFile) :reservationsBST(Reservation()){
-
-	;
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) {
 
 	this->clientsFile = clientsFile;
 	this->supliersFile = supliersFile;
 	this->reservationsFile = reservationsFile;
-
 
 	/*
 	Ficheiro de fornecedores
@@ -472,6 +469,46 @@ void Company::showSupliers(){
 //     Client
 // -------------------
 
+bool Company::isClientInactive(string username) {
+
+	bool inactive = false;
+
+	unordered_set<Client, hcli, eqcli>::const_iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		if (username == it->getUsername())
+			inactive = true;
+
+		it++;
+	}
+
+	return inactive;
+
+}
+
+unordered_set<Client, hcli, eqcli>::iterator Company::verifyInactiveCliLogin(string username, string password) {
+
+	string un;
+	string pw;
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		un = (*it).getUsername();
+		pw = (*it).getPassword();
+
+		if ((un == username) && (pw == password)) return it;
+
+		it++;
+	}
+
+	throw InvalidLogIn();
+
+}
+
+
 vector<Client>::iterator Company::verifyLogInCli(string username, string password) {
 	string un;
 	string pw;
@@ -533,9 +570,22 @@ void Company::registerClient() {
 	gotoXY(43, 15);
 }
 
-// -------------------
-//     Reservation
-// -------------------
+unordered_set<Client, hcli, eqcli>::iterator Company::replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos) {
+
+	Client cli = *ith;
+	cli.deleteReservation(pos);
+
+	inactiveClients.erase(ith);
+
+	inactiveClients.insert(cli);
+
+	for (ith = inactiveClients.begin(); ith != inactiveClients.end(); ith++) {
+	
+		if (cli.getUsername() == ith->getUsername())
+			return ith;
+	}
+}
+
 
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
@@ -842,24 +892,6 @@ void Company::showReservation()const {
 
 }
 
-void Company::showReservations() const{
-	BSTItrIn<Reservation> itr(reservationsBST);
-
-	clearScreen();
-
-	gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
-	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
-	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
-
-	while (!itr.isAtEnd()){
-		cout << itr.retrieve();
-
-		itr.advance();
-	}
-
-
-	pauseScreen();
-}
 
 // -------------------
 //     Administrator
