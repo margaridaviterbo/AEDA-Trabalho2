@@ -70,12 +70,16 @@ float Reservation::getTotalPrice()const {
 
 ostream &operator<<(ostream & out, const Reservation  & reserv)
 {
+	
+	out << left << "    ";
 
-	out << setw(15) << reserv.ID
-		<< setw(25) << reserv.accomodation->getID()
-		<< setw(20) << "-" << reserv.checkIN << "-"
-		<< setw(10) << "-" << reserv.checkOUT <<"-"
-		<< setw(17) << reserv.getTotalPrice();
+	out << setw(20) << reserv.client
+		<< setw(15) << reserv.ID
+		<< setw(18) << reserv.accomodation->getID()
+		<< reserv.checkIN << setw(5) << " "
+		<< reserv.checkOUT << setw(5) << " "
+		<< setw(11) << reserv.getTotalPrice()
+		<< reserv.marking;
 	out << endl;
 
 	return out;
@@ -102,6 +106,23 @@ float Reservation::getFee() const {
 	float price = getTotalPrice();
 
 	return price*percentage;
+}
+
+bool Reservation::operator < (const Reservation & res) const{
+	if (client == res.client)
+		return marking < res.marking;
+
+	if (res.client == "Não Registado")
+		return true;
+
+	if (client == "Não Registado")
+		return false;
+
+	return client < res.client;
+
+
+
+	
 }
 
 

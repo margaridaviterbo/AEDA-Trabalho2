@@ -146,8 +146,7 @@ void Company::supliersInicialization(string supliersFile)
 
 }
 
-void Company::reservationsInicialization(string reservationsFile)
-{
+void Company::reservationsInicialization(string reservationsFile){
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -167,6 +166,7 @@ void Company::reservationsInicialization(string reservationsFile)
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
+		
 
 
 		ss >> name;
@@ -192,7 +192,7 @@ void Company::reservationsInicialization(string reservationsFile)
 				{
 					accomodation = *it2;
 					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
-					reservations.push_back(reserv);
+					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
 					break;
@@ -205,8 +205,7 @@ void Company::reservationsInicialization(string reservationsFile)
 	name_reservations.close();
 }
 
-void Company::clientsInicialization(string clientsFile)
-{
+void Company::clientsInicialization(string clientsFile){
 	ifstream name_clients;
 	string line_c;
 
@@ -232,12 +231,16 @@ void Company::clientsInicialization(string clientsFile)
 		{
 			idr = fromString<unsigned int>(IDreservation);
 
-			for (unsigned int i = 0; i < reservations.size(); i++)
-			{
-				if (reservations[i].getID() == idr) {
-					client.addReservation(reservations[i]);
-				}
+			BSTItrIn<Reservation> itr(reservationsBST);
+
+			while (!itr.isAtEnd()){
+				Reservation r = itr.retrieve();
+				if (r.getID() == idr)
+					client.addReservation(r);
+
+				itr.advance();
 			}
+
 		}
 
 		if (client.isInactiveClient()) {
@@ -253,11 +256,14 @@ void Company::clientsInicialization(string clientsFile)
 }
 
 
-Company::Company(string clientsFile, string supliersFile, string reservationsFile) {
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) :reservationsBST(Reservation()){
+
+	;
 
 	this->clientsFile = clientsFile;
 	this->supliersFile = supliersFile;
 	this->reservationsFile = reservationsFile;
+
 
 	/*
 	Ficheiro de fornecedores
@@ -325,17 +331,19 @@ void Company::saveSupliersChanges() const
 void Company::saveReservationsChanges() const
 {
 	ofstream fout;
+	BSTItrIn<Reservation> itr(reservationsBST);
 	fout.open(reservationsFile);
 
 	if (fout.fail()) throw ErrorOpeningFile("Reservas");
 
 	fout << setw(5) << Reservation::getLastID() << endl;
 
-	for (unsigned int i = 0; i < reservations.size(); i++)
-	{
-		reservations[i].save(fout);
+	while (!itr.isAtEnd()){
+		itr.retrieve().save(fout);
+		itr.advance();
 	}
 
+	
 	fout.close();
 }
 
@@ -530,6 +538,10 @@ void Company::registerClient() {
 	gotoXY(43, 15);
 }
 
+// -------------------
+//     Reservation
+// -------------------
+
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
 	Date d; // DANIEL apagar isto e calcular a Data atual!!!!!!
@@ -551,7 +563,9 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 	Reservation res(a, init_date, final_date, d, client);
 	vector<Accomodation *> accomodations_tmp;
 
-	reservations.push_back(res);
+	//reservations.push_back(res);
+
+	reservationsBST.insert(res);
 
 	vector<Suplier>::iterator its;
 	vector<Accomodation*>::iterator ita;
@@ -677,7 +691,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 
 }
 
-int Company::cancelReservation() {
+int Company::cancelReservation(){
 	string id_str;
 	unsigned int id;
 	Date actual_date;
@@ -721,19 +735,29 @@ int Company::cancelReservation() {
 	actual_date.setMonth(newtime.tm_mon + 1);
 	actual_date.setDay(newtime.tm_mday);
 
+	BSTItrIn<Reservation> itr_bst(reservationsBST);
+	Reservation r;
 
-	for (itr = reservations.begin(); itr != reservations.end(); itr++) {
-		if (itr->getID() == id) {
-			a = itr->getAccomodation();
-			ci = itr->getCheckIn();
-			co = itr->getCheckOut();
-			price = itr->getTotalPrice();
+	
+	while (!itr_bst.isAtEnd()){
+		r = itr_bst.retrieve();
+		if (r.getID() == id){
+			a = r.getAccomodation();
+			ci = r.getCheckIn();
+			co = r.getCheckOut();
+			price = r.getTotalPrice();
 			found = true;
 			break;
 		}
+
+		itr_bst.advance();
 	}
 
 	if (!found) throw InvalidReservationID(id);
+
+	// remove da árvore de reservas
+
+	reservationsBST.remove(r);
 
 	// torna válidas as datas da reserva no alojamento correspondente
 	a->removeDates(ci, co);
@@ -754,13 +778,14 @@ int Company::cancelReservation() {
 
 	//remove do vetor de reservas
 
+	/*
 	for (itr = reservations.begin(); itr != reservations.end(); itr++) {
 		if (itr->getID() == id) {
 			reservations.erase(itr);
 			break;
 		}
 	}
-
+	*/
 
 
 	//converte a data de hoje e a date de inicio da reserva em inteiros
@@ -771,9 +796,6 @@ int Company::cancelReservation() {
 
 	if (num_days >= 30) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
-
-		cout << TAB_BIG << TAB_BIG <<"A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-� devolvida." << endl;
 
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-á devolvida." << endl;
@@ -800,7 +822,8 @@ void Company::showReservation()const {
 	string id_str;
 	unsigned int id;
 
-	vector<Reservation>::const_iterator itr;
+	BSTItrIn<Reservation> itr(reservationsBST);
+
 
 	clearScreen();
 	gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
@@ -818,15 +841,20 @@ void Company::showReservation()const {
 
 	clearScreen();
 
-	for (itr = reservations.begin(); itr != reservations.end(); itr++) {
-		if (itr->getID() == id) {
+	while (!itr.isAtEnd()){
+
+		
+		if (itr.retrieve().getID() == id){
 			gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-			cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+			cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 			cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
-			cout << (*itr);
+			cout << itr.retrieve();
 			return;
 		}
+
+		itr.advance();
 	}
+
 
 	throw InvalidReservationID(id);
 
@@ -834,6 +862,24 @@ void Company::showReservation()const {
 
 }
 
+void Company::showReservations() const{
+	BSTItrIn<Reservation> itr(reservationsBST);
+
+	clearScreen();
+
+	gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
+	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+	while (!itr.isAtEnd()){
+		cout << itr.retrieve();
+
+		itr.advance();
+	}
+
+
+	pauseScreen();
+}
 
 // -------------------
 //     Administrator
