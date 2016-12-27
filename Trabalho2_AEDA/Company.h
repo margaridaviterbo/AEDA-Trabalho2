@@ -135,7 +135,7 @@ public:
 	* @param final_date check out date
 	*
 	*/
-	void addReservationComp(Accomodation *a, Date init_date, Date final_date);
+	void addReservationComp(Accomodation *a, Date init_date, Date final_date, string client);
 
 	/**
 	* @brief ask the client wich reservation he wants to to cancel removes it from the vectors and displays the amount that the client must receive

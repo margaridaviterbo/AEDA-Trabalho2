@@ -11,20 +11,22 @@ void Reservation::setResLastID(unsigned int id) {
 
 
 
-Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT) {
+Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, string name) {
 	this->ID = ID;
 	this->accomodation = accomodation;
 	accomodation->setLastReservationID(ID);
 	this->checkIN = checkIN;
 	this->checkOUT = checkOUT;
+	this->client = name;
 
 }
 
 
-Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT) {
+Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT,string name) {
 	this->accomodation = accomodation;
 	this->checkIN = checkIN;
 	this->checkOUT = checkOUT;
+	this->client = name;
 
 	pair<Date, Date> dates;
 	dates.first = checkIN;
@@ -86,7 +88,8 @@ bool operator == (const Reservation &res1, const Reservation & res2) {
 
 void Reservation::save(ofstream & out) const
 {
-	out << setw(5) << ID
+	out << setw(18) << client
+		<< setw(5) << ID
 		<< setw(5) << accomodation->getID()
 		<< setw(10) << checkIN
 		<< setw(10) << checkOUT

@@ -121,6 +121,8 @@ void clientMenu(Company & comp, vector<Client>::iterator it) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
+				comp.addReservationComp(acc, initial_date, final_date, it->getName());
+
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);

@@ -183,6 +183,8 @@ void Company::reservationsInicialization(string reservationsFile)
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
 
+		ss >> name;
+		ss >> surname; name = name + ' ' + surname;
 		ss >> idr; IDreservation = fromString<unsigned int>(idr);
 		ss >> ida; IDaccomodation = fromString<unsigned int>(ida);
 		ss >> checkIN; Date in(checkIN);
@@ -202,8 +204,9 @@ void Company::reservationsInicialization(string reservationsFile)
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-					Reservation reserv(IDreservation, accomodation, in, out);
+					Reservation reserv(IDreservation, accomodation, in, out, name);
 					reservations.push_back(reserv);
+
 					it->addReservation(reserv);
 
 					break;
@@ -532,8 +535,8 @@ void Company::registerClient() {
 	gotoXY(43, 15);
 }
 
-void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date) {
-	Reservation res(a, init_date, final_date);
+void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
+	Reservation res(a, init_date, final_date, client);
 	vector<Accomodation *> accomodations_tmp;
 
 	reservations.push_back(res);
@@ -650,8 +653,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	for (ita = accomodations.begin(); ita != accomodations.end(); ita++) {
 		if ((*ita)->getID() == id) {
 			a = (*ita);
-			addReservationComp(a, initial_date, final_date);
-			updateDiscounts();	//TODO not sure yet se está no sítio certo
+			updateDiscounts();	//TODO not sure yet se está no sítio certo  //n�o est� xd
 			return a;
 		}
 	}
