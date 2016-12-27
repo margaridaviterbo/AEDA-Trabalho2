@@ -16,6 +16,8 @@
 
 using namespace std;
 
+typedef vector<Accomodation* >::iterator itAccomodation;
+
 class User {
 private:
 	string username;
@@ -209,6 +211,10 @@ public:
 
 	void addAccomodation2(); // comment later
 
+	bool operator<(const Suplier & c) const;
+
+	friend ostream &operator<<(ostream & out, const Suplier & s);
+	
 };
 
 /**

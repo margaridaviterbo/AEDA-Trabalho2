@@ -318,9 +318,6 @@ void writeEstabliType(int x) {
 }
 
 
-
-
-
 bedroomType chooseBedType() {
 
 	clearScreen();
@@ -457,7 +454,6 @@ establishment chooseEst() {
 	gotoXY(43, 21);
 
 }
-
 
 void Suplier::addAccomodation2() {
 	string option_str;
@@ -657,6 +653,33 @@ void Suplier::showFees()const {
 
 }
 
+
+bool Suplier::operator<(const Suplier & c) const{
+
+	return getName() < c.getName();
+
+}
+
+ostream &operator<<(ostream & out, const Suplier & s){
+	cout << left<<  "     ";
+
+	cout << setw(17) << s.getName()
+		<< setw(20) << s.getUsername()
+		<< setw(13) << s.getNIF()
+		<< setw(40) << s.getAdress();
+
+	itAccomodation it;
+	vector<Accomodation*> accomodations = s.getAccomodations();
+
+	for (it = accomodations.begin(); it != accomodations.end(); it++){
+		cout << setw(4) << (*it)->getID();
+	}
+
+
+	cout << endl;
+
+	return cout;
+}
 
 // -------------------
 //    Client

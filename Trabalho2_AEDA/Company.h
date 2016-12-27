@@ -37,11 +37,17 @@ private:
 	vector <Reservation> reservations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 
+	vector<Suplier> supliers; 
+	vector<Client> clients;
+	vector <Reservation> reservations;
+	priority_queue <Accomodation> accomodationsDiscounts;
+
 	string clientsFile;
 	string supliersFile;
 	string reservationsFile;
 
 public:
+
 	/**
 	* @brief constructor for the Company based on the files provided
 	*
@@ -113,6 +119,14 @@ public:
 	*
 	*/
 	vector<Suplier>::iterator verifyLogInSup(string username, string password);
+
+	/**
+	* @brief displays the Company's supliers in alphabetic order
+	*
+	*
+	*/
+
+	void showSupliers();
 
 	/**
 	* @brief verifies if the username and password of a client are correct
