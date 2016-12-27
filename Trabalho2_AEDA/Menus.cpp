@@ -877,7 +877,7 @@ void Menu::novoMenu(Company & comp){
 	int menu_item = 0, x = 7;
 	bool running = true;
 
-	exit = 0;
+
 
 	gotoXY(48, 4); cout << "|| MENU INICIAL ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Menu Fornecedor             ";
@@ -936,8 +936,10 @@ void Menu::novoMenu(Company & comp){
 				break;
 			case 4: 
 				comp.saveChanges();
+				/*
 				exit = true;
-				running = false;
+				running = false;*/
+				exit(1);
 				break;
 
 			}
@@ -982,7 +984,7 @@ void Menu::start(Company & comp) {
 		break;
 	case 4:
 		comp.saveChanges();
-		exit = 1;
+		//exit = 1;
 	}
 
 
