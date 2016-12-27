@@ -20,7 +20,7 @@ private:
 	bool exit;
 
 public:
-	Menu() { exit = 0; }
+	Menu() { exit = false; }
 
 
 

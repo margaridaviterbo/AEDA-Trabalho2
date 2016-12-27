@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <cstdlib>
 #include <unordered_set>
+#include <algorithm>
 
 #include "User.h"
 #include "utils.h"
@@ -37,10 +38,7 @@ private:
 	vector <Reservation> reservations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 
-	vector<Suplier> supliers; 
-	vector<Client> clients;
-	vector <Reservation> reservations;
-	priority_queue <Accomodation> accomodationsDiscounts;
+	//priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
@@ -163,8 +161,10 @@ public:
 	*
 	* @param final_date check out date
 	*
+	* @param client clients name
+	*
 	*/
-	void addReservationComp(Accomodation *a, Date init_date, Date final_date);
+	void addReservationComp(Accomodation *a, Date init_date, Date final_date,string client);
 
 	/**
 	* @brief ask the client wich reservation he wants to to cancel removes it from the vectors and displays the amount that the client must receive
@@ -202,6 +202,8 @@ public:
 	*
 	*/
 	void saveReservationsChanges() const;
+
+	//void updateDiscounts();
 };
 
 

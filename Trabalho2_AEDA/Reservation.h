@@ -18,6 +18,7 @@ private:
 	Date checkOUT;
 	Date marking;
 	float totalPrice;
+	string client;
 public:
 	Reservation() {};
 
@@ -35,21 +36,8 @@ public:
 	* @param marking
 	*
 	*/
-	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking);
+	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client);
 
-	/**
-	* @brief reservation constructor with id
-	*
-	* @param ID
-	*
-	* @param accomodation
-	*
-	* @param checkIN
-	*
-	* @param checkOUT
-	*
-	*/
-	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT);
 
 	/**
 	* @brief reservation constructor
@@ -61,7 +49,7 @@ public:
 	* @param checkOUT
 	*
 	*/
-	Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT);
+	Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client); 
 
 	/**
 	* @brief reservation constructor with id only
