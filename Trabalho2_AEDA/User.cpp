@@ -722,3 +722,43 @@ void Client::save(ofstream & out) const
 
 	out << endl;
 }
+
+ostream &operator<<(ostream & out, const Client  & cli){
+
+	out << setw(20) << cli.getUsername()
+		<< setw(28) << cli.getPassword()
+		<< setw(36) << cli.getName()
+		<< setw(23) << cli.getPoints();
+
+	return out;
+}
+
+bool Client::isInactiveClient() {
+
+	vector<Reservation>::const_iterator it;
+	vector<Reservation> reservs = getReservations();
+
+	bool active = true;
+
+
+	for(it = reservs.begin(); it != reservs.end(); it++){
+	
+		Date actual_date, marking_date = it->getMarking();
+
+		struct tm newtime;
+		time_t now = time(0);
+		localtime_s(&newtime, &now);
+
+		actual_date.setYear(newtime.tm_year + 1900);
+		actual_date.setMonth(newtime.tm_mon + 1);
+		actual_date.setDay(newtime.tm_mday);
+
+		int marking_int = marking_date.convert_date_int();
+		int aDate_int = actual_date.convert_date_int();
+
+		if ((aDate_int - marking_int) > 365)
+			active = false;
+	}
+
+	return active;
+}

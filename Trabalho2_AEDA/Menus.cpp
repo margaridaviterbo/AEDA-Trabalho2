@@ -826,13 +826,16 @@ void Menu::adminMenu(Company & comp) {
 				cout << "Opcao 2";
 				break;
 			case 2:
-				gotoXY(43, 16);
-				cout << "Opcao 3";
+				clearScreen();
+				comp.showInactiveClients();
+				pauseScreen();
+				adminMenu(comp);
 				break;
 			case 3:
-				gotoXY(43, 16);
-				cout << "Opcao 4";
-				break;
+				clearScreen();
+				comp.showActiveClients();
+				pauseScreen();
+				adminMenu(comp);
 			case 4:
 				gotoXY(43, 16);
 				cout << "Opcao 5";
