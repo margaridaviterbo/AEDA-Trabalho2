@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <cstdlib>
+#include <ctime>
 
 #include "defs.h"
 #include "utils.h"
@@ -293,5 +294,8 @@ public:
 	*/
 	void save(ofstream & out) const;
 
+	bool isInactiveClient();
+
+	friend ostream &operator<<(ostream & out, const Client  & cli); // comment later
 
 };

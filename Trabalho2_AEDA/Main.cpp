@@ -49,25 +49,25 @@ int main() {
 		catch (InvalidDate id) {
 			cout << id;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 		}
 		catch (invalid_argument) {
-			cout << endl << TAB << "Erro na introdução dos dados." << endl;
-			cout << TAB << "Deve introduzir um número." << endl;
+			cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
+			cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 
 
 		}
 		catch (out_of_range) {
-			cout << endl << TAB << "Erro na introdução dos dados." << endl;
-			cout << TAB << "O número introduzido ultrapassa os valores suportados." << endl;
+			cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
+			cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 
@@ -76,7 +76,7 @@ int main() {
 		catch (InvalidLogIn ili) {
 			cout << ili;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 
@@ -84,7 +84,7 @@ int main() {
 		catch (InvalidUsername iu) {
 			cout << iu;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 			
 
@@ -92,7 +92,7 @@ int main() {
 		catch (ErrorOpeningFile eof) {
 			cout << eof;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 
@@ -101,7 +101,7 @@ int main() {
 		catch (InvalidReservationID iri) {
 			cout << iri;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 			
 
