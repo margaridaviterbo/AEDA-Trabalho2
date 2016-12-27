@@ -9,6 +9,7 @@
 
 #include "defs.h"
 #include "utils.h"
+#include "Accomodation.h"
 #include "Date.h"
 #include "Reservation.h"
 

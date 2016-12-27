@@ -81,7 +81,8 @@ public:
 	InvalidReservationID(unsigned int id) { this->id = id; }
 
 	friend ostream & operator << (ostream &out, InvalidReservationID &ii) {
-		out << endl;
+		out << endl << endl << endl << endl;
+		out << TAB_BIG  << TAB_BIG << "                            || Reserva ||" << endl << endl << endl;
 		out << TAB << "Não existe nenhuma reserva com o ID " << ii.id << "." << endl;
 		out << TAB << "Por favor volte a tentar." << endl;
 

@@ -113,12 +113,12 @@ int Date::convert_date_int()const {
 
 ostream& operator<<(ostream& out, const Date & date) {
 	if (date.day < 10)
-		out << '0' << date.day << '/';
+		out << "0" << date.day << "/";
 	else
 		out << date.day << "/";
 
 	if (date.month < 10)
-		out << "0" << date.month << '/';
+		out << "0" << date.month << "/";
 	else
 		out << date.month << "/";
 
