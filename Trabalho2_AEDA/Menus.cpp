@@ -122,6 +122,8 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				if (acc == NULL) break;
 
 
+				comp.addReservationComp(acc, initial_date, final_date, it->getName());
+
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
@@ -933,10 +935,11 @@ void Menu::novoMenu(Company & comp){
 				guestMenu(comp);
 				break;
 			case 4: 
-				exit = 1;
 				comp.saveChanges();
-				//exit = 1;
-				
+				exit = true;
+				running = false;
+				break;
+
 			}
 		}
 	}
