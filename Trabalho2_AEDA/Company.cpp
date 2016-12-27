@@ -291,7 +291,7 @@ void Company::saveClientsChanges() const
 	{
 		clients[i].save(fout);
 	}
-
+	
 	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
 
 	while (it != inactiveClients.end()) {
@@ -299,7 +299,7 @@ void Company::saveClientsChanges() const
 		(*it).save(fout);
 		it++;
 	}
-
+	
 
 	fout.close();
 }
@@ -533,6 +533,21 @@ void Company::registerClient() {
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
 	Date d; // DANIEL apagar isto e calcular a Data atual!!!!!!
+	
+	// Data atual
+
+	/*
+	Date actual_date;
+
+	struct tm newtime;
+	time_t now = time(0);
+	localtime_s(&newtime, &now);
+
+	actual_date.setYear(newtime.tm_year + 1900);
+	actual_date.setMonth(newtime.tm_mon + 1);
+	actual_date.setDay(newtime.tm_mday);
+	*/
+
 	Reservation res(a, init_date, final_date, d, client);
 	vector<Accomodation *> accomodations_tmp;
 
