@@ -823,7 +823,8 @@ void Menu::adminMenu(Company & comp) {
 				break;
 			case 1:
 				gotoXY(43, 16);
-				cout << "Opcao 2";
+				comp.showSupliers();
+				adminMenu(comp);
 				break;
 			case 2:
 				clearScreen();
@@ -838,7 +839,8 @@ void Menu::adminMenu(Company & comp) {
 				adminMenu(comp);
 			case 4:
 				gotoXY(43, 16);
-				cout << "Opcao 5";
+				comp.showReservations();
+				adminMenu(comp);
 				break;
 			case 5:
 				novoMenu(comp);

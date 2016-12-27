@@ -146,8 +146,7 @@ void Company::supliersInicialization(string supliersFile)
 
 }
 
-void Company::reservationsInicialization(string reservationsFile)
-{
+void Company::reservationsInicialization(string reservationsFile){
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -167,6 +166,7 @@ void Company::reservationsInicialization(string reservationsFile)
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
+		
 
 
 		ss >> name;
@@ -192,7 +192,8 @@ void Company::reservationsInicialization(string reservationsFile)
 				{
 					accomodation = *it2;
 					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
-					reservations.push_back(reserv);
+					reservations.push_back(reserv);  //adiciona ao vetor de reservas
+					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
 					break;
@@ -205,8 +206,7 @@ void Company::reservationsInicialization(string reservationsFile)
 	name_reservations.close();
 }
 
-void Company::clientsInicialization(string clientsFile)
-{
+void Company::clientsInicialization(string clientsFile){
 	ifstream name_clients;
 	string line_c;
 
@@ -253,11 +253,14 @@ void Company::clientsInicialization(string clientsFile)
 }
 
 
-Company::Company(string clientsFile, string supliersFile, string reservationsFile) {
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) :reservationsBST(Reservation()){
+
+	;
 
 	this->clientsFile = clientsFile;
 	this->supliersFile = supliersFile;
 	this->reservationsFile = reservationsFile;
+
 
 	/*
 	Ficheiro de fornecedores
@@ -529,6 +532,10 @@ void Company::registerClient() {
 
 	gotoXY(43, 15);
 }
+
+// -------------------
+//     Reservation
+// -------------------
 
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
@@ -835,6 +842,24 @@ void Company::showReservation()const {
 
 }
 
+void Company::showReservations() const{
+	BSTItrIn<Reservation> itr(reservationsBST);
+
+	clearScreen();
+
+	gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
+	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+	while (!itr.isAtEnd()){
+		cout << itr.retrieve();
+
+		itr.advance();
+	}
+
+
+	pauseScreen();
+}
 
 // -------------------
 //     Administrator
