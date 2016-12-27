@@ -12,6 +12,7 @@
 
 #include "User.h"
 #include "utils.h"
+#include "BST.h"
 
 using namespace std;
 
@@ -37,6 +38,9 @@ private:
 	vector<Client> clients;
 	vector <Reservation> reservations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
+
+	BST<Reservation> reservations_BST;
+
 
 	//priority_queue <Accomodation> accomodationsDiscounts;
 

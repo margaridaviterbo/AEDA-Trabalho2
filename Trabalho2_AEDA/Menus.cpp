@@ -823,7 +823,8 @@ void Menu::adminMenu(Company & comp) {
 				break;
 			case 1:
 				gotoXY(43, 16);
-				cout << "Opcao 2";
+				comp.showSupliers();
+				adminMenu(comp);
 				break;
 			case 2:
 				gotoXY(43, 16);
