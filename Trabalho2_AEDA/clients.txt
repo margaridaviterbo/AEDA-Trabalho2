@@ -1,6 +1,7 @@
-    monteiro17  xoninhas2000       João Monteiro       10 22
-       areias1     lelito12d          Nuno Lucas       1 12
-       pedroso       psdfole         Pedro Silva       2
-      chavez34      sadfasdg         Joao Chavez       
-         4love         sgabr       Maria Silvano       26
-        6yuppp      agvamroa          Pedro Dias       
+            27             0                 0 0       0
+    monteiro17  xoninhas2000       João Monteiro      30   22
+       areias1     lelito12d          Nuno Lucas      15   12
+       pedroso       psdfole         Pedro Silva       0
+      chavez34      sadfasdg         Joao Chavez       0
+         4love         sgabr       Maria Silvano       0
+        6yuppp      agvamroa          Pedro Dias       0
