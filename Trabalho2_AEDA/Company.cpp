@@ -568,7 +568,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 
 	}
 
-//	updateDiscounts();
+	updateDiscounts();
 
 }
 
@@ -666,7 +666,6 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	for (ita = accomodations.begin(); ita != accomodations.end(); ita++) {
 		if ((*ita)->getID() == id) {
 			a = (*ita);
-		//	updateDiscounts();	//TODO not sure yet se está no sítio certo // definitivamente não o sítio certo
 
 			return a;
 		}
@@ -873,13 +872,10 @@ void Company::showActiveClients() const {
 
 
 
-
-/*
-
 void Company::updateDiscounts() {
 
 	bool found = false;
-	for (int i = reservations.size(); i >= 0; i--) {
+	for (int i = 0; i<reservations.size();i++) {
 		priority_queue<Accomodation> temp = accomodationsDiscounts;
 		for (int j = 0; j <= temp.size(); j++) {
 			if (temp.top() == *(reservations.at(i)).getAccomodation())
@@ -894,5 +890,5 @@ void Company::updateDiscounts() {
 	}
 
 }
-*/
+
 
