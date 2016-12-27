@@ -123,6 +123,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 
 				comp.addReservationComp(acc, initial_date, final_date, it->getName());
+				comp.updateDiscounts();
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);

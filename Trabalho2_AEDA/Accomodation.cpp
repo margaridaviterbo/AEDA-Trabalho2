@@ -54,6 +54,12 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 }
 
 
+bool Accomodation::operator<(const Accomodation &acc) const {
+
+	//TODO arranjar outra forma de comparação: o periodo de tempo -> ver infinite book
+
+	return(lastReservationID < acc.lastReservationID);
+}
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {
 	this->est = est;
