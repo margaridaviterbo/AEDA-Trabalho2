@@ -81,27 +81,6 @@ public:
 	*/
 	float getTotalPrice()const;
 
-	/**
-	* @brief displays reservation on the screen
-	*
-	* @param out cout
-	*
-	* @param reserv reservation to display
-	*
-	* @return out
-	*/
-	friend ostream &operator<<(ostream & out, const Reservation  & reserv);
-
-	/**
-	* @brief compares 2 reservations
-	*
-	* @param acc1
-	*
-	* @param acc2
-	*
-	* @return true if the reservations have the same id, false otherwise
-	*/
-	friend bool operator == (const Reservation &acc1, const Reservation& acc2);
 
 	/**
 	* @brief sets accomodation
@@ -199,7 +178,30 @@ public:
 	*/
 	void save(ofstream & out) const;
 
-	
+
+	/**
+	* @brief displays reservation on the screen
+	*
+	* @param out cout
+	*
+	* @param reserv reservation to display
+	*
+	* @return out
+	*/
+	friend ostream &operator<<(ostream & out, const Reservation  & reserv);
+
+	/**
+	* @brief compares 2 reservations
+	*
+	* @param acc1
+	*
+	* @param acc2
+	*
+	* @return true if the reservations have the same id, false otherwise
+	*/
+	friend bool operator == (const Reservation &acc1, const Reservation& acc2);
+
+	bool operator < (const Reservation & res) const;
 
 };
 
