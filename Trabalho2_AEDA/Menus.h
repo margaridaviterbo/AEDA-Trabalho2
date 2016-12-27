@@ -17,10 +17,9 @@ using namespace std;
 
 class Menu {
 private:
-	bool exit;
 
 public:
-	Menu() { exit = false; }
+	Menu(){};
 
 
 
