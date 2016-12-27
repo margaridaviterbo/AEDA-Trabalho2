@@ -20,7 +20,8 @@ int main() {
 
 	/*
 	try {
-		novoMenu(APlaceInTheSun);
+		Menu m;
+		m.novoMenu(APlaceInTheSun);
 		//start(APlaceInTheSun);
 	}
 	catch (WrongOption wp) {
@@ -100,15 +101,16 @@ int main() {
 		return main();
 
 
-	}
-	*/
+	}*/
+	
 
-
+	
 	Menu m;
 
 	while (! m.getExit()) {
 
 		try {
+			
 			m.novoMenu(APlaceInTheSun);
 
 		}
@@ -117,7 +119,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 
 
 		}
@@ -126,7 +128,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+			
 
 		}
 		catch (InvalidDate id) {
@@ -134,7 +136,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 		}
 		catch (invalid_argument) {
 			cout << endl << TAB << "Erro na introdução dos dados." << endl;
@@ -142,7 +144,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 
 
 		}
@@ -152,7 +154,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 
 
 		}
@@ -161,7 +163,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 
 		}
 		catch (InvalidUsername iu) {
@@ -169,7 +171,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+			
 
 		}
 		catch (ErrorOpeningFile eof) {
@@ -177,7 +179,7 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+		
 
 
 		}
@@ -186,12 +188,12 @@ int main() {
 			APlaceInTheSun.saveChanges();
 			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
-			return main();
+			
 
 		}
 
 	}
 
-
+	exit(1);
 
 }
