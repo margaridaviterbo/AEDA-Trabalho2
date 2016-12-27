@@ -59,16 +59,6 @@ public:
 	Company(string clientsFile, string supliersFile, string reservationsFile);
 
 	/**
-	* @brief checks if a specific reserevation makes a client Inactive
-	*
-	* @param a specific reseravtion
-	*
-	* @return true is it makes Inactive, false if it does not
-	*
-	*/
-	bool isInactive(Reservation res);
-
-	/**
 	* @brief initializes the vector supliers
 	*
 	* @param supliersFile file of supliers
@@ -202,6 +192,15 @@ public:
 	*
 	*/
 	void saveReservationsChanges() const;
+
+	/////////////////////////////
+
+	void showInactiveClients() const;
+	
+	void showActiveClients() const;
+
+
+
 
 	//void updateDiscounts();
 };

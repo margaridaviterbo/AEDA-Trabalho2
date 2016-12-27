@@ -1,40 +1,5 @@
 #include "Company.h"
 
-/*
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // used for goto
-
-COORD CursorPosition; // used for goto
-
-
-void gotoXY(int x, int y)
-{
-	CursorPosition.X = x;
-	CursorPosition.Y = y;
-	SetConsoleCursorPosition(console, CursorPosition);
-}
-*/
-
-bool Company::isInactive(Reservation res) {
-
-	Date actual_date, marking_date = res.getMarking();
-
-	struct tm newtime;
-	time_t now = time(0);
-	localtime_s(&newtime, &now);
-
-	actual_date.setYear(newtime.tm_year + 1900);
-	actual_date.setMonth(newtime.tm_mon + 1);
-	actual_date.setDay(newtime.tm_mday);
-
-	int marking_int = marking_date.convert_date_int();
-	int aDate_int = actual_date.convert_date_int();
-
-	if ((aDate_int - marking_int) > 365)
-		return true;
-	else return false;
-
-}
-
 void Company::supliersInicialization(string supliersFile)
 {
 	ifstream name_supliers;
@@ -271,15 +236,13 @@ void Company::clientsInicialization(string clientsFile)
 			{
 				if (reservations[i].getID() == idr) {
 					client.addReservation(reservations[i]);
-
-					if ( isInactive(reservations[i]) )
-						activeClient = false;
 				}
 			}
 		}
 
-		if(activeClient)
+		if (client.isInactiveClient()) {
 			clients.push_back(client);
+		}
 		else {
 			pair<unordered_set<Client, hcli, eqcli>::iterator, bool> res = inactiveClients.insert(client);
 		}
@@ -329,6 +292,15 @@ void Company::saveClientsChanges() const
 		clients[i].save(fout);
 	}
 
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+		
+		(*it).save(fout);
+		it++;
+	}
+
+
 	fout.close();
 }
 
@@ -376,7 +348,7 @@ void Company::saveChanges() const
 }
 
 // -------------------
-//     SUPLIER
+//     Suplier
 // -------------------
 
 vector<Suplier>::iterator Company::verifyLogInSup(string username, string password) {
@@ -847,6 +819,43 @@ void Company::showReservation()const {
 
 
 }
+
+
+// -------------------
+//     Administrator
+// -------------------
+
+
+void Company::showInactiveClients() const {
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	gotoXY(40, 4); cout << "|| Lista de Clientes Inativos ||" << endl << endl << endl;
+	cout << "            Username                    Password                     Nome do Cliente                  Pontos          " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+
+	while (it != inactiveClients.end()) {
+		cout << *it << endl;
+		it++;
+	}
+}
+
+void Company::showActiveClients() const {
+
+	vector<Client>::const_iterator it;
+
+	gotoXY(40, 4); cout << "|| Lista de Clientes Ativos ||" << endl << endl << endl;
+	cout << "            Username                    Password                     Nome do Cliente                  Pontos          " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+	for (it = clients.begin(); it != clients.end(); it++) {
+
+		cout << *it << endl;
+	}
+
+}
+
 
 
 
