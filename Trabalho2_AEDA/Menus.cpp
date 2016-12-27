@@ -16,7 +16,7 @@ void gotoXY(int x, int y)
 */
 
 
-void writeClientMenu(int x) {
+void Menu::writeClientMenu(int x) {
 
 	switch (x)
 	{
@@ -39,7 +39,7 @@ void writeClientMenu(int x) {
 	}
 }
 
-void clientMenu(Company & comp, vector<Client>::iterator it) {
+void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 	clearScreen();
 
@@ -277,7 +277,7 @@ void clientMenu(Company & comp, vector<Client>::iterator it) {
 
 }
 
-void logIn(Company &comp, char user) {
+void Menu::logIn(Company &comp, char user) {
 	clearScreen();
 
 	string username;
@@ -325,7 +325,7 @@ void logIn(Company &comp, char user) {
 
 }
 
-void mainMenu2(Company & comp, char user) {
+void Menu::mainMenu2(Company & comp, char user) {
 	
 	clearScreen();
 
@@ -399,7 +399,7 @@ void mainMenu2(Company & comp, char user) {
 
 }
 
-void writeOptionMainMenu(int x) {
+void Menu::writeOptionMainMenu(int x) {
 
 	switch (x)
 	{
@@ -415,7 +415,7 @@ void writeOptionMainMenu(int x) {
 	}
 }
 
-void mainMenu(Company & comp, char user) {
+void Menu::mainMenu(Company & comp, char user) {
 	clearScreen();
 
 	string option_str;
@@ -448,7 +448,7 @@ void mainMenu(Company & comp, char user) {
 
 }
 
-void writeSuplierMenu(int x) {
+void Menu::writeSuplierMenu(int x) {
 
 	switch (x)
 	{
@@ -473,8 +473,7 @@ void writeSuplierMenu(int x) {
 	}
 }
 
-
-void suplierMenu(Company & comp, vector<Suplier>::iterator it) {
+void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 
 	clearScreen();
 
@@ -593,7 +592,8 @@ void suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 
 
 }
-void writeGuestMenu(int x) {
+
+void Menu::writeGuestMenu(int x) {
 
 	switch (x)
 	{
@@ -612,8 +612,7 @@ void writeGuestMenu(int x) {
 	}
 }
 
-
-void guestMenu(Company & comp) {
+void Menu::guestMenu(Company & comp) {
 
 
 	// dados para efetuar reserva
@@ -728,72 +727,7 @@ void guestMenu(Company & comp) {
 		}
 	}
 
-
-
-
-
-
-
-
-	/*
-	cout << endl << TAB_BIG << "|| Menu ||" << endl << endl;
-	cout << endl << TAB << "| 1 |  Efetuar Reserva" << endl;
-	cout << endl << TAB << "| 2 |  Cancelar Reserva" << endl;
-	cout << endl << TAB << "| 3 |  Ver Reserva" << endl;
-	cout << endl << TAB << "| 4 |  Voltar ao Menu Inicial" << endl;
-
-
-	option_int = showOptions(1, 4);
-
-	clearScreen();
-
-	switch (option_int) {
-	case 1:
-
-		cout << endl << TAB_BIG << "|| Efetuar Reserva ||" << endl << endl;
-
-		cout << TAB << "Local: ";
-		getline(cin, location);
-		if (cin.eof()) throw InvalidInput();
-
-		cout << TAB << "Data Inicial: ";
-		getline(cin, date);
-		if (!initial_date.getDate(date)) throw InvalidDate();
-
-		cout << TAB << "Data Final: ";
-		getline(cin, date);
-		if (!final_date.getDate(date)) throw InvalidDate();
-
-		acc = comp.displayOffers(location, initial_date, final_date);
-		if (acc == NULL) break;
-
-		res.setAccomodation(acc);
-		res.setCheckIN(initial_date);
-		res.setCheckOUT(final_date);
-		res.setID();
-
-
-		clearScreen();
-
-		cout << endl << TAB_BIG << "|| Reserva ||" << endl << endl;
-		cout << res;
-
-
-		cout << endl << TAB << "A sua reserva foi criada com sucesso." << endl;
-		cout << endl << TAB << "É importante que guarde o id da sua reserva para poder fazer alterações futuras." << endl;
-
-		break;
-	case 2:
-		comp.cancelReservation();
-		break;
-	case 3:
-		comp.showReservation();
-		break;
-	case 4:
-		start(comp);
-	}
-
-	*/
+	
 	cout << TAB << "Prima qualquer tecla para voltar ao Menu." << endl << endl;
 
 	pauseScreen();
@@ -803,9 +737,116 @@ void guestMenu(Company & comp) {
 
 }
 
+void Menu::writeAdminMenu(int x) {
+
+	switch (x)
+	{
+	case 7:
+		cout << "   Aplicar Descontos                   ";
+		break;
+	case 8:
+		cout << "   Lista de Fornecedores               ";
+		break;
+	case 9:
+		cout << "   Lista de Clientes Inativos          ";
+		break;
+	case 10:
+		cout << "   Lista de Clientes Ativos            ";
+		break;
+	case 11:
+		cout << "   Lista de Reservas                   ";
+		break;
+	case 12:
+		cout << "   Voltar ao Menu Inicial              ";
+		break;
+	}
+}
+
+void Menu::adminMenu(Company & comp) {
+
+	clearScreen();
+
+	int menu_item = 0, x = 7;
+	bool running = true;
 
 
-void writeOptionStartMenu(int x) {
+	gotoXY(48, 4); cout << "|| Menu Administrador ||";
+
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Aplicar Descontos                   ";
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	gotoXY(43, 8);  cout << "   Lista de Fornecedores               ";
+	gotoXY(43, 9);  cout << "   Lista de Clientes Inativos          ";
+	gotoXY(43, 10); cout << "   Lista de Clientes Ativos            ";
+	gotoXY(43, 11); cout << "   Lista de Reservas                   ";
+	gotoXY(43, 12); cout << "   Voltar ao Menu Inicial              ";
+	gotoXY(43, 15);
+
+	system("pause>nul");
+
+	while (running)
+	{
+
+		gotoXY(43, 15);
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN) && x < 12) //down button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
+			x++;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item++;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
+			x--;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item--;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+
+			switch (menu_item) {
+			case 0:
+				gotoXY(43, 16);
+				cout << "Opcao 1";
+				break;
+			case 1:
+				gotoXY(43, 16);
+				cout << "Opcao 2";
+				break;
+			case 2:
+				gotoXY(43, 16);
+				cout << "Opcao 3";
+				break;
+			case 3:
+				gotoXY(43, 16);
+				cout << "Opcao 4";
+				break;
+			case 4:
+				gotoXY(43, 16);
+				cout << "Opcao 5";
+				break;
+			case 5:
+				novoMenu(comp);
+			}
+		}
+	}
+
+	gotoXY(43, 21);
+
+
+}
+
+void Menu::writeOptionStartMenu(int x) {
 
 	switch (x)
 	{
@@ -827,25 +868,14 @@ void writeOptionStartMenu(int x) {
 	}
 }
 
-void writeAdministratorMenu(int x) {
-	clearScreen();
-
-	//int menu_item = 0, x = 7;
-	bool running = true;
-
-
-	gotoXY(48, 4); cout << "|| Menu Administrador ||";
-
-	//SEGUIR INFINITEBOOK
-	//TODO começar por fazer funçao para imprimir queue e chama-la aqui, depois acrescentar funcionalidades crude e fazer menu
-}
-
-void novoMenu(Company & comp){
+void Menu::novoMenu(Company & comp){
 
 	clearScreen();
 
 	int menu_item = 0, x = 7;
 	bool running = true;
+
+	exit = 0;
 
 	gotoXY(48, 4); cout << "|| MENU INICIAL ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Menu Fornecedor             ";
@@ -897,15 +927,16 @@ void novoMenu(Company & comp){
 				mainMenu2(comp, 'c');
 				break;
 			case 2: 
-				gotoXY(43, 16);
-				writeAdministratorMenu(1);  // implementar menu administrador
+				adminMenu(comp);
 				break;
 			case 3: 
 				guestMenu(comp);
 				break;
 			case 4: 
+				exit = 1;
 				comp.saveChanges();
-				exit(1);
+				//exit = 1;
+				
 			}
 		}
 	}
@@ -914,7 +945,7 @@ void novoMenu(Company & comp){
 
 }
 
-void start(Company & comp) {
+void Menu::start(Company & comp) {
 	string option_str;
 	unsInt option_int;
 
@@ -948,7 +979,7 @@ void start(Company & comp) {
 		break;
 	case 4:
 		comp.saveChanges();
-		exit(1);
+		exit = 1;
 	}
 
 

@@ -16,9 +16,26 @@ private:
 	Accomodation* accomodation;
 	Date checkIN;
 	Date checkOUT;
+	Date marking;
 	float totalPrice;
 public:
 	Reservation() {};
+
+	/**
+	* @brief reservation constructor with id
+	*
+	* @param ID
+	*
+	* @param accomodation
+	*
+	* @param checkIN
+	*
+	* @param checkOUT
+	*
+	* @param marking
+	*
+	*/
+	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking);
 
 	/**
 	* @brief reservation constructor with id
@@ -160,6 +177,15 @@ public:
 	*/
 	Date getCheckOut() const { return checkOUT; }
 
+
+	/**
+	* @brief gets marking
+	*
+	* @return marking date
+	*
+	*/
+	Date getMarking() const { return marking; }
+
 	/**
 	* @brief gets accomodation
 	*
@@ -184,6 +210,8 @@ public:
 	*
 	*/
 	void save(ofstream & out) const;
+
+	
 
 };
 

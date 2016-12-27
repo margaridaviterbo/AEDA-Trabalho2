@@ -3,19 +3,39 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <queue>
 #include <ctime>
 #include <conio.h>
 #include <windows.h>
 #include <cstdlib>
+#include <unordered_set>
 
 #include "User.h"
 #include "utils.h"
 
 using namespace std;
 
+struct eqcli {
+	bool operator() (const Client &c1, const Client &c2) const {
+		return c1 == c2;
+	}
+};
+
+struct hcli {
+	int operator() (const Client &c1) const {
+		int v = 0;
+		for (unsigned int i = 0; i < c1.getName().size(); i++)
+			v = 37 * v + c1.getName()[i];
+		return v;
+	}
+};
+
+
 class Company {	//implementar nesta classe as funcionalidades gerais do programa, os metodos para gerir a empresa
 private:
+	vector<Suplier> supliers; 
+	vector<Client> clients;
+	vector <Reservation> reservations;
+	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 
 	vector<Suplier> supliers; 
 	vector<Client> clients;
@@ -27,7 +47,6 @@ private:
 	string reservationsFile;
 
 public:
-	
 
 	/**
 	* @brief constructor for the Company based on the files provided
@@ -40,6 +59,16 @@ public:
 	*
 	*/
 	Company(string clientsFile, string supliersFile, string reservationsFile);
+
+	/**
+	* @brief checks if a specific reserevation makes a client Inactive
+	*
+	* @param a specific reseravtion
+	*
+	* @return true is it makes Inactive, false if it does not
+	*
+	*/
+	bool isInactive(Reservation res);
 
 	/**
 	* @brief initializes the vector supliers
@@ -173,8 +202,6 @@ public:
 	*
 	*/
 	void saveReservationsChanges() const;
-
-	void updateDiscounts();
 };
 
 

@@ -9,12 +9,18 @@ void Reservation::setResLastID(unsigned int id) {
 	}
 }
 
+Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking) {
+	this->ID = ID;
+	this->accomodation = accomodation;
+	this->checkIN = checkIN;
+	this->checkOUT = checkOUT;
+	this->marking = marking;
 
+}
 
 Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT) {
 	this->ID = ID;
 	this->accomodation = accomodation;
-	accomodation->setLastReservationID(ID);
 	this->checkIN = checkIN;
 	this->checkOUT = checkOUT;
 
@@ -33,15 +39,14 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
-	accomodation->setLastReservationID(ID);
 }
 
 float Reservation::getTotalPrice()const {
 
-	int in = checkIN.convert_date_int();
-	int out = checkOUT.convert_date_int();
+	int IN = checkIN.convert_date_int();
+	int OUT = checkOUT.convert_date_int();
 
-	int numDays = out - in;
+	int numDays = OUT - IN;
 
 	float total = 0;
 
@@ -88,8 +93,9 @@ void Reservation::save(ofstream & out) const
 {
 	out << setw(5) << ID
 		<< setw(5) << accomodation->getID()
-		<< setw(10) << checkIN
-		<< setw(10) << checkOUT
+		<< setw(12) << checkIN
+		<< setw(12) << checkOUT
+		<< setw(12) << marking
 		<< endl;
 }
 
