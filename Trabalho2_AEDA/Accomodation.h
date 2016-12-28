@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4996)
 
 #include <string>
 #include <vector>
@@ -60,7 +61,7 @@ public:
 	* @param unavailable_dates
 	*
 	*/
-	Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> available_dates);
+	Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> available_dates, time_t creation_time);
 	Accomodation() {};
 
 	/**
@@ -229,7 +230,7 @@ public:
 	* @param bed_type type of bedroom
 	*
 	*/
-	Bedroom(unsigned int id, float price_night, float price_month, float price_year, string location, vector<pair<Date, Date>> unavailableDates, establishment  est, bedroomType bed_type);
+	Bedroom(unsigned int id, float price_night, float price_month, float price_year, string location, vector<pair<Date, Date>> unavailableDates, time_t creation_time, establishment  est, bedroomType bed_type);
 
 	/**
 	* @brief prints bedroom on the sreen
@@ -280,7 +281,7 @@ public:
 	* @param unavailable_dates
 	*
 	*/
-	Flat(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailableDates) : Accomodation(id, price_night, price_week, price_month, location, unavailableDates) { setFee(0.1); };
+	Flat(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailableDates, time_t creation_time) : Accomodation(id, price_night, price_week, price_month, location, unavailableDates, creation_time) { setFee(0.1); };
 
 	/**
 	* @brief prints flat on the sreen
@@ -334,7 +335,7 @@ public:
 	* @param unavailable_dates
 	*
 	*/
-	Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, int n_bed, bool suite);
+	Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time, int n_bed, bool suite);
 
 	/**
 	* @brief prints apartment on the sreen

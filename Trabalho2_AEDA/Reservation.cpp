@@ -16,7 +16,7 @@ Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date 
 	this->checkOUT = checkOUT;
 	this->marking = marking;
 	this->client = client;
-	accomodation->setLastReservationID = ID;
+	accomodation->setLastReservationID(ID);
 	reservationDateTime = date_time;
 }
 
@@ -36,7 +36,7 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
-	accomodation->setLastReservationID = ID;
+	accomodation->setLastReservationID(ID);
 	reservationDateTime = time(0);
 }
 

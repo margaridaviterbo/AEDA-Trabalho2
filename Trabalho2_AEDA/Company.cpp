@@ -36,11 +36,12 @@ void Company::supliersInicialization(string supliersFile)
 		{
 
 			stringstream ss; ss.str(line_f);
-			string type, d, w, m, city, date1, date2, next;
+			string type, d, w, m, city, date1, date2, next, time;
 			float daily, weekly, monthly;
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
+			time_t creation_time;
 
 
 			ss >> ID;
@@ -62,6 +63,10 @@ void Company::supliersInicialization(string supliersFile)
 				ss >> date1;
 
 			}
+
+			ss >> time;
+			const char * dt_str = time.c_str();
+			creation_time = (time_t)atoll(dt_str);
 
 			if (type == "BEDROOM")
 			{
@@ -106,9 +111,10 @@ void Company::supliersInicialization(string supliersFile)
 					estbl = SHARED_HOUSE;
 				}
 
-				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, estbl, bedType);
+				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
 
 				sup.addAccomodationFile(bed);
+				updateDiscounts();
 			}
 
 			if (type == "APARTMENT")
@@ -124,18 +130,20 @@ void Company::supliersInicialization(string supliersFile)
 				if (suite_str != "SIM")
 					suite = false;
 
-				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, numRooms, suite);
+				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, creation_time, numRooms, suite);
 
 				sup.addAccomodationFile(apart);
+				updateDiscounts();
 			}
 
 
 			if (type == "FLAT")
 			{
 
-				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates);
+				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates, creation_time);
 
 				sup.addAccomodationFile(flt);
+				updateDiscounts();
 			}
 
 		}
@@ -451,7 +459,7 @@ void Company::registerSuplier() {
 
 	gotoXY(35, 7); cout << s.getName() << ", a sua conta foi criada com sucesso!" << endl;
 
-
+	updateDiscounts();
 }
 
 
@@ -815,7 +823,7 @@ int Company::cancelReservation(){
 		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedência não será reembolsadao." << endl;
 	}
 
-
+	updateDiscounts();
 	return id;
 }
 
@@ -922,7 +930,7 @@ void Company::showActiveClients() const {
 void Company::updateDiscounts() {
 
 	bool found = false;
-	for (int i = 0; i<reservationsBST.size();i++) {
+	/*for (int i = 0; i<reservationsBST.size();i++) {
 		priority_queue<Accomodation> temp = accomodationsDiscounts;
 		for (int j = 0; j <= temp.size(); j++) {
 			if (temp.top() == *(reservations.at(i)).getAccomodation())
@@ -934,7 +942,7 @@ void Company::updateDiscounts() {
 			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
 			temp = accomodationsDiscounts;
 		}
-	}
+	}*/
 
 }
 
