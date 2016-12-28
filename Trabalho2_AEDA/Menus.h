@@ -17,10 +17,9 @@ using namespace std;
 
 class Menu {
 private:
-	bool exit;
 
 public:
-	Menu() { exit = false; }
+	Menu(){};
 
 
 
@@ -95,6 +94,8 @@ public:
 	void adminMenu(Company & comp);
 
 	void novoMenu(Company & comp);
+
+	void clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith);
 
 	// Por aqui todas as funções de Menu.h
 	// na função "novoMenu()" inicializar exit =0;

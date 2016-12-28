@@ -1,21 +1,5 @@
 #include "Menus.h"
 
-
-/*
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // used for goto
-
-COORD CursorPosition; // used for goto
-
-
-void gotoXY(int x, int y)
-{
-	CursorPosition.X = x;
-	CursorPosition.Y = y;
-	SetConsoleCursorPosition(console, CursorPosition);
-}
-*/
-
-
 void Menu::writeClientMenu(int x) {
 
 	switch (x)
@@ -57,7 +41,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 	bool running = true;
 
 
-	gotoXY(48, 4); cout << "||" << it->getName() << "||";
+	gotoXY(48, 4); cout << "|| " << it->getName() << " ||";
 
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
 
@@ -123,6 +107,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 
 				comp.addReservationComp(acc, initial_date, final_date, it->getName());
+				comp.updateDiscounts();
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
@@ -135,7 +120,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 				
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -153,6 +138,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				break;
 			case 2:
 				it->showReservations();
+				pauseScreen();
 				id = comp.cancelReservation();
 				if (id == 0) break;
 
@@ -182,102 +168,167 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 		}
 	}
 
-
-
-
-
-	/*
-	cout << endl << TAB_BIG << "|| " << it->getUsername() << " ||" << endl << endl;
-	cout << endl << TAB << "| 1 |  Efetuar Reserva" << endl;
-	cout << endl << TAB << "| 2 |  Ver Reservas" << endl;
-	cout << endl << TAB << "| 3 |  Cancelar Reservas" << endl;
-	cout << endl << TAB << "| 4 |  Informações de Conta" << endl;
-	cout << endl << TAB << "| 5 |  Sair" << endl;
-
-	option_int = showOptions(1, 5);
-
-	switch (option_int) {
-	case 1:
-		clearScreen();
-
-		cout << endl << TAB_BIG << "|| Efetuar Reserva ||" << endl << endl;
-
-		cout << TAB << "Local: ";
-		getline(cin, location);
-		if (cin.eof()) throw InvalidInput();
-
-		cout << TAB << "Data Inicial: ";
-		getline(cin, date);
-		if (!initial_date.getDate(date)) throw InvalidDate();
-
-		cout << TAB << "Data Final: ";
-		getline(cin, date);
-		if (!final_date.getDate(date)) throw InvalidDate();
-
-		acc = comp.displayOffers(location, initial_date, final_date);
-		if (acc == NULL) break;
-
-
-		res.setAccomodation(acc);
-		res.setCheckIN(initial_date);
-		res.setCheckOUT(final_date);
-		res.setID();
-
-		it->addReservation(res);
-
-		clearScreen();
-
-		cout << endl << TAB_BIG << "|| Reserva ||" << endl << endl;
-		cout << res;
-		//cout da reserva
-
-		cout << endl << TAB << "A sua reserva foi criada com sucesso." << endl;
-		cout << TAB << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
-
-		pauseScreen();
-
-		clientMenu(comp, it);
-		break;
-	case 2:
-		it->showReservations();
-		break;
-
-	case 3:
-		it->showReservations();
-		id = comp.cancelReservation();
-		if (id == 0) break;
-
-		reservations_tmp = it->getReservations();
-		res.setID(id);
-		pos = sequentialSearch<Reservation>(reservations_tmp, res);
-
-		it->deleteReservation(pos);
-
-		break;
-	case 4:
-		clearScreen();
-		cout << endl << TAB_BIG << "|| INFORMAÇÕES DA CONTA ||" << endl << endl;
-		cout << TAB << "Nome: " << it->getName() << endl;
-		cout << TAB << "Nome de Utilizador: " << it->getUsername() << endl;
-		cout << TAB << "Pontos: " << it->getPoints() << endl << endl;
-
-		break;
-	case 5:
-		//exit(1);  
-		start(comp);
-		break;
-	}
-
-	*/
-
 	cout << TAB << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
 
 	pauseScreen();
 
 	clientMenu(comp, it);
-
-
 }
+
+void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
+
+	clearScreen();
+
+	// dados para efetuar reserva
+	string location;
+	string date;
+	Date initial_date;
+	Date final_date;
+	Accomodation* acc;
+	Reservation res;
+	int id, pos;
+	vector<Reservation> reservations_tmp;
+
+	int menu_item = 0, x = 7;
+	bool running = true;
+
+
+	gotoXY(48, 4); cout << "|| " << ith->getName() << " ||";
+
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	gotoXY(43, 8);  cout << "   Ver Reservas                        ";
+	gotoXY(43, 9);  cout << "   Cancelar Reservas                   ";
+	gotoXY(43, 10); cout << "   Informação de Conta                 ";
+	gotoXY(43, 11); cout << "   Sair                                ";
+	gotoXY(43, 15);
+
+	system("pause>nul");
+
+	while (running)
+	{
+
+		gotoXY(43, 15);
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN) && x < 11) //down button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeClientMenu(x);
+			x++;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeClientMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item++;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeClientMenu(x);
+			x--;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeClientMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item--;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+
+			switch (menu_item) {
+			case 0:
+				/*clearScreen();
+
+				gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
+
+				gotoXY(40, 7); cout << "Local: ";
+				getline(cin, location);
+				if (cin.eof()) throw InvalidInput();
+
+				gotoXY(40, 9); cout << "Data Inicial: ";
+				getline(cin, date);
+				if (!initial_date.getDate(date)) throw InvalidDate();
+
+				gotoXY(40, 10); cout << "Data Final: ";
+				getline(cin, date);
+				if (!final_date.getDate(date)) throw InvalidDate();
+
+				acc = comp.displayOffers(location, initial_date, final_date);
+				if (acc == NULL) break;
+
+
+				comp.addReservationComp(acc, initial_date, final_date, ith->getName());
+
+				res.setAccomodation(acc);
+				res.setCheckIN(initial_date);
+				res.setCheckOUT(final_date);
+				res.setID();
+
+				ith->addReservation(res);
+
+				clearScreen();
+
+				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
+
+				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+				cout << res;
+
+				cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
+				cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
+
+				pauseScreen();
+
+				clientMenu(comp, it);*/
+				cout << "nova reserva" << endl;
+				break;
+			case 1:
+				ith->showReservations();
+				pauseScreen();
+				clientMenuHash(comp, ith);
+				break;
+			case 2:
+				ith->showReservations();
+				id = comp.cancelReservation();
+				if (id == 0) break;
+
+				reservations_tmp = ith->getReservations();
+				res.setID(id);
+				pos = sequentialSearch<Reservation>(reservations_tmp, res);
+
+				ith = comp.replaceHashClient(ith, pos);
+
+				pauseScreen();
+				clientMenuHash(comp, ith);
+				cout << "cancelar";
+				break;
+			case 3:
+				clearScreen();
+				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
+				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << ith->getName() << endl;
+				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << ith->getUsername() << endl;
+				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Pontos : " << ith->getPoints() << endl << endl;
+				cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+				pauseScreen();
+				clientMenuHash(comp, ith);
+				break;
+			case 4:
+				novoMenu(comp);
+				break;
+			}
+		}
+	}
+
+	cout << TAB << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
+
+	pauseScreen();
+
+	clientMenuHash(comp, ith);
+}
+
+
 
 void Menu::logIn(Company &comp, char user) {
 	clearScreen();
@@ -287,12 +338,11 @@ void Menu::logIn(Company &comp, char user) {
 	char ch;
 	vector<Suplier>::iterator its;
 	vector<Client>::iterator itc;
-
+	unordered_set<Client, hcli, eqcli>::iterator ith;
 
 	gotoXY(48, 4); cout << "|| ENTRAR ||";
 
 	gotoXY(42, 7);  cout << "Username: ";
-
 	getline(cin, username);
 	if (cin.eof()) throw InvalidInput();
 
@@ -314,8 +364,17 @@ void Menu::logIn(Company &comp, char user) {
 		suplierMenu(comp, its);
 	}
 	else {
-		itc = comp.verifyLogInCli(username, password);
-		clientMenu(comp, itc);
+		
+		if (comp.isClientInactive(username)) {
+
+			ith = comp.verifyInactiveCliLogin(username, password);
+			clientMenuHash(comp, ith);    
+		}
+		else {
+			pauseScreen();
+			itc = comp.verifyLogInCli(username, password);
+			clientMenu(comp, itc);
+		}
 	}
 
 
@@ -694,6 +753,8 @@ void Menu::guestMenu(Company & comp) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
+				comp.addReservationComp(acc, initial_date, final_date, "Não Registado");
+
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
@@ -703,7 +764,7 @@ void Menu::guestMenu(Company & comp) {
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -880,7 +941,7 @@ void Menu::novoMenu(Company & comp){
 	int menu_item = 0, x = 7;
 	bool running = true;
 
-	exit = 0;
+
 
 	gotoXY(48, 4); cout << "|| MENU INICIAL ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Menu Fornecedor             ";
@@ -939,8 +1000,10 @@ void Menu::novoMenu(Company & comp){
 				break;
 			case 4: 
 				comp.saveChanges();
+				/*
 				exit = true;
-				running = false;
+				running = false;*/
+				exit(1);
 				break;
 
 			}
@@ -985,7 +1048,7 @@ void Menu::start(Company & comp) {
 		break;
 	case 4:
 		comp.saveChanges();
-		exit = 1;
+		//exit = 1;
 	}
 
 

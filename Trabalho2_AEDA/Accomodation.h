@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <ctime>
 
 #include "Date.h"
 
@@ -14,12 +15,14 @@ enum bedroomType { SINGLE, DOUBLE_R, DOUBLE_EXTRA_BED, TRIPLE };	//tipos de quar
 
 class Accomodation {
 private:
+	time_t creationDateTime;
 	float price_night;
 	float price_week;
 	float price_month;
 	string location;
 	unsigned int id;
 	static unsigned int lastID;
+	int lastReservationID=0;
 	vector<pair<Date, Date>> unavailable_dates;
 	float fee;
 
@@ -167,6 +170,7 @@ public:
 	*
 	*/
 	static void setAccLastID(unsigned int id);
+	void setLastReservationID(int id) { lastReservationID = id; }
 
 	/**
 	* @brief overload of the the equality operator
@@ -176,6 +180,7 @@ public:
 	* @return true is accomodations have the same id, false otherwise
 	*/
 	bool operator == (const Accomodation &acc) const;
+	bool operator < (const Accomodation &acc) const;
 };
 
 class Bedroom : public Accomodation {

@@ -16,8 +16,8 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 	this->price_month = price_month;
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
-
 	this->id = ++lastID;
+	creationDateTime = time(0);
 }
 
 Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates) {
@@ -27,6 +27,7 @@ Accomodation::Accomodation(unsigned int id, float price_night, float price_week,
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = id;
+	creationDateTime = time(0);
 
 }
 
@@ -54,6 +55,12 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 }
 
 
+bool Accomodation::operator<(const Accomodation &acc) const {
+
+	//TODO arranjar outra forma de comparação: o periodo de tempo -> ver infinite book
+
+	return(lastReservationID < acc.lastReservationID);
+}
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {
 	this->est = est;
