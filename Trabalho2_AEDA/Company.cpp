@@ -114,7 +114,7 @@ void Company::supliersInicialization(string supliersFile)
 				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
 
 				sup.addAccomodationFile(bed);
-				updateDiscounts();
+				updateDiscounts(*bed);
 			}
 
 			if (type == "APARTMENT")
@@ -133,7 +133,7 @@ void Company::supliersInicialization(string supliersFile)
 				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, creation_time, numRooms, suite);
 
 				sup.addAccomodationFile(apart);
-				updateDiscounts();
+				updateDiscounts(*apart);
 			}
 
 
@@ -143,7 +143,7 @@ void Company::supliersInicialization(string supliersFile)
 				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates, creation_time);
 
 				sup.addAccomodationFile(flt);
-				updateDiscounts();
+				updateDiscounts(*flt);
 			}
 
 		}
@@ -154,7 +154,7 @@ void Company::supliersInicialization(string supliersFile)
 
 }
 
-void Company::reservationsInicialization(string reservationsFile){
+void Company::reservationsInicialization(string reservationsFile) {
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -174,7 +174,7 @@ void Company::reservationsInicialization(string reservationsFile){
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
-		
+
 
 
 		ss >> name;
@@ -214,7 +214,7 @@ void Company::reservationsInicialization(string reservationsFile){
 	name_reservations.close();
 }
 
-void Company::clientsInicialization(string clientsFile){
+void Company::clientsInicialization(string clientsFile) {
 	ifstream name_clients;
 	string line_c;
 
@@ -242,7 +242,7 @@ void Company::clientsInicialization(string clientsFile){
 
 			BSTItrIn<Reservation> itr(reservationsBST);
 
-			while (!itr.isAtEnd()){
+			while (!itr.isAtEnd()) {
 				Reservation r = itr.retrieve();
 				if (r.getID() == idr)
 					client.addReservation(r);
@@ -265,7 +265,7 @@ void Company::clientsInicialization(string clientsFile){
 }
 
 
-Company::Company(string clientsFile, string supliersFile, string reservationsFile) :reservationsBST(Reservation()){
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) : reservationsBST(Reservation()) {
 
 	;
 
@@ -306,15 +306,15 @@ void Company::saveClientsChanges() const
 	{
 		clients[i].save(fout);
 	}
-	
+
 	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
 
 	while (it != inactiveClients.end()) {
-		
+
 		(*it).save(fout);
 		it++;
 	}
-	
+
 
 	fout.close();
 }
@@ -347,12 +347,12 @@ void Company::saveReservationsChanges() const
 
 	fout << setw(5) << Reservation::getLastID() << endl;
 
-	while (!itr.isAtEnd()){
+	while (!itr.isAtEnd()) {
 		itr.retrieve().save(fout);
 		itr.advance();
 	}
 
-	
+
 	fout.close();
 }
 
@@ -422,7 +422,7 @@ void Company::registerSuplier() {
 	if (cin.eof()) throw InvalidInput();
 
 	gotoXY(42, 12); cout << "Palavra-Passe: ";
-	
+
 
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
@@ -440,12 +440,16 @@ void Company::registerSuplier() {
 	do {
 		clearScreen();
 		gotoXY(48, 4); cout << "|| Registar ||" << endl << endl;
-		gotoXY(42, 13); cout <<  "Adicionar Alojamento (s/n)? ";
+		gotoXY(42, 13); cout << "Adicionar Alojamento (s/n)? ";
 		getline(cin, add);
 
 		if (cin.eof()) throw InvalidInput();
 
-		if (add == "s") s.addAccomodation2();
+		Accomodation acc;
+		if (add == "s") {
+			acc = s.addAccomodation2();
+			updateDiscounts(acc);
+		}
 
 	} while (add == "s");
 
@@ -459,11 +463,10 @@ void Company::registerSuplier() {
 
 	gotoXY(35, 7); cout << s.getName() << ", a sua conta foi criada com sucesso!" << endl;
 
-	updateDiscounts();
 }
 
 
-void Company::showSupliers(){
+void Company::showSupliers() {
 	sort(supliers.begin(), supliers.end());
 
 
@@ -472,7 +475,7 @@ void Company::showSupliers(){
 	cout << "     Nome             Nome de Utilizador  NIF          Morada                                  Alojamentos             " << endl;
 	cout << " --------------------------------------------------------------------------------------------------------------------" << endl;
 
-	for (int i = 0; i < supliers.size(); i++){
+	for (int i = 0; i < supliers.size(); i++) {
 		cout << supliers.at(i);
 
 	}
@@ -510,7 +513,7 @@ void Company::registerClient() {
 
 	clearScreen();
 
-	
+
 	gotoXY(48, 4);  cout << "|| Registar ||" << endl << endl;
 	gotoXY(42, 7);  cout << "Nome: ";
 	getline(cin, name);
@@ -524,7 +527,7 @@ void Company::registerClient() {
 
 
 	gotoXY(42, 9); cout << "Palavra-Passe: ";
-	
+
 	ch = _getch();
 	while (ch != 13) {//character 13 is enter
 		password.push_back(ch);
@@ -554,7 +557,7 @@ void Company::registerClient() {
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
 	Date d; // DANIEL apagar isto e calcular a Data atual!!!!!!
-	
+
 	// Data atual
 
 	/*
@@ -700,7 +703,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 
 }
 
-int Company::cancelReservation(){
+int Company::cancelReservation() {
 	string id_str;
 	unsigned int id;
 	Date actual_date;
@@ -747,10 +750,10 @@ int Company::cancelReservation(){
 	BSTItrIn<Reservation> itr_bst(reservationsBST);
 	Reservation r;
 
-	
-	while (!itr_bst.isAtEnd()){
+
+	while (!itr_bst.isAtEnd()) {
 		r = itr_bst.retrieve();
-		if (r.getID() == id){
+		if (r.getID() == id) {
 			a = r.getAccomodation();
 			ci = r.getCheckIn();
 			co = r.getCheckOut();
@@ -850,10 +853,10 @@ void Company::showReservation()const {
 
 	clearScreen();
 
-	while (!itr.isAtEnd()){
+	while (!itr.isAtEnd()) {
 
-		
-		if (itr.retrieve().getID() == id){
+
+		if (itr.retrieve().getID() == id) {
 			gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 			cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 			cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
@@ -871,7 +874,7 @@ void Company::showReservation()const {
 
 }
 
-void Company::showReservations() const{
+void Company::showReservations() const {
 	BSTItrIn<Reservation> itr(reservationsBST);
 
 	clearScreen();
@@ -880,7 +883,7 @@ void Company::showReservations() const{
 	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 
-	while (!itr.isAtEnd()){
+	while (!itr.isAtEnd()) {
 		cout << itr.retrieve();
 
 		itr.advance();
@@ -929,20 +932,41 @@ void Company::showActiveClients() const {
 
 void Company::updateDiscounts() {
 
-	bool found = false;
-	/*for (int i = 0; i<reservationsBST.size();i++) {
-		priority_queue<Accomodation> temp = accomodationsDiscounts;
+	bool found;
+	BSTItrIn<Reservation> itr(reservationsBST);
+	priority_queue<Accomodation> temp;
+
+	while (!itr.isAtEnd()) {
+		found = false;
+		temp = accomodationsDiscounts;
 		for (int j = 0; j <= temp.size(); j++) {
-			if (temp.top() == *(reservations.at(i)).getAccomodation())
+			if (temp.top() == *(itr.retrieve()).getAccomodation())
 				found = true;
 			temp.pop();
 		}
-
 		if (!found) {
-			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
-			temp = accomodationsDiscounts;
+			accomodationsDiscounts.push(*(itr.retrieve()).getAccomodation());
 		}
-	}*/
+
+		itr.advance();
+	}
+
+}
+
+void Company::updateDiscounts(Accomodation acc) {
+
+	bool found = false;
+	priority_queue<Accomodation> temp = accomodationsDiscounts;
+
+	for (int j = 0; j <= temp.size(); j++) {
+		if (temp.top() == acc)
+			found = true;
+		temp.pop();
+	}
+
+	if (!found) {
+		accomodationsDiscounts.push(acc);
+	}
 
 }
 

@@ -41,7 +41,7 @@ private:
 	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
-	priority_queue <Accomodation> accomodationsDiscounts;
+	static priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
@@ -203,7 +203,9 @@ public:
 	
 	void showActiveClients() const;
 
-	static void updateDiscounts();
+	void updateDiscounts();
+
+	void updateDiscounts(Accomodation acc);
 };
 
 
