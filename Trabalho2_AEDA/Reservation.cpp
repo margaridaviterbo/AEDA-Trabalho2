@@ -9,14 +9,15 @@ void Reservation::setResLastID(unsigned int id) {
 	}
 }
 
-Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client) {
+Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client, time_t date_time) {
 	this->ID = ID;
 	this->accomodation = accomodation;
 	this->checkIN = checkIN;
 	this->checkOUT = checkOUT;
 	this->marking = marking;
 	this->client = client;
-
+	accomodation->setLastReservationID(ID);
+	reservationDateTime = date_time;
 }
 
 
@@ -35,6 +36,10 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
+
+	accomodation->setLastReservationID (ID);
+
+	reservationDateTime = time(0);
 }
 
 float Reservation::getTotalPrice()const {
@@ -74,9 +79,9 @@ ostream &operator<<(ostream & out, const Reservation  & reserv)
 
 	out << setw(20) << reserv.client
 		<< setw(15) << reserv.ID
-		<< setw(18) << reserv.accomodation->getID()
-		<< reserv.checkIN << setw(5) << " "
-		<< reserv.checkOUT << setw(5) << " "
+		<< setw(17) << reserv.accomodation->getID()
+		<< reserv.checkIN << setw(9) << " "
+		<< reserv.checkOUT << setw(8) << " "
 		<< setw(11) << reserv.getTotalPrice()
 		<< reserv.marking;
 	out << endl;
@@ -91,13 +96,16 @@ bool operator == (const Reservation &res1, const Reservation & res2) {
 
 void Reservation::save(ofstream & out) const
 {
-	out << setw(20) << client
+	char* dt = ctime(&reservationDateTime);
+	string date_time(dt);
+	out << setw(17) << client
 		<< setw(5) << ID
 		<< setw(5) << accomodation->getID()
 		<< setw(12) << checkIN
 		<< setw(12) << checkOUT
 		<< setw(12) << marking
-		<< endl;
+		<< setw(30) << date_time;
+		//<< endl;
 }
 
 float Reservation::getFee() const {
@@ -111,10 +119,10 @@ bool Reservation::operator < (const Reservation & res) const{
 	if (client == res.client)
 		return marking < res.marking;
 
-	if (res.client == "Não Registado")
+	if (res.client == "NÃ£o Registado")
 		return true;
 
-	if (client == "Não Registado")
+	if (client == "NÃ£o Registado")
 		return false;
 
 	return client < res.client;

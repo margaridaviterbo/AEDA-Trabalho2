@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <queue>
 #include <conio.h>
 #include <windows.h>
 #include <cstdlib>
@@ -37,12 +38,10 @@ class Company {	//implementar nesta classe as funcionalidades gerais do programa
 private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
+	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
-	
 	BST<Reservation> reservationsBST;
-
-
-	//priority_queue <Accomodation> accomodationsDiscounts;
+	priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
@@ -204,8 +203,18 @@ public:
 	
 	void showActiveClients() const;
 
+	bool isClientInactive(string username);
 
-	//void updateDiscounts();
+	unordered_set<Client, hcli, eqcli>::iterator verifyInactiveCliLogin(string username, string password);
+
+	unordered_set<Client, hcli, eqcli>::iterator replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos);
+
+	vector<Client>::iterator reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res);
+
+  //void updateDiscounts();
+
+	static void updateDiscounts();
+  
 };
 
 

@@ -95,6 +95,8 @@ public:
 
 	void novoMenu(Company & comp);
 
+	void clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith);
+
 	// Por aqui todas as funções de Menu.h
 	// na função "novoMenu()" inicializar exit =0;
 	bool getExit() { return exit; }

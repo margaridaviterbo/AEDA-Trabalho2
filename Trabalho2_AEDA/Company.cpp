@@ -36,11 +36,12 @@ void Company::supliersInicialization(string supliersFile)
 		{
 
 			stringstream ss; ss.str(line_f);
-			string type, d, w, m, city, date1, date2, next;
+			string type, d, w, m, city, date1, date2, next, time;
 			float daily, weekly, monthly;
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
+			time_t creation_time;
 
 
 			ss >> ID;
@@ -62,6 +63,10 @@ void Company::supliersInicialization(string supliersFile)
 				ss >> date1;
 
 			}
+
+			ss >> time;
+			const char * dt_str = time.c_str();
+			creation_time = (time_t)atoll(dt_str);
 
 			if (type == "BEDROOM")
 			{
@@ -106,9 +111,10 @@ void Company::supliersInicialization(string supliersFile)
 					estbl = SHARED_HOUSE;
 				}
 
-				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, estbl, bedType);
+				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
 
 				sup.addAccomodationFile(bed);
+				updateDiscounts();
 			}
 
 			if (type == "APARTMENT")
@@ -124,18 +130,20 @@ void Company::supliersInicialization(string supliersFile)
 				if (suite_str != "SIM")
 					suite = false;
 
-				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, numRooms, suite);
+				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, creation_time, numRooms, suite);
 
 				sup.addAccomodationFile(apart);
+				updateDiscounts();
 			}
 
 
 			if (type == "FLAT")
 			{
 
-				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates);
+				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates, creation_time);
 
 				sup.addAccomodationFile(flt);
+				updateDiscounts();
 			}
 
 		}
@@ -162,7 +170,7 @@ void Company::reservationsInicialization(string reservationsFile){
 
 	while (getline(name_reservations, line_r))
 	{
-		string name, surname, checkIN, checkOUT, idr, ida, mark;
+		string name, surname, checkIN, checkOUT, idr, ida, mark, dateTime;
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
@@ -176,6 +184,7 @@ void Company::reservationsInicialization(string reservationsFile){
 		ss >> checkIN; Date in(checkIN);
 		ss >> checkOUT; Date out(checkOUT);
 		ss >> mark; Date markg(mark);
+		ss >> dateTime; const char * dt_str = dateTime.c_str(); time_t date_time = (time_t)atoll(dt_str);
 		accom->setID(IDreservation);
 
 		Accomodation *accomodation = new Accomodation();
@@ -191,7 +200,7 @@ void Company::reservationsInicialization(string reservationsFile){
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
+					Reservation reserv(IDreservation, accomodation, in, out, markg, name, date_time);
 					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
@@ -450,7 +459,7 @@ void Company::registerSuplier() {
 
 	gotoXY(35, 7); cout << s.getName() << ", a sua conta foi criada com sucesso!" << endl;
 
-
+	updateDiscounts();
 }
 
 
@@ -476,6 +485,46 @@ void Company::showSupliers(){
 // -------------------
 //     Client
 // -------------------
+
+bool Company::isClientInactive(string username) {
+
+	bool inactive = false;
+
+	unordered_set<Client, hcli, eqcli>::const_iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		if (username == it->getUsername())
+			inactive = true;
+
+		it++;
+	}
+
+	return inactive;
+
+}
+
+unordered_set<Client, hcli, eqcli>::iterator Company::verifyInactiveCliLogin(string username, string password) {
+
+	string un;
+	string pw;
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		un = (*it).getUsername();
+		pw = (*it).getPassword();
+
+		if ((un == username) && (pw == password)) return it;
+
+		it++;
+	}
+
+	throw InvalidLogIn();
+
+}
+
 
 vector<Client>::iterator Company::verifyLogInCli(string username, string password) {
 	string un;
@@ -538,6 +587,43 @@ void Company::registerClient() {
 	gotoXY(43, 15);
 }
 
+unordered_set<Client, hcli, eqcli>::iterator Company::replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos) {
+
+	Client cli = *ith;
+	cli.deleteReservation(pos);
+
+	inactiveClients.erase(ith);
+
+	inactiveClients.insert(cli);
+
+	for (ith = inactiveClients.begin(); ith != inactiveClients.end(); ith++) {
+
+		if (cli.getUsername() == ith->getUsername())
+			return ith;
+	}
+}
+
+vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res) {
+
+	Client cli = *ith;
+	cli.addReservation(res);
+
+	inactiveClients.erase(ith);
+
+	clients.push_back(cli);
+
+	vector<Client>::iterator it;
+
+	for (it = clients.begin(); it != clients.end(); it++) {
+	
+		if (cli.getUsername() == it->getUsername())
+			return it;	
+	}
+
+}
+
+
+
 // -------------------
 //     Reservation
 // -------------------
@@ -582,7 +668,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 
 	}
 
-//	updateDiscounts();
+	//updateDiscounts();
 
 }
 
@@ -680,7 +766,6 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	for (ita = accomodations.begin(); ita != accomodations.end(); ita++) {
 		if ((*ita)->getID() == id) {
 			a = (*ita);
-		//	updateDiscounts();	//TODO not sure yet se está no sítio certo // definitivamente não o sítio certo
 
 			return a;
 		}
@@ -815,7 +900,7 @@ int Company::cancelReservation(){
 		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedência não será reembolsadao." << endl;
 	}
 
-
+	updateDiscounts();
 	return id;
 }
 
@@ -918,14 +1003,11 @@ void Company::showActiveClients() const {
 }
 
 
-
-
 /*
-
 void Company::updateDiscounts() {
 
 	bool found = false;
-	for (int i = reservations.size(); i >= 0; i--) {
+	/*for (int i = 0; i<reservationsBST.size();i++) {
 		priority_queue<Accomodation> temp = accomodationsDiscounts;
 		for (int j = 0; j <= temp.size(); j++) {
 			if (temp.top() == *(reservations.at(i)).getAccomodation())
@@ -937,7 +1019,7 @@ void Company::updateDiscounts() {
 			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
 			temp = accomodationsDiscounts;
 		}
-	}
+	}*/
 
 }
 */

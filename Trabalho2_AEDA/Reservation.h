@@ -1,8 +1,10 @@
 #pragma once
-
+#pragma warning(disable : 4996)
 
 #include <string>
-
+#include <ctime>
+#include <time.h>
+#include <stdio.h>
 
 #include "Date.h"
 #include "Accomodation.h"
@@ -11,6 +13,7 @@ using namespace std;
 
 class Reservation {
 private:
+	time_t reservationDateTime;
 	static unsigned int lastID;
 	int ID;
 	Accomodation* accomodation;
@@ -36,7 +39,7 @@ public:
 	* @param marking
 	*
 	*/
-	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client);
+	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client, time_t date_time);
 
 
 	/**
