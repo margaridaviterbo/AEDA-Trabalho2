@@ -1,8 +1,10 @@
 #pragma once
-
+#pragma warning(disable : 4996)
 
 #include <string>
 #include <ctime>
+#include <time.h>
+#include <stdio.h>
 
 #include "Date.h"
 #include "Accomodation.h"

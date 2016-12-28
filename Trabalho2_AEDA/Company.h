@@ -38,6 +38,7 @@ class Company {	//implementar nesta classe as funcionalidades gerais do programa
 private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
+	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
 	priority_queue <Accomodation> accomodationsDiscounts;
@@ -202,7 +203,7 @@ public:
 	
 	void showActiveClients() const;
 
-  void updateDiscounts();
+	static void updateDiscounts();
 };
 
 
