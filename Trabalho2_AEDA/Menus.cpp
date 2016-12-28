@@ -107,6 +107,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 
 				comp.addReservationComp(acc, initial_date, final_date, it->getName());
+				comp.updateDiscounts();
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
@@ -119,7 +120,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 				
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -752,6 +753,8 @@ void Menu::guestMenu(Company & comp) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
+				comp.addReservationComp(acc, initial_date, final_date, "Não Registado");
+
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
@@ -761,7 +764,7 @@ void Menu::guestMenu(Company & comp) {
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
