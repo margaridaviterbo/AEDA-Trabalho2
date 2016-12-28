@@ -162,7 +162,7 @@ void Company::reservationsInicialization(string reservationsFile){
 
 	while (getline(name_reservations, line_r))
 	{
-		string name, surname, checkIN, checkOUT, idr, ida, mark;
+		string name, surname, checkIN, checkOUT, idr, ida, mark, dateTime;
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
@@ -176,6 +176,7 @@ void Company::reservationsInicialization(string reservationsFile){
 		ss >> checkIN; Date in(checkIN);
 		ss >> checkOUT; Date out(checkOUT);
 		ss >> mark; Date markg(mark);
+		ss >> dateTime; const char * dt_str = dateTime.c_str(); time_t date_time = (time_t)atoll(dt_str);
 		accom->setID(IDreservation);
 
 		Accomodation *accomodation = new Accomodation();
@@ -191,7 +192,7 @@ void Company::reservationsInicialization(string reservationsFile){
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
+					Reservation reserv(IDreservation, accomodation, in, out, markg, name, date_time);
 					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
@@ -921,7 +922,7 @@ void Company::showActiveClients() const {
 void Company::updateDiscounts() {
 
 	bool found = false;
-	for (int i = 0; i<reservations.size();i++) {
+	for (int i = 0; i<reservationsBST.size();i++) {
 		priority_queue<Accomodation> temp = accomodationsDiscounts;
 		for (int j = 0; j <= temp.size(); j++) {
 			if (temp.top() == *(reservations.at(i)).getAccomodation())

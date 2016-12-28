@@ -16,8 +16,8 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 	this->price_month = price_month;
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
-
 	this->id = ++lastID;
+	creationDateTime = time(0);
 }
 
 Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates) {
@@ -27,6 +27,7 @@ Accomodation::Accomodation(unsigned int id, float price_night, float price_week,
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = id;
+	creationDateTime = time(0);
 
 }
 
