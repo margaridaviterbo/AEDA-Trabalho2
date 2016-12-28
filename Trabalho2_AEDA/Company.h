@@ -39,10 +39,7 @@ private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
-	
 	BST<Reservation> reservationsBST;
-
-
 	priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;

@@ -15,6 +15,7 @@ enum bedroomType { SINGLE, DOUBLE_R, DOUBLE_EXTRA_BED, TRIPLE };	//tipos de quar
 
 class Accomodation {
 private:
+	time_t creationDateTime;
 	float price_night;
 	float price_week;
 	float price_month;
