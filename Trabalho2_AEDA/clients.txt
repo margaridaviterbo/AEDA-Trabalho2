@@ -1,6 +1,6 @@
-    monteiro17  xoninhas2000       João Monteiro      50   22   10
-       areias1     lelito12d          Nuno Lucas      15   12    1
-       pedroso       psdfole         Pedro Silva      30    2
-      chavez34      sadfasdg         Joao Chavez       0
-        6yuppp      agvamroa          Pedro Dias       0
-         4love    silvaninho       Maria Silvano      30   26
+     monteiro17  xoninhas2000       Joao Monteiro      50   22   10
+        areias1     lelito12d          Nuno Lucas      15   12    1
+        pedroso       psdfole         Pedro Silva      30    2
+       chavez34        asdasd         Joao Chavez      30    2
+         6yuppp        adoimd          Pedro Dias       0
+          4love    silvaninho       Maria Silvano      35   26   27

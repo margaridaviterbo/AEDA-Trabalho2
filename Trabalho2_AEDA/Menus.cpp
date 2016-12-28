@@ -1,5 +1,21 @@
 #include "Menus.h"
 
+
+/*
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // used for goto
+
+COORD CursorPosition; // used for goto
+
+
+void gotoXY(int x, int y)
+{
+	CursorPosition.X = x;
+	CursorPosition.Y = y;
+	SetConsoleCursorPosition(console, CursorPosition);
+}
+*/
+
+
 void Menu::writeClientMenu(int x) {
 
 	switch (x)
@@ -41,7 +57,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 	bool running = true;
 
 
-	gotoXY(48, 4); cout << "|| " << it->getName() << " ||";
+	gotoXY(48, 4); cout << "||" << it->getName() << "||";
 
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
 
@@ -107,7 +123,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 
 				comp.addReservationComp(acc, initial_date, final_date, it->getName());
-				comp.updateDiscounts();
+				//comp.updateDiscounts();
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
@@ -138,7 +154,6 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				break;
 			case 2:
 				it->showReservations();
-				pauseScreen();
 				id = comp.cancelReservation();
 				if (id == 0) break;
 
@@ -173,6 +188,8 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 	pauseScreen();
 
 	clientMenu(comp, it);
+
+
 }
 
 void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
@@ -188,6 +205,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 	Reservation res;
 	int id, pos;
 	vector<Reservation> reservations_tmp;
+	vector<Client>::iterator it;
 
 	int menu_item = 0, x = 7;
 	bool running = true;
@@ -238,7 +256,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 
 			switch (menu_item) {
 			case 0:
-				/*clearScreen();
+				clearScreen();
 
 				gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
 
@@ -265,7 +283,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 				res.setCheckOUT(final_date);
 				res.setID();
 
-				ith->addReservation(res);
+				it = comp.reservationHash(ith, res);
 
 				clearScreen();
 
@@ -280,7 +298,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 
 				pauseScreen();
 
-				clientMenu(comp, it);*/
+				clientMenu(comp, it); // vai ter que passar para menu cliente
 				cout << "nova reserva" << endl;
 				break;
 			case 1:
@@ -290,6 +308,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 				break;
 			case 2:
 				ith->showReservations();
+				pauseScreen();
 				id = comp.cancelReservation();
 				if (id == 0) break;
 
@@ -329,7 +348,6 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 }
 
 
-
 void Menu::logIn(Company &comp, char user) {
 	clearScreen();
 
@@ -343,6 +361,7 @@ void Menu::logIn(Company &comp, char user) {
 	gotoXY(48, 4); cout << "|| ENTRAR ||";
 
 	gotoXY(42, 7);  cout << "Username: ";
+
 	getline(cin, username);
 	if (cin.eof()) throw InvalidInput();
 
@@ -364,11 +383,11 @@ void Menu::logIn(Company &comp, char user) {
 		suplierMenu(comp, its);
 	}
 	else {
-		
+
 		if (comp.isClientInactive(username)) {
 
 			ith = comp.verifyInactiveCliLogin(username, password);
-			clientMenuHash(comp, ith);    
+			clientMenuHash(comp, ith);
 		}
 		else {
 			pauseScreen();
@@ -884,7 +903,8 @@ void Menu::adminMenu(Company & comp) {
 				break;
 			case 1:
 				gotoXY(43, 16);
-				cout << "Opcao 2";
+				comp.showSupliers();
+				adminMenu(comp);
 				break;
 			case 2:
 				clearScreen();
@@ -899,7 +919,8 @@ void Menu::adminMenu(Company & comp) {
 				adminMenu(comp);
 			case 4:
 				gotoXY(43, 16);
-				cout << "Opcao 5";
+				comp.showReservations();
+				adminMenu(comp);
 				break;
 			case 5:
 				novoMenu(comp);

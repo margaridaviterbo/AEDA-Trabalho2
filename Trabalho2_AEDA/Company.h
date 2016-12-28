@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BST.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,6 +14,7 @@
 
 #include "User.h"
 #include "utils.h"
+
 
 using namespace std;
 
@@ -37,11 +39,7 @@ private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
-<<<<<<< HEAD
-
-=======
 	BST<Reservation> reservationsBST;
->>>>>>> origin/master
 	priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
@@ -49,7 +47,7 @@ private:
 	string reservationsFile;
 
 public:
-
+	
 	/**
 	* @brief constructor for the Company based on the files provided
 	*
@@ -197,23 +195,22 @@ public:
 	*/
 	void saveReservationsChanges() const;
 
-	/////////////////////////////
+
+	void showReservations() const;
 
 	void showInactiveClients() const;
 	
 	void showActiveClients() const;
 
-<<<<<<< HEAD
 	bool isClientInactive(string username);
 
 	unordered_set<Client, hcli, eqcli>::iterator verifyInactiveCliLogin(string username, string password);
 
 	unordered_set<Client, hcli, eqcli>::iterator replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos);
 
-	//void updateDiscounts();
-=======
-  void updateDiscounts();
->>>>>>> origin/master
+	vector<Client>::iterator reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res);
+
+  //void updateDiscounts();
 };
 
 

@@ -16,7 +16,7 @@ Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date 
 	this->checkOUT = checkOUT;
 	this->marking = marking;
 	this->client = client;
-	accomodation->setLastReservationID = ID;
+	accomodation->setLastReservationID(ID);
 	reservationDateTime = date_time;
 }
 
@@ -36,7 +36,7 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
-	accomodation->setLastReservationID = ID;
+	accomodation->setLastReservationID (ID);
 	reservationDateTime = time(0);
 }
 
@@ -72,12 +72,16 @@ float Reservation::getTotalPrice()const {
 
 ostream &operator<<(ostream & out, const Reservation  & reserv)
 {
+	
+	out << left << "    ";
 
-	out << setw(15) << reserv.ID
-		<< setw(25) << reserv.accomodation->getID()
-		<< setw(20) << "-" << reserv.checkIN << "-"
-		<< setw(10) << "-" << reserv.checkOUT <<"-"
-		<< setw(17) << reserv.getTotalPrice();
+	out << setw(20) << reserv.client
+		<< setw(15) << reserv.ID
+		<< setw(17) << reserv.accomodation->getID()
+		<< reserv.checkIN << setw(9) << " "
+		<< reserv.checkOUT << setw(8) << " "
+		<< setw(11) << reserv.getTotalPrice()
+		<< reserv.marking;
 	out << endl;
 
 	return out;
@@ -92,14 +96,14 @@ void Reservation::save(ofstream & out) const
 {
 	char* dt = ctime(&reservationDateTime);
 	string date_time(dt);
-	out << setw(20) << client
+	out << setw(17) << client
 		<< setw(5) << ID
 		<< setw(5) << accomodation->getID()
 		<< setw(12) << checkIN
 		<< setw(12) << checkOUT
 		<< setw(12) << marking
-		<< setw(12) << date_time
-		<< endl;
+		<< setw(30) << date_time;
+		//<< endl;
 }
 
 float Reservation::getFee() const {
@@ -107,6 +111,23 @@ float Reservation::getFee() const {
 	float price = getTotalPrice();
 
 	return price*percentage;
+}
+
+bool Reservation::operator < (const Reservation & res) const{
+	if (client == res.client)
+		return marking < res.marking;
+
+	if (res.client == "Não Registado")
+		return true;
+
+	if (client == "Não Registado")
+		return false;
+
+	return client < res.client;
+
+
+
+	
 }
 
 

@@ -146,8 +146,7 @@ void Company::supliersInicialization(string supliersFile)
 
 }
 
-void Company::reservationsInicialization(string reservationsFile)
-{
+void Company::reservationsInicialization(string reservationsFile){
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -167,6 +166,7 @@ void Company::reservationsInicialization(string reservationsFile)
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
+		
 
 
 		ss >> name;
@@ -192,16 +192,8 @@ void Company::reservationsInicialization(string reservationsFile)
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-<<<<<<< HEAD
-					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
-<<<<<<< HEAD
-					reservations.push_back(reserv);
-=======
-=======
 					Reservation reserv(IDreservation, accomodation, in, out, markg, name, date_time);
->>>>>>> origin/master
 					reservationsBST.insert(reserv);
->>>>>>> origin/master
 					it->addReservation(reserv);
 
 					break;
@@ -214,8 +206,7 @@ void Company::reservationsInicialization(string reservationsFile)
 	name_reservations.close();
 }
 
-void Company::clientsInicialization(string clientsFile)
-{
+void Company::clientsInicialization(string clientsFile){
 	ifstream name_clients;
 	string line_c;
 
@@ -266,11 +257,14 @@ void Company::clientsInicialization(string clientsFile)
 }
 
 
-Company::Company(string clientsFile, string supliersFile, string reservationsFile) {
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) :reservationsBST(Reservation()){
+
+	;
 
 	this->clientsFile = clientsFile;
 	this->supliersFile = supliersFile;
 	this->reservationsFile = reservationsFile;
+
 
 	/*
 	Ficheiro de fornecedores
@@ -460,6 +454,7 @@ void Company::registerSuplier() {
 
 }
 
+
 void Company::showSupliers(){
 	sort(supliers.begin(), supliers.end());
 
@@ -594,12 +589,36 @@ unordered_set<Client, hcli, eqcli>::iterator Company::replaceHashClient(unordere
 	inactiveClients.insert(cli);
 
 	for (ith = inactiveClients.begin(); ith != inactiveClients.end(); ith++) {
-	
+
 		if (cli.getUsername() == ith->getUsername())
 			return ith;
 	}
 }
 
+vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res) {
+
+	Client cli = *ith;
+	cli.addReservation(res);
+
+	inactiveClients.erase(ith);
+
+	clients.push_back(cli);
+
+	vector<Client>::iterator it;
+
+	for (it = clients.begin(); it != clients.end(); it++) {
+	
+		if (cli.getUsername() == it->getUsername())
+			return it;	
+	}
+
+}
+
+
+
+// -------------------
+//     Reservation
+// -------------------
 
 void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
 
@@ -641,7 +660,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 
 	}
 
-	updateDiscounts();
+	//updateDiscounts();
 
 }
 
@@ -921,6 +940,24 @@ void Company::showReservation()const {
 
 }
 
+void Company::showReservations() const{
+	BSTItrIn<Reservation> itr(reservationsBST);
+
+	clearScreen();
+
+	gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
+	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+	while (!itr.isAtEnd()){
+		cout << itr.retrieve();
+
+		itr.advance();
+	}
+
+
+	pauseScreen();
+}
 
 // -------------------
 //     Administrator
@@ -958,7 +995,7 @@ void Company::showActiveClients() const {
 }
 
 
-
+/*
 void Company::updateDiscounts() {
 
 	bool found = false;
@@ -977,5 +1014,5 @@ void Company::updateDiscounts() {
 	}
 
 }
-
+*/
 
