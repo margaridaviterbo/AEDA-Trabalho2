@@ -263,6 +263,7 @@ void Suplier::addAccomodation() {
 	}
 
 	accomodations.push_back(acc);
+	//Company::updateDiscounts();
 
 }
 
@@ -581,7 +582,6 @@ void Suplier::addAccomodation2() {
 	gotoXY(43, 21);
 
 	accomodations.push_back(acc);
-
 }
 
 void Suplier::addAccomodationFile(Accomodation * acc) {

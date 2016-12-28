@@ -622,6 +622,7 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 				add = "s";
 				while (add == "s") {
 					it->addAccomodation2();
+					comp.updateDiscounts();
 
 					cout << endl << TAB << "Adicionar Alojamento (s/n)? ";
 					getline(cin, add);

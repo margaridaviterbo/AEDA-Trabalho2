@@ -36,7 +36,9 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 	accomodation->addDates(dates);
 
 	ID = ++lastID;
+
 	accomodation->setLastReservationID (ID);
+
 	reservationDateTime = time(0);
 }
 
@@ -117,10 +119,10 @@ bool Reservation::operator < (const Reservation & res) const{
 	if (client == res.client)
 		return marking < res.marking;
 
-	if (res.client == "Não Registado")
+	if (res.client == "NÃ£o Registado")
 		return true;
 
-	if (client == "Não Registado")
+	if (client == "NÃ£o Registado")
 		return false;
 
 	return client < res.client;
