@@ -203,9 +203,18 @@ public:
 	
 	void showActiveClients() const;
 
-	void updateDiscounts();
+	bool isClientInactive(string username);
+
+	unordered_set<Client, hcli, eqcli>::iterator verifyInactiveCliLogin(string username, string password);
+
+	unordered_set<Client, hcli, eqcli>::iterator replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos);
+
+	vector<Client>::iterator reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res);
+  
+  void updateDiscounts();
 
 	void updateDiscounts(Accomodation acc);
+  
 };
 
 

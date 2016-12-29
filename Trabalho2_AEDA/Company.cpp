@@ -489,6 +489,46 @@ void Company::showSupliers() {
 //     Client
 // -------------------
 
+bool Company::isClientInactive(string username) {
+
+	bool inactive = false;
+
+	unordered_set<Client, hcli, eqcli>::const_iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		if (username == it->getUsername())
+			inactive = true;
+
+		it++;
+	}
+
+	return inactive;
+
+}
+
+unordered_set<Client, hcli, eqcli>::iterator Company::verifyInactiveCliLogin(string username, string password) {
+
+	string un;
+	string pw;
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		un = (*it).getUsername();
+		pw = (*it).getPassword();
+
+		if ((un == username) && (pw == password)) return it;
+
+		it++;
+	}
+
+	throw InvalidLogIn();
+
+}
+
+
 vector<Client>::iterator Company::verifyLogInCli(string username, string password) {
 	string un;
 	string pw;
@@ -550,6 +590,43 @@ void Company::registerClient() {
 	gotoXY(43, 15);
 }
 
+unordered_set<Client, hcli, eqcli>::iterator Company::replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos) {
+
+	Client cli = *ith;
+	cli.deleteReservation(pos);
+
+	inactiveClients.erase(ith);
+
+	inactiveClients.insert(cli);
+
+	for (ith = inactiveClients.begin(); ith != inactiveClients.end(); ith++) {
+
+		if (cli.getUsername() == ith->getUsername())
+			return ith;
+	}
+}
+
+vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res) {
+
+	Client cli = *ith;
+	cli.addReservation(res);
+
+	inactiveClients.erase(ith);
+
+	clients.push_back(cli);
+
+	vector<Client>::iterator it;
+
+	for (it = clients.begin(); it != clients.end(); it++) {
+	
+		if (cli.getUsername() == it->getUsername())
+			return it;	
+	}
+
+}
+
+
+
 // -------------------
 //     Reservation
 // -------------------
@@ -594,7 +671,7 @@ void Company::addReservationComp(Accomodation *a, Date init_date, Date final_dat
 
 	}
 
-	updateDiscounts();
+	//updateDiscounts();
 
 }
 
@@ -929,7 +1006,7 @@ void Company::showActiveClients() const {
 }
 
 
-
+/*
 void Company::updateDiscounts() {
 
 	bool found;
@@ -969,5 +1046,5 @@ void Company::updateDiscounts(Accomodation acc) {
 	}
 
 }
-
+*/
 

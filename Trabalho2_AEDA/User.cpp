@@ -25,7 +25,8 @@ void User::showReservations()const {
 	}
 	else {
 
-		cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+		cout << "      Cliente      ID Reserva     ID Alojamento          Check IN           Check OUT      Preço      Data marcacao   " << endl;
+		//cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
 		cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 
 		for (it = reservations.begin(); it != reservations.end(); it++) {
@@ -707,7 +708,7 @@ void Client::addReservation(Reservation res) {
 
 void Client::save(ofstream & out) const
 {
-	out << setw(14) << getUsername()
+	out <<  setw(15)          << getUsername()
 		<< setw(14) << getPassword()
 		<< setw(20) << getName()
 		<< setw(8) << getPoints();
