@@ -210,7 +210,7 @@ public:
 	*/
 	void showFees()const;
 
-	void addAccomodation2(); // comment later
+	Accomodation addAccomodation2(); // comment later
 
 	bool operator<(const Suplier & c) const;
 
