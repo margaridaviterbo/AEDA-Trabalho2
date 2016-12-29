@@ -213,7 +213,9 @@ public:
   
   void updateDiscounts();
 
+
 	void updateDiscounts(Accomodation acc);
+
   
 };
 
