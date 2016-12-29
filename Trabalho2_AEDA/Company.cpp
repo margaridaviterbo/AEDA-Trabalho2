@@ -114,7 +114,7 @@ void Company::supliersInicialization(string supliersFile)
 				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
 
 				sup.addAccomodationFile(bed);
-				updateDiscounts();
+				//updateDiscounts();
 			}
 
 			if (type == "APARTMENT")
@@ -133,7 +133,7 @@ void Company::supliersInicialization(string supliersFile)
 				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, creation_time, numRooms, suite);
 
 				sup.addAccomodationFile(apart);
-				updateDiscounts();
+				//updateDiscounts();
 			}
 
 
@@ -143,7 +143,7 @@ void Company::supliersInicialization(string supliersFile)
 				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates, creation_time);
 
 				sup.addAccomodationFile(flt);
-				updateDiscounts();
+				//updateDiscounts();
 			}
 
 		}
@@ -459,7 +459,7 @@ void Company::registerSuplier() {
 
 	gotoXY(35, 7); cout << s.getName() << ", a sua conta foi criada com sucesso!" << endl;
 
-	updateDiscounts();
+	//updateDiscounts();
 }
 
 
@@ -900,7 +900,7 @@ int Company::cancelReservation(){
 		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedência não será reembolsadao." << endl;
 	}
 
-	updateDiscounts();
+	//updateDiscounts();
 	return id;
 }
 
@@ -1019,8 +1019,7 @@ void Company::updateDiscounts() {
 			accomodationsDiscounts.push(*(reservations.at(i)).getAccomodation());
 			temp = accomodationsDiscounts;
 		}
-	}*/
+	}
 
-}
-*/
+}*/
 

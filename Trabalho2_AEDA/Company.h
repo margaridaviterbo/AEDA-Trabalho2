@@ -213,7 +213,7 @@ public:
 
   //void updateDiscounts();
 
-	static void updateDiscounts();
+//	static void updateDiscounts();
   
 };
 
