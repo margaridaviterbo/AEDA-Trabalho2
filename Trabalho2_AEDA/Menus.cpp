@@ -30,7 +30,7 @@ void Menu::writeClientMenu(int x) {
 		cout << "   Cancelar Reservas                   ";
 		break;
 	case 10:
-		cout << "   Informação de Conta                 ";
+		cout << "   InformaÃ§Ã£o de Conta                 ";
 		break;
 	case 11:
 		cout << "   Sair                                ";
@@ -64,7 +64,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Ver Reservas                        ";
 	gotoXY(43, 9);  cout << "   Cancelar Reservas                   ";
-	gotoXY(43, 10); cout << "   Informação de Conta                 ";
+	gotoXY(43, 10); cout << "   InformaÃ§Ã£o de Conta                 ";
 	gotoXY(43, 11); cout << "   Sair                                ";
 	gotoXY(43, 15);
 
@@ -121,14 +121,17 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
-
-				comp.addReservationComp(acc, initial_date, final_date, it->getName());
-				//comp.updateDiscounts();
-
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient(it->getName());
+				res.setMarking(getCurrentDate());
 				res.setID();
+
+
+				comp.addReservationComp(acc, res);
+				 // faz o add discounts sÃ³ na funÃ§Ã£o chamada acima ^^^^ 
+		
 
 				it->addReservation(res);
 
@@ -136,7 +139,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 				
-				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      PreÃ§o     MarcaÃ§Ã£o   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -167,7 +170,7 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				break;
 			case 3:
 				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+				gotoXY(48, 4); cout << "|| InformaÃ§Ãµes de Conta ||" << endl << endl;
 				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
@@ -218,7 +221,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Ver Reservas                        ";
 	gotoXY(43, 9);  cout << "   Cancelar Reservas                   ";
-	gotoXY(43, 10); cout << "   Informação de Conta                 ";
+	gotoXY(43, 10); cout << "   InformaÃ§Ã£o de Conta                 ";
 	gotoXY(43, 11); cout << "   Sair                                ";
 	gotoXY(43, 15);
 
@@ -276,20 +279,21 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 				if (acc == NULL) break;
 
 
-				comp.addReservationComp(acc, initial_date, final_date, ith->getName());
-
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient(it->getName());
+				res.setMarking(getCurrentDate());
 				res.setID();
 
-				it = comp.reservationHash(ith, res);
+
+				comp.addReservationComp(acc, res);
 
 				clearScreen();
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
+				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             PreÃ§o         " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -324,7 +328,7 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 				break;
 			case 3:
 				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+				gotoXY(48, 4); cout << "|| InformaÃ§Ãµes de Conta ||" << endl << endl;
 				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << ith->getName() << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << ith->getUsername() << endl;
@@ -539,13 +543,13 @@ void Menu::writeSuplierMenu(int x) {
 		cout << "   Adicionar Alojamento                ";
 		break;
 	case 9:
-		cout << "   Informações de Conta                ";
+		cout << "   InformaÃ§Ãµes de Conta                ";
 		break;
 	case 10:
 		cout << "   Ver Reservas                        ";
 		break;
 	case 11:
-		cout << "   Consultar Taxas de Serviço          ";
+		cout << "   Consultar Taxas de ServiÃ§o          ";
 		break;
 	case 12:
 		cout << "   Sair                                ";
@@ -571,9 +575,9 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Adicionar Alojamento                ";
-	gotoXY(43, 9);  cout << "   Informações de Conta                ";
+	gotoXY(43, 9);  cout << "   InformaÃ§Ãµes de Conta                ";
 	gotoXY(43, 10); cout << "   Ver Reservas                        ";
-	gotoXY(43, 11); cout << "   Consultar Taxas de Serviço          ";
+	gotoXY(43, 11); cout << "   Consultar Taxas de ServiÃ§o          ";
 	gotoXY(43, 12); cout << "   Sair                                ";
 	//gotoXY(43, 15);
 
@@ -621,8 +625,11 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 			case 1:
 				add = "s";
 				while (add == "s") {
-					it->addAccomodation2();
-					//comp.updateDiscounts();
+
+					Accomodation acc;
+					acc = it->addAccomodation2();
+					comp.updateDiscounts(acc);
+
 
 					cout << endl << TAB << "Adicionar Alojamento (s/n)? ";
 					getline(cin, add);
@@ -640,7 +647,7 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 				break;
 			case 2:
 				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+				gotoXY(48, 4); cout << "|| InformaÃ§Ãµes de Conta ||" << endl << endl;
 				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
 				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
@@ -773,18 +780,22 @@ void Menu::guestMenu(Company & comp) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
-				comp.addReservationComp(acc, initial_date, final_date, "Não Registado");
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient("NÃ£o Registado");
+				res.setMarking(getCurrentDate());
 				res.setID();
+
+
+				comp.addReservationComp(acc, res);
 
 				clearScreen();
 
 				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
-				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      PreÃ§o     MarcaÃ§Ã£o   " << endl;
 				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 				cout << res;
 
@@ -1048,7 +1059,7 @@ void Menu::start(Company & comp) {
 	cout << endl << TAB << "| 3 |  Entrar como Visitante" << endl;
 	cout << endl << TAB << "| 4 |  Sair" << endl << endl;
 	/*
-	cout << endl << TAB<< "Opção: ";
+	cout << endl << TAB<< "OpÃ§Ã£o: ";
 
 	getline(cin, option_str);
 

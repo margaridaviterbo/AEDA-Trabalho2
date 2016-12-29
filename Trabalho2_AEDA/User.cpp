@@ -457,7 +457,7 @@ establishment chooseEst() {
 
 }
 
-void Suplier::addAccomodation2() {
+Accomodation Suplier::addAccomodation2() {
 	string option_str;
 	unsInt option_int;
 	float p_day, p_week, p_month;
@@ -582,6 +582,7 @@ void Suplier::addAccomodation2() {
 	gotoXY(43, 21);
 
 	accomodations.push_back(acc);
+	return *acc;
 }
 
 void Suplier::addAccomodationFile(Accomodation * acc) {

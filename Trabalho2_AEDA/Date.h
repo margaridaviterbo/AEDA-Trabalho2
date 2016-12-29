@@ -192,3 +192,6 @@ public:
 	friend ostream& operator<<(ostream& out, const Date & date);
 };
 
+
+Date getCurrentDate();
+

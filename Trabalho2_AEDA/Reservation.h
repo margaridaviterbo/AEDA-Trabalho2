@@ -125,11 +125,28 @@ public:
 	*/
 	void setID(unsigned int id) { ID = id; }
 
+
+	/**
+	* @brief sets clients name
+	*
+	* @param clients name
+	*
+	*/
+	void setClient(string name) { client= name; }
+
+	/**
+	* @brief sets clients name
+	*
+	* @param clients name
+	*
+	*/
+	void setMarking(Date marking) { this->marking = marking; }
+
 	/**
 	* @brief sets by default
 	*
 	*/
-	void setID() { ID = lastID; };
+	void setID() { ID = ++lastID; };
 
 	/**
 	* @brief gets check In
@@ -155,6 +172,7 @@ public:
 	*
 	*/
 	Date getMarking() const { return marking; }
+
 
 	/**
 	* @brief gets accomodation
