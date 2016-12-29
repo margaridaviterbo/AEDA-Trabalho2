@@ -41,7 +41,7 @@ private:
 	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
-	static priority_queue <Accomodation> accomodationsDiscounts;
+	//static priority_queue <Accomodation> accomodationsDiscounts;
 
 	string clientsFile;
 	string supliersFile;
@@ -157,7 +157,7 @@ public:
 	* @param client clients name
 	*
 	*/
-	void addReservationComp(Accomodation *a, Date init_date, Date final_date,string client);
+	void addReservationComp(Accomodation *a, Reservation res);
 
 	/**
 	* @brief ask the client wich reservation he wants to to cancel removes it from the vectors and displays the amount that the client must receive

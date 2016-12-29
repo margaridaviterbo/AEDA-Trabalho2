@@ -19,7 +19,7 @@ void Company::supliersInicialization(string supliersFile)
 
 	while (getline(name_supliers, line_f))
 	{
-		string username, password, name, surname, adress, trash, nif;
+		string username, password, name, surname, adress, trash, nif; //, time ;
 		unsigned int NIF;
 		stringstream ss; ss.str(line_f);
 
@@ -36,12 +36,12 @@ void Company::supliersInicialization(string supliersFile)
 		{
 
 			stringstream ss; ss.str(line_f);
-			string type, d, w, m, city, date1, date2, next, time;
+			string type, d, w, m, city, date1, date2, next;
 			float daily, weekly, monthly;
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
-			time_t creation_time;
+			time_t creation_time =time(0);
 
 
 			ss >> ID;
@@ -63,11 +63,11 @@ void Company::supliersInicialization(string supliersFile)
 				ss >> date1;
 
 			}
-
+			/*
 			ss >> time;
 			const char * dt_str = time.c_str();
 			creation_time = (time_t)atoll(dt_str);
-
+			*/
 			if (type == "BEDROOM")
 			{
 
@@ -631,25 +631,8 @@ vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eq
 //     Reservation
 // -------------------
 
-void Company::addReservationComp(Accomodation *a, Date init_date, Date final_date, string client) {
+void Company::addReservationComp(Accomodation *a,Reservation res) {
 
-	Date d; // DANIEL apagar isto e calcular a Data atual!!!!!!
-
-	// Data atual
-
-	/*
-	Date actual_date;
-
-	struct tm newtime;
-	time_t now = time(0);
-	localtime_s(&newtime, &now);
-
-	actual_date.setYear(newtime.tm_year + 1900);
-	actual_date.setMonth(newtime.tm_mon + 1);
-	actual_date.setDay(newtime.tm_mday);
-	*/
-
-	Reservation res(a, init_date, final_date, d, client);
 	vector<Accomodation *> accomodations_tmp;
 
 	//reservations.push_back(res);
@@ -1006,9 +989,9 @@ void Company::showActiveClients() const {
 }
 
 
-/*
-void Company::updateDiscounts() {
 
+void Company::updateDiscounts() {
+	/*
 	bool found;
 	BSTItrIn<Reservation> itr(reservationsBST);
 	priority_queue<Accomodation> temp;
@@ -1026,12 +1009,12 @@ void Company::updateDiscounts() {
 		}
 
 		itr.advance();
-	}
+	}*/
 
 }
 
 void Company::updateDiscounts(Accomodation acc) {
-
+	/*
 	bool found = false;
 	priority_queue<Accomodation> temp = accomodationsDiscounts;
 
@@ -1044,7 +1027,7 @@ void Company::updateDiscounts(Accomodation acc) {
 	if (!found) {
 		accomodationsDiscounts.push(acc);
 	}
-
+	*/
 }
-*/
+
 

@@ -121,14 +121,17 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
-
-				comp.addReservationComp(acc, initial_date, final_date, it->getName());
-				//comp.updateDiscounts();
-
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient(it->getName());
+				res.setMarking(getCurrentDate());
 				res.setID();
+
+
+				comp.addReservationComp(acc, res);
+				 // faz o add discounts só na função chamada acima ^^^^ 
+		
 
 				it->addReservation(res);
 
@@ -276,14 +279,15 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 				if (acc == NULL) break;
 
 
-				comp.addReservationComp(acc, initial_date, final_date, ith->getName());
-
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient(it->getName());
+				res.setMarking(getCurrentDate());
 				res.setID();
 
-				it = comp.reservationHash(ith, res);
+
+				comp.addReservationComp(acc, res);
 
 				clearScreen();
 
@@ -774,12 +778,16 @@ void Menu::guestMenu(Company & comp) {
 				acc = comp.displayOffers(location, initial_date, final_date);
 				if (acc == NULL) break;
 
-				comp.addReservationComp(acc, initial_date, final_date, "Não Registado");
 
 				res.setAccomodation(acc);
 				res.setCheckIN(initial_date);
 				res.setCheckOUT(final_date);
+				res.setClient("Não Registado");
+				res.setMarking(getCurrentDate());
 				res.setID();
+
+
+				comp.addReservationComp(acc, res);
 
 				clearScreen();
 
