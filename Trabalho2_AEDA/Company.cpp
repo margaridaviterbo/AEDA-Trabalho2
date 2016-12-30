@@ -271,7 +271,6 @@ void Company::clientsInicialization(string clientsFile) {
 
 }
 
-
 Company::Company(string clientsFile, string supliersFile, string reservationsFile) : reservationsBST(Reservation()) {
 
 	;
@@ -363,13 +362,15 @@ void Company::saveReservationsChanges() const
 	fout.close();
 }
 
-
 void Company::saveChanges() const
 {
 	saveClientsChanges();
 	saveReservationsChanges();
 	saveSupliersChanges();
 }
+
+
+
 
 // -------------------
 //     Suplier
@@ -418,6 +419,7 @@ void Company::registerSuplier() {
 
 	NIF = stoul(NIF_str);
 
+	if( NIF > 999999999 || NIF < 100000000)throw InvalidInput();
 
 	gotoXY(42, 9); cout << "Morada: ";
 	getline(cin, adress);
@@ -495,6 +497,9 @@ void Company::showSupliers() {
 
 
 }
+
+
+
 // -------------------
 //     Client
 // -------------------
@@ -537,7 +542,6 @@ unordered_set<Client, hcli, eqcli>::iterator Company::verifyInactiveCliLogin(str
 	throw InvalidLogIn();
 
 }
-
 
 vector<Client>::iterator Company::verifyLogInCli(string username, string password) {
 	string un;
@@ -726,7 +730,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	clearScreen();
 
 	if (accomodations.size() == 0) {
-		cout << TAB << "Não existe nenhum alojamento que verifique as condições desejadas." << endl;
+		cout << TAB << "Nao existe nenhum alojamento que verifique as condicoes desejadas." << endl;
 		return NULL;
 	}
 
@@ -746,7 +750,7 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 
 
 	cout << endl << TAB << "Introduza o ID do alojamento que pertende reservar." << endl;
-	cout << TAB << "Caso não esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
+	cout << TAB << "Caso nao esteja interessado em nenhum dos alojamentos introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -1080,7 +1084,6 @@ void Company::updateAdresses(){
 
 
 }
-
 
 void Company::updateDiscounts() {
 	/*

@@ -62,6 +62,11 @@ public:
 	*
 	*/
 	Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> available_dates, time_t creation_time);
+	
+	/**
+	* @brief  default accomodation constructor
+	*
+	*/
 	Accomodation() {};
 
 	/**
@@ -171,6 +176,13 @@ public:
 	*
 	*/
 	static void setAccLastID(unsigned int id);
+	
+	/**
+	* @brief sets reservation last id
+	*
+	* @param id
+	*
+	*/
 	void setLastReservationID(int id) { lastReservationID = id; }
 
 	/**
@@ -178,9 +190,17 @@ public:
 	*
 	* @param acc
 	*
-	* @return true is accomodations have the same id, false otherwise
+	* @return true if accomodations have the same id, false otherwise
 	*/
 	bool operator == (const Accomodation &acc) const;
+	
+	/**
+	* @brief overload of the the < operator
+	*
+	* @param acc
+	*
+	* @return true if the period of time since the last reservation is bigger than the other, false otherwise
+	*/
 	bool operator < (const Accomodation &acc) const;
 };
 

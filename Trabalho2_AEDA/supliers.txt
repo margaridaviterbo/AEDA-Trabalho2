@@ -1,4 +1,4 @@
-   28
+   30
       dolfander            123    Daniel Machado      123123123        - Rua Principal 200 - 
    24   BEDROOM   23   23   23         Porto         -    02/07/2010 13/07/2010       -    SINGLE     HOTEL
 -------
@@ -8,6 +8,7 @@
    11      FLAT   10  100  300     Vila Real         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017       -
    27   BEDROOM   20   50  100         Porto         -    03/06/2016 05/06/2016       -    SINGLE     HOTEL
    28   BEDROOM    3   10   40         Porto         -    05/06/2015 06/07/2016       -    DOUBLE_EXTRA_BED   SHARED_HOUSE
+   30   BEDROOM   20   30   90       Coimbra         -    03/04/2017 16/04/2017       -    TRIPLE   SHARED_HOUSE
 -------
        areias12      lelito12d        Nuno Lucas      309823420        - Rua DR Eduardo Santos Silva, Porto - 
     1   BEDROOM   20  120  400        Aveiro         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017       -    SINGLE   SHARED_HOUSE
@@ -22,4 +23,7 @@
          kyahra            123       Sofia Alves      999999999        - yo - 
    25      FLAT   34  145  400     Vila Real         -       -
    26   BEDROOM   45  200  600     Mirandela         -    05/06/2017 25/06/2017    25/02/2017 27/02/2017       -    DOUBLE_EXTRA_BED   BED_AND_BREAKFAST
+-------
+           rafa           1234    Rafael Machado      474839274        - Rua das Flores, Porto - 
+   29   BEDROOM   20  230 1230         Porto         -    03/05/2017 06/05/2017    04/05/2017 08/05/2017       -    DOUBLE     HOTEL
 -------

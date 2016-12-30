@@ -27,6 +27,7 @@ private:
 	vector<Reservation> reservations;
 
 public:
+	
 	/**
 	* @brief User constructor
 	*
@@ -84,30 +85,35 @@ public:
 	*
 	*/
 	void setUsername(string username) { this->username = username; }
+	
 	/**
 	* @brief shows reservations
 	*
 	*
 	*/
 	void showReservations()const;
+	
 	/**
 	*
 	* @return reservations
 	*
 	*/
 	vector<Reservation> getReservations() const { return reservations; };
+	
 	/**
 	* @brief shows reservations
 	*
 	*
 	*/
 	void setReservations(vector<Reservation> res) { this->reservations = res; };
+	
 	/**
 	* @brief deletes reservations
 	*
 	* @param position
 	*/
 	void deleteReservation(int position);
+	
 	/**
 	* @brief equal operator
 	*
@@ -115,7 +121,6 @@ public:
 	*
 	* @return if it went well
 	*/
-
 	bool operator== (const User & usr) const;
 };
 
@@ -127,6 +132,7 @@ private:
 	vector <Accomodation*> accomodations;
 
 public:
+	
 	/**
 	* @brief creates a new suplier
 	*
@@ -141,34 +147,40 @@ public:
 	* @adress
 	*/
 	Suplier(string username, string password, string name, int nif, string adress);
+	
 	/**
 	* @brief adds accomodation
 	*
 	*/
 	void addAccomodation();
+	
 	/**
 	* @brief adds accomodation from file
 	*
 	* @param acc
 	*/
 	void addAccomodationFile(Accomodation * acc);
+	
 	/**
 	* @brief shows accomodations
 	*
 	*/
 	void showAccomodations()const;
+	
 	/**
 	* @brief gets accomodations
 	*
 	* @return accomodations
 	*/
 	vector<Accomodation*> getAccomodations() const { return accomodations; }
+	
 	/**
 	* @brief sets accomodations
 	*
 	* @param accomodations
 	*/
 	void setAccomodations(vector<Accomodation*> accomodations) { this->accomodations = accomodations; }
+	
 	/**
 	* @brief gets adress
 	*
@@ -210,10 +222,32 @@ public:
 	*/
 	void showFees()const;
 
-	Accomodation addAccomodation2(); // comment later
+	/**
+	* @brief adds a new accomodation
+	*
+	* @return accomodation
+	*/
+	Accomodation addAccomodation2(); 
 
+	/**
+	* @brief compares supliers
+	*
+ 	* @param c the suplier being compared
+	*
+	* @return true if the suplier name is alphabetical minor 
+	*/
 	bool operator<(const Suplier & c) const;
 
+
+	/**
+	* @brief overload of << operator, shows the suplier information
+	*
+	* @param out the ofstream used
+	*
+	* @param s suplier whose information is being showed
+	*
+	* @return ostream 
+	*/
 	friend ostream &operator<<(ostream & out, const Suplier & s);
 	
 };
@@ -242,16 +276,47 @@ void askForPrice(float & p_night, float & p_week, float & p_month);
 */
 void askForAvailability(vector < pair<Date, Date>>&  unavailableDates);
 
-
+/**
+* @brief selects a bedroom type
+*
+* @param the bedroom type that is being selected
+*
+*/
 void writeBedroomType(int x);
 
+/**
+* @brief selects a establishment type
+*
+* @param the establishment type that is being selected
+*
+*/
 void writeEstabliType(int x);
 
+/**
+* @brief selects a bed type
+*
+* @param the bed type that is being selected
+*
+*/
 void writeBedType(int x);
 
+
+/**
+* @brief selects a bed type
+*
+* @return bedroomType that was selected
+*
+*/
 bedroomType chooseBedType();
 
+/**
+* @brief selects a establishment
+*
+* @return establishment that was selected
+*
+*/
 establishment chooseEst();
+
 
 class Client : public User {
 
@@ -304,8 +369,22 @@ public:
 	*/
 	void save(ofstream & out) const;
 
+	/**
+	* @brief decides whereas a client is inactive or not
+	*
+	* @return true if the Client does not do a reservation for more than a year, false otherwise
+	*/
 	bool isInactiveClient();
 
+	/**
+	* @brief decides whereas a client is inactive or not
+	*
+	* @param ostream that is being used 
+	*
+	* @param cli the client wich information is going to be showed
+	*
+	* @return ostream with the client information
+	*/
 	friend ostream &operator<<(ostream & out, const Client  & cli); // comment later
 
 };
