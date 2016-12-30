@@ -70,6 +70,11 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 	system("pause>nul");
 
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
 	while (running)
 	{
 
@@ -226,6 +231,11 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -430,6 +440,11 @@ void Menu::mainMenu2(Company & comp, char user) {
 
 	system("pause>nul");
 
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
 	while (running)
 	{
 
@@ -583,6 +598,11 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 
 	system("pause>nul");
 
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
 	while (running)
 	{
 
@@ -728,6 +748,11 @@ void Menu::guestMenu(Company & comp) {
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -887,6 +912,11 @@ void Menu::adminMenu(Company & comp) {
 
 	system("pause>nul");
 
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
 	while (running)
 	{
 
@@ -1010,6 +1040,11 @@ void Menu::novoMenu(Company & comp){
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
