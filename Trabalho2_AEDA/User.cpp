@@ -531,7 +531,10 @@ Accomodation Suplier::addAccomodation2() {
 
 				askForAvailability(unavailable_dates);
 
+				cout << "cheguei aqui user1";
+
 				acc = new Bedroom(p_day, p_week, p_month, location, unavailable_dates, est, bed_type);
+				cout << "cheguei aqui user2";
 				running = false;
 				break;
 
@@ -581,7 +584,12 @@ Accomodation Suplier::addAccomodation2() {
 
 	gotoXY(43, 21);
 
+	cout << "cheguei aqui user3";
+
 	accomodations.push_back(acc);
+
+	cout << "cheguei aqui user4";
+
 	return *acc;
 }
 

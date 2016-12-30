@@ -611,6 +611,8 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 
 			clearScreen();
 
+			cout << "entrei";
+
 			switch (menu_item) {
 			case 0:
 				it->showAccomodations();
@@ -623,13 +625,15 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 				while (add == "s") {
 					Accomodation acc;
 					acc = it->addAccomodation2();
+					cout << "consegui??";
 					comp.updateDiscounts(acc);
-
+					cout << "cheguei aqui menu1";
 					cout << endl << TAB << "Adicionar Alojamento (s/n)? ";
 					getline(cin, add);
-
+					cout << "cheguei aqui menu2";
 				}
 
+				cout << "cheguei aqui menu3";
 				if (add != "n") throw InvalidInput();
 
 

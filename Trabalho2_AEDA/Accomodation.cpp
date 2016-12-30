@@ -223,7 +223,7 @@ void Accomodation::saveAccomodation(ofstream & out)
 	char* dt = ctime(&creationDateTime);
 	string date_time(dt);
 
-	out << "   -" << setw(14) << date_time;
+	out << "    -    " << date_time << "    -";
 
 }
 void Bedroom::saveAccomodation(ofstream & out)

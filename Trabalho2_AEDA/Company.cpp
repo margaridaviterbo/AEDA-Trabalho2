@@ -2,21 +2,31 @@
 
 void Company::supliersInicialization(string supliersFile)
 {
+	cout << "entrei supliers1";
+
 	ifstream name_supliers;
 	string line_f;
 	unsigned int maxID;
 
 	name_supliers.open(supliersFile);
 
+	cout << "entrei supliers2";
+
 	if (!name_supliers.is_open()) throw ErrorOpeningFile("Fornecedores");
 
 	getline(name_supliers, line_f);
 	stringstream ss; ss.str(line_f);
 
+	cout << "entrei supliers3";
+
 	ss >> maxID;
+
+
+	cout << "entrei supliers4";
 
 	Accomodation::setAccLastID(maxID);
 
+	cout << "entrei supliers5";
 	while (getline(name_supliers, line_f))
 	{
 		string username, password, name, surname, adress, trash, nif;
@@ -30,7 +40,11 @@ void Company::supliersInicialization(string supliersFile)
 		ss >> nif; NIF = fromString<unsigned int>(nif);
 		ss >> trash; getline(ss, adress, '-'); trim(adress);
 
+		cout << "entrei supliers6";
+
 		Suplier sup(username, password, name, NIF, adress);
+
+		cout << "entrei supliers7";
 
 		while (getline(name_supliers, line_f) && line_f != "-------")
 		{
@@ -53,31 +67,55 @@ void Company::supliersInicialization(string supliersFile)
 
 			normalize(city);
 
+			cout << "entrei supliers8";
+
 			ss >> date1;
+
+			cout << date1;
 
 			while (date1 != "-")
 			{
+				cout << "aiii";
+
 				Date d1(date1); pair_dates.first = d1;
-				ss >> date2; Date d2(date2); pair_dates.second = d2;
+				ss >> date2; 
+				cout << date2;
+				Date d2(date2); pair_dates.second = d2;
 				unavailableDates.push_back(pair_dates);
 				ss >> date1;
 
 			}
 
-			ss >> time;
+			cout << "check";
+
+			getline(ss, time, '-'); trim(time);
+
+			cout << time;
+
+			//ss >> trash;
+
+			//cout << trash;
+			
 			const char * dt_str = time.c_str();
 			creation_time = (time_t)atoll(dt_str);
 
 			if (type == "BEDROOM")
 			{
 
+				cout << "entrei supliers9";
+
 				string bedroomType2, est;
 				bedroomType bedType;
 
 				ss >> bedroomType2;
 
+				cout << bedroomType2<<"  aqui  ";
+
+
 				if (bedroomType2 == "SINGLE")
 				{
+					cout << "entrei supliers10";
+
 					bedType = SINGLE;
 				}
 				if (bedroomType2 == "DOUBLE")
@@ -100,6 +138,8 @@ void Company::supliersInicialization(string supliersFile)
 
 				if (est == "HOTEL")
 				{
+					cout << "entrei supliers11";
+
 					estbl = HOTEL;
 				}
 				if (est == "BED_AND_BREAKFAST")
@@ -111,9 +151,15 @@ void Company::supliersInicialization(string supliersFile)
 					estbl = SHARED_HOUSE;
 				}
 
+				cout << "entrei supliers12";
+
 				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
 
+				cout << "entrei supliers13";
+
 				sup.addAccomodationFile(bed);
+
+				cout << "entrei supliers14";
 				updateDiscounts(*bed);
 			}
 
@@ -147,11 +193,12 @@ void Company::supliersInicialization(string supliersFile)
 			}
 
 		}
+		cout << "entrei supliers13";
 		supliers.push_back(sup);
 	}
 
 	name_supliers.close();
-
+	cout << "entrei supliers14";
 }
 
 void Company::reservationsInicialization(string reservationsFile) {
@@ -1006,7 +1053,7 @@ void Company::showActiveClients() const {
 }
 
 
-/*
+
 void Company::updateDiscounts() {
 
 	bool found;
@@ -1016,7 +1063,7 @@ void Company::updateDiscounts() {
 	while (!itr.isAtEnd()) {
 		found = false;
 		temp = accomodationsDiscounts;
-		for (int j = 0; j <= temp.size(); j++) {
+		for (int j = 0; j < temp.size(); j++) {
 			if (temp.top() == *(itr.retrieve()).getAccomodation())
 				found = true;
 			temp.pop();
@@ -1031,11 +1078,16 @@ void Company::updateDiscounts() {
 }
 
 void Company::updateDiscounts(Accomodation acc) {
-
+	cout << "here??";
 	bool found = false;
 	priority_queue<Accomodation> temp = accomodationsDiscounts;
 
-	for (int j = 0; j <= temp.size(); j++) {
+	cout << "and here??";
+
+	for (int j = 0; j < temp.size(); j++) {
+
+		cout << "será?";
+
 		if (temp.top() == acc)
 			found = true;
 		temp.pop();
@@ -1046,5 +1098,5 @@ void Company::updateDiscounts(Accomodation acc) {
 	}
 
 }
-*/
+
 
