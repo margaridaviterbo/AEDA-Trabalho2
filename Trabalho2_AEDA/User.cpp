@@ -731,6 +731,8 @@ void Client::save(ofstream & out) const
 
 ostream &operator<<(ostream & out, const Client  & cli){
 
+	out << left << "     ";
+
 	out << setw(20) << cli.getUsername()
 		<< setw(28) << cli.getPassword()
 		<< setw(36) << cli.getName()

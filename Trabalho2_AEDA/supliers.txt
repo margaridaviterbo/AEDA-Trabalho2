@@ -1,4 +1,4 @@
-   26
+   28
       dolfander            123    Daniel Machado      123123123        - Rua Principal 200 - 
    24   BEDROOM   23   23   23         Porto         -    02/07/2010 13/07/2010       -    SINGLE     HOTEL
 -------
@@ -6,6 +6,8 @@
    12   BEDROOM   20  120  400        Aveiro         -    06/08/2017 18/08/2017    12/03/2017 17/03/2017       -    SINGLE     HOTEL
    21 APARTMENT   40  200  600       Coimbra         -    12/07/2017 20/07/2017    12/03/2017 17/03/2017       -    3        NAO
    11      FLAT   10  100  300     Vila Real         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017       -
+   27   BEDROOM   20   50  100         Porto         -    03/06/2016 05/06/2016       -    SINGLE     HOTEL
+   28   BEDROOM    3   10   40         Porto         -    05/06/2015 06/07/2016       -    DOUBLE_EXTRA_BED   SHARED_HOUSE
 -------
        areias12      lelito12d        Nuno Lucas      309823420        - Rua DR Eduardo Santos Silva, Porto - 
     1   BEDROOM   20  120  400        Aveiro         -    01/01/2017 01/01/2017    12/03/2017 17/03/2017       -    SINGLE   SHARED_HOUSE

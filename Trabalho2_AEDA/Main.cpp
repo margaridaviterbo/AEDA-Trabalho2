@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <locale.h>
+#include <stdlib.h>
 
 #include "Company.h"
 #include "Menus.h"
@@ -31,7 +32,7 @@ int main() {
 		catch (WrongOption wp) {
 			cout << wp;
 			APlaceInTheSun.saveChanges();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 		
 
@@ -41,7 +42,7 @@ int main() {
 			cout << ii;
 			APlaceInTheSun.saveChanges();
 			cin.clear();
-			cout << TAB << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
+			cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Inicial." << endl;
 			pauseScreen();
 			
 
