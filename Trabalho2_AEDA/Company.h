@@ -213,6 +213,9 @@ public:
   
   void updateDiscounts();
 
+  void showInactiveClientsAdresses() const;
+  
+  void Company::updateAdresses();
 
 	void updateDiscounts(Accomodation acc);
 

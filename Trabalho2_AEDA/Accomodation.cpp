@@ -220,10 +220,10 @@ void Accomodation::saveAccomodation(ofstream & out)
 		out << it->first << " " << it->second << "    ";
 	}
 
-	char* dt = ctime(&creationDateTime);
-	string date_time(dt);
+	//char* dt = ctime(&creationDateTime);
+	//string date_time(dt);
 
-	out << "   -" << setw(14) << date_time;
+	out << "   -" ; // << setw(14) << date_time;
 
 }
 void Bedroom::saveAccomodation(ofstream & out)
