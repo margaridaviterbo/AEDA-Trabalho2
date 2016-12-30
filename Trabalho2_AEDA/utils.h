@@ -13,9 +13,9 @@
 using namespace std;
 
 /**
-* @brief converts
+* @brief converts  string into a T type
 *
-* @return
+* @return the T type
 *
 */
 template <class T>
@@ -28,7 +28,16 @@ T fromString(const string& s) {
 	return t;
 }
 
-
+/**
+* @brief sequential search algorithm
+*
+* @param v the comparable vector
+*
+* @param x the comparable element
+*
+* @return i position of the element x in the vector v, -1 if the element does not exist
+*
+*/
 template <class Comparable>
 int sequentialSearch(const vector<Comparable> &v, Comparable x)
 {
@@ -37,6 +46,64 @@ int sequentialSearch(const vector<Comparable> &v, Comparable x)
 			return i;   // encontrou
 	return -1;     // não encontrou
 }
+
+/**
+* @brief clears the Screen
+*
+*/
+void clearScreen();
+
+/**
+* @brief pauses the Screen
+*
+*/
+void pauseScreen();
+
+/**
+* @brief upcases a string 
+*
+* @param str the string to be converted
+*
+*/
+void upCase(string &str);
+
+/**
+* @brief normalizes a string
+*
+* @param str the string to be normalized
+*
+*/
+void normalize(string &str);
+
+/**
+* @brief removes the " " at the begining and at the end of a string 
+*
+* @param str the string to be 'trimed'
+*
+*/
+void trim(string &str);
+
+/**
+* @brief shows the Options between first and last that you are able to choose
+*
+* @param first
+*
+* @param last
+*
+* @return the chosen option
+*
+*/
+int showOptions(int first, int last);
+
+/**
+* @brief goes to a specific pair of coordenates on the screen
+*
+* @param x position
+*
+* @param y position
+*
+*/
+void gotoXY(int x, int y);
 
 
 // -------------------
@@ -48,11 +115,28 @@ class WrongOption {
 	unsInt min;
 	unsInt max;
 public:
+
+	/**
+	* @brief wrong option construtor
+	*
+	* @param min
+	*
+	* @param max
+	*
+	*/
 	WrongOption(unsInt min, unsInt max) {
 		this->min = min;
 		this->max = max;
 	}
 
+	/**
+	* @brief overload of << operator for wrong option exception
+	*
+	* @param out , the ostream used
+	*
+	* @param wo
+	*
+	*/
 	friend ostream & operator << (ostream &out, WrongOption &wo) {
 		out << endl;
 		out << TAB_BIG << TAB_BIG << "Opção Inválida." << endl;
@@ -64,8 +148,21 @@ public:
 
 class InvalidInput {
 public:
+
+	/**
+	* @brief Invalid Input construtor
+	*
+	*/
 	InvalidInput() {}
 
+	/**
+	* @brief overload of << operator for invalid input exception
+	*
+	* @param out , the ostream used
+	*
+	* @param ii
+	*
+	*/
 	friend ostream & operator << (ostream &out, InvalidInput &ii) {
 		out << endl;
 		out << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
@@ -78,8 +175,21 @@ public:
 class InvalidReservationID {
 	unsigned int id;
 public:
+	
+	/**
+	* @brief invalid reservation id construtor
+	*
+	*/
 	InvalidReservationID(unsigned int id) { this->id = id; }
 
+	/**
+	* @brief overload of << operator for invalid reseravtion id exception
+	*
+	* @param out , the ostream used
+	*
+	* @param ii
+	*
+	*/
 	friend ostream & operator << (ostream &out, InvalidReservationID &ii) {
 		out << endl << endl << endl << endl;
 		out << TAB_BIG  << TAB_BIG << "                            || Reserva ||" << endl << endl << endl;
@@ -94,8 +204,20 @@ public:
 
 class InvalidDate {
 public:
+	/**
+	* @brief invalid date construtor
+	*
+	*/
 	InvalidDate() {}
 
+	/**
+	* @brief overload of << operator for invalid date exception
+	*
+	* @param out , the ostream used
+	*
+	* @param id
+	*
+	*/
 	friend ostream & operator << (ostream &out, InvalidDate &id) {
 		out << endl;
 		out << TAB_BIG << TAB_BIG << "A data introduzida não é válida." << endl;
@@ -107,8 +229,21 @@ public:
 
 class InvalidLogIn {
 public:
+	
+	/**
+	* @brief invalid login construtor
+	*
+	*/
 	InvalidLogIn() {}
 
+	/**
+	* @brief overload of << operator for invalid login exception
+	*
+	* @param out , the ostream used
+	*
+	* @param ili
+	*
+	*/
 	friend ostream & operator << (ostream &out, InvalidLogIn &ili) {
 		out << endl << endl << endl;
 		out << TAB_BIG  << TAB_BIG << "Os dados de acesso estão incorretos." << endl;
@@ -120,8 +255,21 @@ public:
 
 class InvalidUsername {
 public:
+
+	/**
+	* @brief invalid username construtor
+	*
+	*/
 	InvalidUsername() {}
 
+	/**
+	* @brief overload of << operator for invalid username exception
+	*
+	* @param out , the ostream used
+	*
+	* @param iu
+	*
+	*/
 	friend ostream & operator << (ostream &out, InvalidUsername &iu) {
 		out << endl << endl << endl;
 		out << TAB_BIG << TAB_BIG << "O nome de utilizador escolhido não se encontra disponível." << endl;
@@ -135,8 +283,23 @@ class ErrorOpeningFile {
 private:
 	string file_type;
 public:
+	
+	/**
+	* @brief error opening file construtor
+	*
+	* @param file type
+	*
+	*/
 	ErrorOpeningFile(string file_type) { this->file_type = file_type; };
 
+	/**
+	* @brief overload of << operator for error openig file exception
+	*
+	* @param out , the ostream used
+	*
+	* @param eof
+	*
+	*/
 	friend ostream & operator << (ostream &out, ErrorOpeningFile &eof) {
 		out << endl << endl;
 		out << TAB_BIG << TAB_BIG << "Não foi possível abrir o ficheiro de " << eof.file_type << "." << endl;
@@ -146,13 +309,5 @@ public:
 };
 
 
-void clearScreen();
-void pauseScreen();
-void upCase(string &str);
-void normalize(string &str);
-void trim(string &str);
 
-int showOptions(int first, int last);
-
-void gotoXY(int x, int y);
 

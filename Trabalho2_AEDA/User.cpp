@@ -267,7 +267,6 @@ void Suplier::addAccomodation() {
 
 }
 
-
 void writeBedroomType(int x) {
 
 	switch (x)
@@ -319,7 +318,6 @@ void writeEstabliType(int x) {
 	}
 }
 
-
 bedroomType chooseBedType() {
 
 	clearScreen();
@@ -338,6 +336,11 @@ bedroomType chooseBedType() {
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -389,7 +392,6 @@ bedroomType chooseBedType() {
 	gotoXY(43, 21);
 }
 
-
 establishment chooseEst() {
 
 	clearScreen();
@@ -408,6 +410,11 @@ establishment chooseEst() {
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -478,6 +485,11 @@ Accomodation Suplier::addAccomodation2() {
 	clearScreen();
 	int menu_item = 0, x = 7;
 	bool running = true;
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	gotoXY(48, 4); cout << "|| Tipo de Alojamento ||";
 
@@ -615,7 +627,6 @@ void Suplier::addReservation(Reservation res) {
 	setReservations(res_vec);
 }
 
-
 void Suplier::save(ofstream & out) const
 {
 	out << setw(15) << getUsername() << setw(15) << getPassword() << setw(18) << getName() << setw(15) << nif << "        - " << adress << " - " << endl;
@@ -635,7 +646,7 @@ void Suplier::save(ofstream & out) const
 
 void Suplier::showFees()const {
 	
-	gotoXY(48, 4); cout << "|| Taxas de Serviço ||" << endl << endl << endl;
+	gotoXY(48, 4); cout << "|| Taxas de Servico ||" << endl << endl << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "        Quartos        Flats           Apartamentos   " << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "      ------------------------------------------------" << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "          5%            1%                 15%        \n\n";
@@ -654,7 +665,6 @@ void Suplier::showFees()const {
 	cout << endl;
 
 }
-
 
 bool Suplier::operator<(const Suplier & c) const{
 
@@ -691,8 +701,6 @@ Client::Client(string username, string password, string name,string adress, int 
 	this->points = points;
 	this->adress = adress;
 }
-
-
 
 void Client::addReservation(Reservation res) {
 	float price;

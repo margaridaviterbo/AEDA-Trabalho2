@@ -114,9 +114,7 @@ public:
 	/**
 	* @brief displays the Company's supliers in alphabetic order
 	*
-	*
 	*/
-
 	void showSupliers();
 
 	/**
@@ -196,27 +194,84 @@ public:
 	*/
 	void saveReservationsChanges() const;
 
-
+	/**
+	* @brief shows all reservations
+	*
+	*/
 	void showReservations() const;
 
+	/**
+	* @brief shows all inactive clients
+	*
+	*/
 	void showInactiveClients() const;
 	
+	/**
+	* @brief shows all active clients
+	*
+	*/
 	void showActiveClients() const;
 
+	/**
+	* @brief shows all active clients
+	*
+	* @param username inactive client username
+	*
+	* @return boolean, whereas the client is inactive
+	*
+	*/
 	bool isClientInactive(string username);
 
+	/**
+	* @brief verifies an inactive client login
+	*
+	* @param username inactive client username
+	*
+	* @param password inactive client password
+	*
+	* @return iterator from the inactive clients hash table
+	*
+	*/
 	unordered_set<Client, hcli, eqcli>::iterator verifyInactiveCliLogin(string username, string password);
 
+	/**
+	* @brief replace an inactive client by the one that is passed by param with one reservation less
+	*
+	* @param iterator from the inactive clients hash table
+	*
+	* @param pos of the reservation that is being deleted
+	*
+	* @return iterator from the inactive clients hash table
+	*
+	*/
 	unordered_set<Client, hcli, eqcli>::iterator replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos);
 
+	/**
+	* @brief adds a reservation to a specific client and he is converted on a active client
+	*
+	* @param iterator from the inactive clients hash table
+	*
+	* @param res the reservation that is added
+	*
+	* @return iterator from the active clients vector
+	*
+	*/
 	vector<Client>::iterator reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res);
   
-  void updateDiscounts();
-
-  void showInactiveClientsAdresses() const;
+	/**
+	* @brief shows all inactive clients adresses
+	*
+	*/
+	void showInactiveClientsAdresses() const;
   
-  void Company::updateAdresses();
+	/**
+	* @brief  updates adresses
+	*
+	*/
+	void updateAdresses();
 
+
+  void updateDiscounts();
 	void updateDiscounts(Accomodation acc);
 
   
