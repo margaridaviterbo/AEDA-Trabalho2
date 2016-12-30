@@ -257,6 +257,7 @@ class Client : public User {
 
 private:
 	int points;
+	string adress;
 
 public:
 	/**
@@ -270,8 +271,10 @@ public:
 	*
 	* @param points, default 0
 	*
+	* @param adress
+	*
 	*/
-	Client(string username, string password, string name, int points = 0);
+	Client(string username, string password, string name, string adress, int points = 0);
 
 	/**
 	* @brief gets points
@@ -279,6 +282,13 @@ public:
 	* @return po0ints
 	*/
 	int getPoints() const { return points; };
+
+	/**
+	* @brief gets adress
+	*
+	* @return adress
+	*/
+	string getAdress() const { return adress; };
 
 	/**
 	* @brief adds a reservations to the vector reservations and increments the points based on the price

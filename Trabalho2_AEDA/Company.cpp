@@ -227,7 +227,7 @@ void Company::clientsInicialization(string clientsFile) {
 
 	while (getline(name_clients, line_c))
 	{
-		string ID, password, name, surname, pts, IDreservation;
+		string ID, password, name, surname, pts, IDreservation, trash, adress;
 		unsigned int idr;
 		stringstream ss; ss.str(line_c);
 
@@ -236,8 +236,10 @@ void Company::clientsInicialization(string clientsFile) {
 		ss >> name;
 		ss >> surname; name = name + ' ' + surname;
 		ss >> pts;
+		ss >> trash; getline(ss, adress, '-'); trim(adress);
 
-		Client client(ID, password, name);
+
+		Client client(ID, password, name, adress);
 
 		bool activeClient = true;
 
@@ -554,9 +556,7 @@ vector<Client>::iterator Company::verifyLogInCli(string username, string passwor
 }
 
 void Company::registerClient() {
-	string name;
-	string username;
-	string password = "";
+	string name, adress, username, password = "";
 	char ch;
 
 	clearScreen();
@@ -567,6 +567,9 @@ void Company::registerClient() {
 	getline(cin, name);
 	if (cin.eof()) throw InvalidInput();
 
+	gotoXY(42, 7);  cout << "Morada: ";
+	getline(cin, adress);
+	if (cin.eof()) throw InvalidInput();
 
 	gotoXY(42, 8); cout << "Nome de Utilizador: ";
 	getline(cin, username);
@@ -586,7 +589,7 @@ void Company::registerClient() {
 	if (cin.eof()) throw InvalidInput();
 
 
-	Client client(username, password, name);
+	Client client(username, password, name, adress);
 	if (sequentialSearch(clients, client) != -1) throw InvalidUsername();
 
 	clearScreen();
@@ -996,6 +999,87 @@ void Company::showActiveClients() const {
 
 }
 
+void Company::showInactiveClientsAdresses() const {
+
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	gotoXY(40, 4); cout << "|| Moradas de Clientes Inativos ||" << endl << endl << endl;
+	cout << "           Nome do Cliente                  Username                     Morada                                       " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+
+	while (it != inactiveClients.end()) {
+		
+		cout << setw(25) << it->getName()
+			<< setw(25) << it->getUsername()
+			<< setw(45) << it->getAdress();
+
+		it++;
+	}
+}
+
+void Company::updateAdresses(){
+
+	int points;
+	string username, adress, name, password;
+	bool exist = false;
+
+	showInactiveClientsAdresses();
+	pauseScreen();
+	clearScreen();
+	gotoXY(40, 4); cout << "|| Atualizar Moradas ||" << endl << endl << endl;
+
+	gotoXY(30, 7); cout << "Nome de utilizador: ";
+	getline(cin, username);
+	if (cin.eof()) throw InvalidInput();
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		if (username == it->getUsername())	
+			exist = true;
+		it++;
+	}
+
+	if (exist) {
+
+		gotoXY(30, 8); cout << "Nova morada: ";
+		getline(cin, adress);
+		if (cin.eof()) throw InvalidInput();
+
+		unordered_set<Client, hcli, eqcli>::iterator itt = inactiveClients.begin();
+
+		while (itt != inactiveClients.end()) {
+
+			if (username == itt->getUsername()) {
+
+				password = itt->getPassword();
+				name = itt->getPassword();
+				points = itt->getPoints();
+				break;
+			}	
+
+			itt++;
+		}
+
+		Client cli(username, password, name, adress, points);
+
+		inactiveClients.erase(itt);
+
+		inactiveClients.insert(cli);
+
+		gotoXY(30, 9); cout << "Morada atualizada com sucesso";
+
+	}
+	else {
+		gotoXY(30, 9); cout << "O nome de utilizador não é válido!!" << endl;
+	}
+
+
+
+}
 
 
 void Company::updateDiscounts() {

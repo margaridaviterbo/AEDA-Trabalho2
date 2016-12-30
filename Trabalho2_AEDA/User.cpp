@@ -687,10 +687,12 @@ ostream &operator<<(ostream & out, const Suplier & s){
 //    Client
 // -------------------
 
-Client::Client(string username, string password, string name, int points) :User(username, password, name) {
+Client::Client(string username, string password, string name,string adress, int points) :User(username, password, name) {
 	this->points = points;
-
+	this->adress = adress;
 }
+
+
 
 void Client::addReservation(Reservation res) {
 	float price;
@@ -708,10 +710,12 @@ void Client::addReservation(Reservation res) {
 
 void Client::save(ofstream & out) const
 {
-	out <<  setw(15)          << getUsername()
+	out << setw(15) << getUsername()
 		<< setw(14) << getPassword()
 		<< setw(20) << getName()
-		<< setw(8) << getPoints();
+		<< setw(8) << getPoints() << " - " 
+		<< setw(40) << getAdress() << " -";
+
 
 	vector<Reservation>::const_iterator it;
 

@@ -851,6 +851,12 @@ void Menu::writeAdminMenu(int x) {
 		cout << "   Lista de Reservas                   ";
 		break;
 	case 12:
+		cout << "   Moradas para Publicidade            ";
+		break;
+	case 13:
+		cout << "   Atualizar Moradas                   ";
+		break;
+	case 14:
 		cout << "   Voltar ao Menu Inicial              ";
 		break;
 	}
@@ -873,7 +879,10 @@ void Menu::adminMenu(Company & comp) {
 	gotoXY(43, 9);  cout << "   Lista de Clientes Inativos          ";
 	gotoXY(43, 10); cout << "   Lista de Clientes Ativos            ";
 	gotoXY(43, 11); cout << "   Lista de Reservas                   ";
-	gotoXY(43, 12); cout << "   Voltar ao Menu Inicial              ";
+	gotoXY(43, 12); cout << "   Moradas para Publicidade            ";
+	gotoXY(43, 13); cout << "   Atualizar Moradas                   ";
+	gotoXY(43, 14); cout << "   Voltar ao Menu Inicial              ";
+
 	gotoXY(43, 15);
 
 	system("pause>nul");
@@ -885,7 +894,7 @@ void Menu::adminMenu(Company & comp) {
 
 		system("pause>nul"); // the >nul bit causes it the print no message
 
-		if (GetAsyncKeyState(VK_DOWN) && x < 12) //down button pressed
+		if (GetAsyncKeyState(VK_DOWN) && x < 14) //down button pressed
 		{
 			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
 			x++;
@@ -910,11 +919,13 @@ void Menu::adminMenu(Company & comp) {
 
 			switch (menu_item) {
 			case 0:
-				gotoXY(43, 16);
-				cout << "Opcao 1";
+				clearScreen();
+				gotoXY(43, 15); cout << "opcao 1";
+				pauseScreen();
+				adminMenu(comp);
 				break;
 			case 1:
-				gotoXY(43, 16);
+				clearScreen();
 				comp.showSupliers();
 				adminMenu(comp);
 				break;
@@ -935,6 +946,18 @@ void Menu::adminMenu(Company & comp) {
 				adminMenu(comp);
 				break;
 			case 5:
+				clearScreen();
+				comp.showInactiveClientsAdresses();
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 6:
+				clearScreen();
+				comp.updateAdresses();
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 7:
 				novoMenu(comp);
 			}
 		}
