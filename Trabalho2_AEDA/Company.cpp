@@ -2,11 +2,13 @@
 
 void Company::supliersInicialization(string supliersFile)
 {
+
 	ifstream name_supliers;
 	string line_f;
 	unsigned int maxID;
 
 	name_supliers.open(supliersFile);
+
 
 	if (!name_supliers.is_open()) throw ErrorOpeningFile("Fornecedores");
 
@@ -41,8 +43,6 @@ void Company::supliersInicialization(string supliersFile)
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
-			time_t creation_time =time(0);
-
 
 			ss >> ID;
 			ss >> type;
@@ -55,19 +55,21 @@ void Company::supliersInicialization(string supliersFile)
 
 			ss >> date1;
 
+
 			while (date1 != "-")
 			{
+
 				Date d1(date1); pair_dates.first = d1;
-				ss >> date2; Date d2(date2); pair_dates.second = d2;
+				ss >> date2;
+				Date d2(date2); pair_dates.second = d2;
 				unavailableDates.push_back(pair_dates);
 				ss >> date1;
 
 			}
-			/*
-			ss >> time;
-			const char * dt_str = time.c_str();
-			creation_time = (time_t)atoll(dt_str);
-			*/
+
+			getline(ss, time, '-'); trim(time);
+			Date creation_time(time);
+			
 			if (type == "BEDROOM")
 			{
 
@@ -92,7 +94,6 @@ void Company::supliersInicialization(string supliersFile)
 				{
 					bedType = TRIPLE;
 				}
-
 
 
 				ss >> est;
@@ -156,7 +157,6 @@ void Company::supliersInicialization(string supliersFile)
 	}
 
 	name_supliers.close();
-
 }
 
 void Company::reservationsInicialization(string reservationsFile) {
@@ -175,7 +175,7 @@ void Company::reservationsInicialization(string reservationsFile) {
 
 	while (getline(name_reservations, line_r))
 	{
-		string name, surname, checkIN, checkOUT, idr, ida, mark, dateTime;
+		string name, surname, checkIN, checkOUT, idr, ida, mark;
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
@@ -189,7 +189,6 @@ void Company::reservationsInicialization(string reservationsFile) {
 		ss >> checkIN; Date in(checkIN);
 		ss >> checkOUT; Date out(checkOUT);
 		ss >> mark; Date markg(mark);
-		ss >> dateTime; const char * dt_str = dateTime.c_str(); time_t date_time = (time_t)atoll(dt_str);
 		accom->setID(IDreservation);
 
 		Accomodation *accomodation = new Accomodation();
@@ -205,7 +204,7 @@ void Company::reservationsInicialization(string reservationsFile) {
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-					Reservation reserv(IDreservation, accomodation, in, out, markg, name, date_time);
+					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
 					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
@@ -633,9 +632,9 @@ vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eq
 	vector<Client>::iterator it;
 
 	for (it = clients.begin(); it != clients.end(); it++) {
-	
+
 		if (cli.getUsername() == it->getUsername())
-			return it;	
+			return it;
 	}
 
 }
@@ -669,7 +668,7 @@ void Company::addReservationComp(Accomodation *a,Reservation res) {
 
 	}
 
-	//updateDiscounts();
+	updateDiscounts();
 
 }
 
@@ -1005,7 +1004,6 @@ void Company::showActiveClients() const {
 
 void Company::showInactiveClientsAdresses() const {
 
-
 	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
 
 	gotoXY(40, 4); cout << "|| Moradas de Clientes Inativos ||" << endl << endl << endl;
@@ -1098,7 +1096,7 @@ void Company::updateAdresses(){
 }
 
 void Company::updateDiscounts() {
-	/*
+	
 	bool found;
 	BSTItrIn<Reservation> itr(reservationsBST);
 	priority_queue<Accomodation> temp;
@@ -1106,7 +1104,7 @@ void Company::updateDiscounts() {
 	while (!itr.isAtEnd()) {
 		found = false;
 		temp = accomodationsDiscounts;
-		for (int j = 0; j <= temp.size(); j++) {
+		for (int j = 0; j < temp.size(); j++) {
 			if (temp.top() == *(itr.retrieve()).getAccomodation())
 				found = true;
 			temp.pop();
@@ -1114,19 +1112,18 @@ void Company::updateDiscounts() {
 		if (!found) {
 			accomodationsDiscounts.push(*(itr.retrieve()).getAccomodation());
 		}
-
-
 		itr.advance();
-	}*/
+	}
 
 }
 
 void Company::updateDiscounts(Accomodation acc) {
-	/*
+
 	bool found = false;
 	priority_queue<Accomodation> temp = accomodationsDiscounts;
 
-	for (int j = 0; j <= temp.size(); j++) {
+	for (int j = 0; j < temp.size(); j++) {
+
 		if (temp.top() == acc)
 			found = true;
 		temp.pop();
@@ -1135,7 +1132,6 @@ void Company::updateDiscounts(Accomodation acc) {
 	if (!found) {
 		accomodationsDiscounts.push(acc);
 	}
-	*/
 }
 
 

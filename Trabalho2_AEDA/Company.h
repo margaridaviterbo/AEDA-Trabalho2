@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <time.h>
 #include <queue>
 #include <conio.h>
 #include <windows.h>
@@ -41,7 +42,9 @@ private:
 	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
-	//static priority_queue <Accomodation> accomodationsDiscounts;
+
+	priority_queue <Accomodation> accomodationsDiscounts;
+
 
 	string clientsFile;
 	string supliersFile;

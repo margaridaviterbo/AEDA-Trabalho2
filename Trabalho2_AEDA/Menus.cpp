@@ -352,7 +352,7 @@ void Menu::OptionInaClientAddReservation(Company & comp, unordered_set<Client, h
 		res.setID();
 
 		comp.addReservationComp(acc, res);
-
+    
 		clearScreen();
 
 		gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
@@ -794,6 +794,8 @@ void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
 		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
 
 			clearScreen();
+
+			cout << "entrei";
 
 			switch (menu_item) {
 			case 0:
