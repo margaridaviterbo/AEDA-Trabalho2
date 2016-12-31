@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <time.h>
 #include <queue>
 #include <conio.h>
 #include <windows.h>

@@ -17,10 +17,10 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = ++lastID;
-	creationDateTime = time(0);
+	creationDateTime = getCurrentDate();
 }
 
-Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time) {
+Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time) {
 	this->price_night = price_night;
 	this->price_week = price_week;
 	this->price_month = price_month;
@@ -68,7 +68,7 @@ Bedroom::Bedroom(float price_night, float price_week, float price_month, string 
 	setFee(0.05);
 }
 
-Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
 	this->est = est;
 	this->bed_type = bed_type;
 	setFee(0.05);
@@ -81,7 +81,7 @@ Apartment::Apartment(float price_night, float price_week, float price_month, str
 	setFee(0.15);
 }
 
-Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time, int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time, int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
 	this->number_bedrooms = n_bed;
 	this->suite = suite;
 	setFee(0.15);
@@ -220,11 +220,10 @@ void Accomodation::saveAccomodation(ofstream & out)
 		out << it->first << " " << it->second << "    ";
 	}
 
-	char* dt = ctime(&creationDateTime);
-	string date_time(dt);
-	date_time.erase(date_time.length() - 1);
+	
+	//date_time.erase(date_time.length() - 1);
 
-	out << "    -    " << date_time << "    -";
+	out << "    -    " << creationDateTime << "    -";
 
 }
 void Bedroom::saveAccomodation(ofstream & out)

@@ -2,7 +2,6 @@
 
 void Company::supliersInicialization(string supliersFile)
 {
-	cout << "entrei supliers1";
 
 	ifstream name_supliers;
 	string line_f;
@@ -10,23 +9,16 @@ void Company::supliersInicialization(string supliersFile)
 
 	name_supliers.open(supliersFile);
 
-	cout << "entrei supliers2";
 
 	if (!name_supliers.is_open()) throw ErrorOpeningFile("Fornecedores");
 
 	getline(name_supliers, line_f);
 	stringstream ss; ss.str(line_f);
 
-	cout << "entrei supliers3";
-
 	ss >> maxID;
-
-
-	cout << "entrei supliers4";
 
 	Accomodation::setAccLastID(maxID);
 
-	cout << "entrei supliers5";
 	while (getline(name_supliers, line_f))
 	{
 		string username, password, name, surname, adress, trash, nif;
@@ -40,11 +32,7 @@ void Company::supliersInicialization(string supliersFile)
 		ss >> nif; NIF = fromString<unsigned int>(nif);
 		ss >> trash; getline(ss, adress, '-'); trim(adress);
 
-		cout << "entrei supliers6";
-
 		Suplier sup(username, password, name, NIF, adress);
-
-		cout << "entrei supliers7";
 
 		while (getline(name_supliers, line_f) && line_f != "-------")
 		{
@@ -55,7 +43,6 @@ void Company::supliersInicialization(string supliersFile)
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
-			time_t creation_time;
 
 
 			ss >> ID;
@@ -67,71 +54,33 @@ void Company::supliersInicialization(string supliersFile)
 
 			normalize(city);
 
-			cout << "entrei supliers8";
-
 			ss >> date1;
 
-			cout << date1;
 
 			while (date1 != "-")
 			{
-				cout << "aiii";
 
 				Date d1(date1); pair_dates.first = d1;
 				ss >> date2;
-				cout << date2;
 				Date d2(date2); pair_dates.second = d2;
 				unavailableDates.push_back(pair_dates);
 				ss >> date1;
 
 			}
 
-			cout << "check";
-
 			getline(ss, time, '-'); trim(time);
-			ss.str(time);
-
-			/*apagar*/			cout << time << "1";
-
-			char * dt_str = time.c_str();
-			struct tm* tm;
-			creation_time = strftime(dt_str, sizeof(dt_str), "%a %b %d %H:%M:%S %Y", tm);
+			Date creation_time(time);
 			
-			//creation_time = mktime(tm);
-
-
-			/*ERRO AQUI??*/		//creation_time = (time_t)atoll(dt_str);
-			//__________________________________________________________________-
-			cout << creation_time << "nao imprime este formato";
-
-			char* dt = ctime(&creation_time);
-			cout << dt;
-			string date_time(dt);
-			date_time.erase(date_time.length() - 1);
-
-			cout << "    -    " << date_time << "    -";
-
-			system("pause");
-			//__________________________________________________________________________
-
-
 			if (type == "BEDROOM")
 			{
-
-				cout << "entrei supliers9";
 
 				string bedroomType2, est;
 				bedroomType bedType;
 
 				ss >> bedroomType2;
 
-				cout << bedroomType2 << "  aqui  ";
-
-
 				if (bedroomType2 == "SINGLE")
 				{
-					cout << "entrei supliers10";
-
 					bedType = SINGLE;
 				}
 				if (bedroomType2 == "DOUBLE")
@@ -148,14 +97,11 @@ void Company::supliersInicialization(string supliersFile)
 				}
 
 
-
 				ss >> est;
 				establishment estbl;
 
 				if (est == "HOTEL")
 				{
-					cout << "entrei supliers11";
-
 					estbl = HOTEL;
 				}
 				if (est == "BED_AND_BREAKFAST")
@@ -167,15 +113,10 @@ void Company::supliersInicialization(string supliersFile)
 					estbl = SHARED_HOUSE;
 				}
 
-				cout << "entrei supliers12";
-
 				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
-
-				cout << "entrei supliers13";
 
 				sup.addAccomodationFile(bed);
 
-				cout << "entrei supliers14";
 				updateDiscounts(*bed);
 			}
 
@@ -209,12 +150,10 @@ void Company::supliersInicialization(string supliersFile)
 			}
 
 		}
-		cout << "entrei supliers13";
 		supliers.push_back(sup);
 	}
 
 	name_supliers.close();
-	cout << "entrei supliers14";
 }
 
 void Company::reservationsInicialization(string reservationsFile) {
@@ -233,7 +172,7 @@ void Company::reservationsInicialization(string reservationsFile) {
 
 	while (getline(name_reservations, line_r))
 	{
-		string name, surname, checkIN, checkOUT, idr, ida, mark, dateTime;
+		string name, surname, checkIN, checkOUT, idr, ida, mark;
 		unsigned int IDreservation, IDaccomodation;
 		stringstream ss; ss.str(line_r);
 		Accomodation *accom = new Accomodation();
@@ -247,7 +186,6 @@ void Company::reservationsInicialization(string reservationsFile) {
 		ss >> checkIN; Date in(checkIN);
 		ss >> checkOUT; Date out(checkOUT);
 		ss >> mark; Date markg(mark);
-		ss >> dateTime; const char * dt_str = dateTime.c_str(); time_t date_time = (time_t)atoll(dt_str);
 		accom->setID(IDreservation);
 
 		Accomodation *accomodation = new Accomodation();
@@ -263,7 +201,7 @@ void Company::reservationsInicialization(string reservationsFile) {
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
-					Reservation reserv(IDreservation, accomodation, in, out, markg, name, date_time);
+					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
 					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
