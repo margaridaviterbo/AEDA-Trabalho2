@@ -800,7 +800,7 @@ int Company::cancelReservation() {
 	gotoXY(48, 4); cout << "|| Cancelar Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende cancelar." << endl;
-	cout << TAB << "Caso não esteja interessado em cancelar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso nao esteja interessado em cancelar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -885,20 +885,20 @@ int Company::cancelReservation() {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-á devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "A totalidade do valor (" << price << ") ser-lhe-a devolvida." << endl;
 
 
 	}
 	else if (num_days >= 15) {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-á devolvida." << endl;
+		cout << TAB_BIG << TAB_BIG << "Apenas 50% do valor (" << price / 2 << ") ser-lhe-a devolvida." << endl;
 
 	}
 	else {
 		gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "A sua reserva foi cancelada com sucesso." << endl << endl;
-		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedência não será reembolsadao." << endl;
+		cout << TAB_BIG << TAB_BIG << "Por a reserva ter sido cancelada com pouca antecedencia não será reembolsado." << endl;
 	}
 
 	//updateDiscounts();
@@ -916,7 +916,7 @@ void Company::showReservation()const {
 	gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
 	cout << endl << TAB << "Introduza o ID da reserva que pretende visualizar." << endl;
-	cout << TAB << "Caso não esteja interessado em visualizar reservas introduza o valor zero." << endl;
+	cout << TAB << "Caso nao esteja interessado em visualizar reservas introduza o valor zero." << endl;
 
 	cout << endl << TAB << "ID: ";
 
@@ -933,7 +933,7 @@ void Company::showReservation()const {
 
 		if (itr.retrieve().getID() == id) {
 			gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-			cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+			cout << "    Cliente             ID Reserva     ID Alojamento     Check IN          Check OUT        Preco        Marcacao     " << endl;
 			cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 			cout << itr.retrieve();
 			return;
@@ -955,7 +955,7 @@ void Company::showReservations() const {
 	clearScreen();
 
 	gotoXY(48, 4); cout << "|| Reservas ||" << endl << endl << endl;
-	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+	cout << "    Cliente             ID Reserva     ID Alojamento     Check IN          Check OUT        Preco        Marcacao     " << endl;
 	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 
 	while (!itr.isAtEnd()) {
@@ -1015,9 +1015,11 @@ void Company::showInactiveClientsAdresses() const {
 
 	while (it != inactiveClients.end()) {
 		
-		cout << setw(25) << it->getName()
+		cout << left << "             ";
+
+		cout << setw(33) << it->getName()
 			<< setw(25) << it->getUsername()
-			<< setw(45) << it->getAdress();
+			<< setw(50) << it->getAdress();
 
 		it++;
 	}
@@ -1054,14 +1056,16 @@ void Company::updateAdresses(){
 		if (cin.eof()) throw InvalidInput();
 
 		unordered_set<Client, hcli, eqcli>::iterator itt = inactiveClients.begin();
-
+		vector<Reservation>reser;
+		
 		while (itt != inactiveClients.end()) {
 
 			if (username == itt->getUsername()) {
 
 				password = itt->getPassword();
-				name = itt->getPassword();
+				name = itt->getName();
 				points = itt->getPoints();
+				reser = itt->getReservations();
 				break;
 			}	
 
@@ -1070,15 +1074,23 @@ void Company::updateAdresses(){
 
 		Client cli(username, password, name, adress, points);
 
+		vector<Reservation>::iterator itr;
+		
+		for (itr = reser.begin(); itr != reser.end(); itr++) {
+
+			cli.addReservation(*itr);
+		}
+
 		inactiveClients.erase(itt);
 
 		inactiveClients.insert(cli);
 
-		gotoXY(30, 9); cout << "Morada atualizada com sucesso";
+
+		gotoXY(30, 12); cout << "Morada atualizada com sucesso";
 
 	}
 	else {
-		gotoXY(30, 9); cout << "O nome de utilizador não é válido!!" << endl;
+		gotoXY(30, 9); cout << "O nome de utilizador nao e valido!!" << endl;
 	}
 
 

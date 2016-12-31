@@ -186,15 +186,15 @@ void Menu::OptionClientCancelReservation(Company & comp, vector<Client>::iterato
 		clientMenu(comp, it);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenu(comp, it);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenu(comp, it);
@@ -228,7 +228,7 @@ void Menu::OptionClientCancelReservation(Company & comp, vector<Client>::iterato
 void Menu::OptionClientInformation(Company & comp, vector<Client>::iterator it){
 
 	clearScreen();
-	gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+	gotoXY(48, 4); cout << "|| Informacoes de Conta ||" << endl << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
@@ -388,15 +388,15 @@ void Menu::OptionInaClientAddReservation(Company & comp, unordered_set<Client, h
 		clientMenuHash(comp, ith);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenuHash(comp, ith);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenuHash(comp, ith);
@@ -476,15 +476,15 @@ void Menu::OptionInaClientCancelReservation(Company & comp, unordered_set<Client
 		clientMenuHash(comp, ith);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenuHash(comp, ith);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
 		pauseScreen();
 		clientMenuHash(comp, ith);
@@ -518,7 +518,7 @@ void Menu::OptionInaClientCancelReservation(Company & comp, unordered_set<Client
 void Menu::OptionInaClientInformation(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
 
 	clearScreen();
-	gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
+	gotoXY(48, 4); cout << "|| Informacoes de Conta ||" << endl << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << ith->getName() << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << ith->getUsername() << endl;
@@ -683,15 +683,15 @@ void Menu::OptionSuplierAddAccomodation(Company & comp, vector<Suplier>::iterato
 		suplierMenu(comp, it);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
 		pauseScreen();
 		suplierMenu(comp, it);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
 		pauseScreen();
 		suplierMenu(comp, it);
@@ -874,7 +874,7 @@ void Menu::OptionGuestAddAccomodation(Company & comp) {
 		res.setAccomodation(acc);
 		res.setCheckIN(initial_date);
 		res.setCheckOUT(final_date);
-		res.setClient("Não Registado");
+		res.setClient("Nao Registado");
 		res.setMarking(getCurrentDate());
 		res.setID();
 
@@ -885,7 +885,7 @@ void Menu::OptionGuestAddAccomodation(Company & comp) {
 
 		gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
 
-		cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
+		cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcacao   " << endl;
 		cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
 		cout << res;
 
@@ -915,14 +915,14 @@ void Menu::OptionGuestAddAccomodation(Company & comp) {
 		guestMenu(comp);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
 		pauseScreen();
 		guestMenu(comp);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
 		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
 		pauseScreen();
@@ -958,15 +958,15 @@ void Menu::OptionGuestCancelReservation(Company & comp) {
 		guestMenu(comp);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
 		pauseScreen();
 		guestMenu(comp);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
 		pauseScreen();
 		guestMenu(comp);
@@ -1289,15 +1289,15 @@ void Menu::OptionRegister(Company &comp, char user) {
 		mainMenu(comp, user);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
 		pauseScreen();
 		mainMenu(comp, user);
 	}
 	catch (out_of_range) {
 		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
 		pauseScreen();
 		mainMenu(comp, user);
@@ -1357,15 +1357,15 @@ void Menu::OptionLogin(Company &comp, char user) {
 		mainMenu(comp, user);
 	}
 	catch (invalid_argument) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "Deve introduzir um número." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
 		pauseScreen();
 		mainMenu(comp, user);
 	}
 	catch (out_of_range) {
-		cout << endl << TAB_BIG << TAB_BIG << "Erro na introdução dos dados." << endl;
-		cout << TAB_BIG << TAB_BIG << "O número introduzido ultrapassa os valores suportados." << endl;
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
 		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
 		pauseScreen();
 		mainMenu(comp, user);

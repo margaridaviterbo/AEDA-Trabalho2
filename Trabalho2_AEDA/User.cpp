@@ -20,7 +20,7 @@ void User::showReservations()const {
 
 
 	if (reservations.size() == 0) {
-		cout << TAB << "Ainda não possui reservas." << endl;
+		cout << TAB << "Ainda nao possui reservas." << endl;
 		return;
 	}
 	else {
@@ -56,20 +56,20 @@ void askForPrice(float & p_night, float & p_week, float & p_month) {
 	
 	clearScreen();
 
-	gotoXY(48, 4); cout << "|| Mais informação ||";
+	gotoXY(48, 4); cout << "|| Mais informacao ||";
 
-	gotoXY(4, 7); cout << "-> Preçário" << endl;
-	gotoXY(42, 7); cout << "Preço por noite : ";	
+	gotoXY(4, 7); cout << "-> Precario" << endl;
+	gotoXY(42, 7); cout << "Preco por noite : ";	
 	getline(cin, line);
 	p_night = stof(line);
 	if (cin.eof()) throw InvalidInput();
 
-	gotoXY(42, 8); cout << "Preço por semana : ";
+	gotoXY(42, 8); cout << "Preco por semana : ";
 	getline(cin, line);
 	p_week = stof(line);
 	if (cin.eof()) throw InvalidInput();
 
-	gotoXY(42, 9); cout << "Preço por mês : ";
+	gotoXY(42, 9); cout << "Preco por mes : ";
 	getline(cin, line);
 	p_month = stof(line);
 	if (cin.eof()) throw InvalidInput();
@@ -86,7 +86,7 @@ void askForAvailability(vector < pair<Date, Date>>&  unavailable_dates) {
 	int i = 0;
 
 	gotoXY(4, 12); cout << "-> Disponibilidade" << endl;
-	gotoXY(42, 12); cout << "(introduza o intervalo de datas em que o alojamento não estára disponível) ";
+	gotoXY(42, 12); cout << "(introduza o intervalo de datas em que o alojamento não estara disponível) ";
 	gotoXY(42, 13); cout << "(as datas introduzidas devem estar no formato d/m/a)";
 
 
@@ -476,7 +476,7 @@ Accomodation Suplier::addAccomodation2() {
 
 	gotoXY(48, 4); cout << "|| Adicionar Alojamento ||" << endl << endl;
 
-	gotoXY(4, 7); cout << "-> Localização" << endl;
+	gotoXY(4, 7); cout << "-> Localizacao" << endl;
 	gotoXY(42, 7); cout << "Cidade: ";
 
 	getline(cin, location);
@@ -609,7 +609,7 @@ void Suplier::showAccomodations()const {
 	gotoXY(48, 4); cout << "|| Alojamentos ||" << endl << endl;
 
 	if (accomodations.size() == 0) {
-		cout << TAB << "Ainda não possui alojamentos registados." << endl;
+		cout << TAB << "Ainda nao possui alojamentos registados." << endl;
 		return;
 	}
 
@@ -739,12 +739,12 @@ void Client::save(ofstream & out) const
 
 ostream &operator<<(ostream & out, const Client  & cli){
 
-	out << left << "     ";
+	out << left << "           ";
 
-	out << setw(20) << cli.getUsername()
-		<< setw(28) << cli.getPassword()
-		<< setw(36) << cli.getName()
-		<< setw(23) << cli.getPoints();
+	out << setw(28) << cli.getUsername()
+		<< setw(30) << cli.getPassword()
+		<< setw(35) << cli.getName()
+		<< setw(5) << cli.getPoints();
 
 	return out;
 }
