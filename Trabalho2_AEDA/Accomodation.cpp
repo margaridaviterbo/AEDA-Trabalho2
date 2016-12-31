@@ -222,6 +222,7 @@ void Accomodation::saveAccomodation(ofstream & out)
 
 	char* dt = ctime(&creationDateTime);
 	string date_time(dt);
+	date_time.erase(date_time.length() - 1);
 
 	out << "    -    " << date_time << "    -";
 

@@ -78,7 +78,7 @@ void Company::supliersInicialization(string supliersFile)
 				cout << "aiii";
 
 				Date d1(date1); pair_dates.first = d1;
-				ss >> date2; 
+				ss >> date2;
 				cout << date2;
 				Date d2(date2); pair_dates.second = d2;
 				unavailableDates.push_back(pair_dates);
@@ -89,15 +89,31 @@ void Company::supliersInicialization(string supliersFile)
 			cout << "check";
 
 			getline(ss, time, '-'); trim(time);
+			ss.str(time);
 
-			cout << time;
+			/*apagar*/			cout << time << "1";
 
-			//ss >> trash;
-
-			//cout << trash;
+			char * dt_str = time.c_str();
+			struct tm* tm;
+			creation_time = strftime(dt_str, sizeof(dt_str), "%a %b %d %H:%M:%S %Y", tm);
 			
-			const char * dt_str = time.c_str();
-			creation_time = (time_t)atoll(dt_str);
+			//creation_time = mktime(tm);
+
+
+			/*ERRO AQUI??*/		//creation_time = (time_t)atoll(dt_str);
+			//__________________________________________________________________-
+			cout << creation_time << "nao imprime este formato";
+
+			char* dt = ctime(&creation_time);
+			cout << dt;
+			string date_time(dt);
+			date_time.erase(date_time.length() - 1);
+
+			cout << "    -    " << date_time << "    -";
+
+			system("pause");
+			//__________________________________________________________________________
+
 
 			if (type == "BEDROOM")
 			{
@@ -109,7 +125,7 @@ void Company::supliersInicialization(string supliersFile)
 
 				ss >> bedroomType2;
 
-				cout << bedroomType2<<"  aqui  ";
+				cout << bedroomType2 << "  aqui  ";
 
 
 				if (bedroomType2 == "SINGLE")
@@ -665,9 +681,9 @@ vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eq
 	vector<Client>::iterator it;
 
 	for (it = clients.begin(); it != clients.end(); it++) {
-	
+
 		if (cli.getUsername() == it->getUsername())
-			return it;	
+			return it;
 	}
 
 }
