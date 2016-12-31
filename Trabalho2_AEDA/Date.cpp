@@ -166,3 +166,21 @@ bool operator == (const Date &d1, const Date &d2) {
 
 
 }
+
+
+Date getCurrentDate(){
+	Date current_date;
+
+	struct tm newtime;
+	time_t now = time(0);
+	localtime_s(&newtime, &now);
+
+	current_date.setYear(newtime.tm_year + 1900);
+	current_date.setMonth(newtime.tm_mon + 1);
+	current_date.setDay(newtime.tm_mday);
+
+	return current_date;
+
+}
+
+

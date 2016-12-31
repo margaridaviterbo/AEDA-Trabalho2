@@ -1,20 +1,8 @@
 #include "Menus.h"
 
-
-/*
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // used for goto
-
-COORD CursorPosition; // used for goto
-
-
-void gotoXY(int x, int y)
-{
-	CursorPosition.X = x;
-	CursorPosition.Y = y;
-	SetConsoleCursorPosition(console, CursorPosition);
-}
-*/
-
+// -------------------
+//     Client Menu
+// -------------------
 
 void Menu::writeClientMenu(int x) {
 
@@ -30,7 +18,7 @@ void Menu::writeClientMenu(int x) {
 		cout << "   Cancelar Reservas                   ";
 		break;
 	case 10:
-		cout << "   Informação de Conta                 ";
+		cout << "   Informacao de Conta                 ";
 		break;
 	case 11:
 		cout << "   Sair                                ";
@@ -39,36 +27,238 @@ void Menu::writeClientMenu(int x) {
 	}
 }
 
-void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
+void Menu::OptionClientAddReservation(Company & comp, vector<Client>::iterator it) {
 
-	clearScreen();
+	try {
 
-	// dados para efetuar reserva
-	string location;
-	string date;
-	Date initial_date;
-	Date final_date;
-	Accomodation* acc;
+		string location, date;
+		Date initial_date, final_date;
+		Accomodation* acc;
+		Reservation res;
+
+		clearScreen();
+
+		gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
+
+		gotoXY(40, 7); cout << "Local: ";
+		getline(cin, location);
+		if (cin.eof()) throw InvalidInput();
+
+		gotoXY(40, 9); cout << "Data Inicial: ";
+		getline(cin, date);
+		if (!initial_date.getDate(date)) throw InvalidDate();
+
+		gotoXY(40, 10); cout << "Data Final: ";
+		getline(cin, date);
+		if (!final_date.getDate(date)) throw InvalidDate();
+
+		acc = comp.displayOffers(location, initial_date, final_date);
+		if (acc == NULL) clientMenu(comp, it);
+
+		res.setAccomodation(acc);
+		res.setCheckIN(initial_date);
+		res.setCheckOUT(final_date);
+		res.setClient(it->getName());
+		res.setMarking(getCurrentDate());
+		res.setID();
+
+		comp.addReservationComp(acc, res);
+		// faz o add discounts sÃ³ na funÃ§Ã£o chamada acima ^^^^ 
+
+		it->addReservation(res);
+
+		clearScreen();
+
+		gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
+
+		cout << "    Cliente             ID Reserva     ID Alojamento     Check IN         Check OUT      PreÃ§o     Marcacao   " << endl;
+		cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << res;
+
+		cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
+		cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
+
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O nÃºmero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+}
+
+void Menu::OptionClientShowReservations(Company & comp, vector<Client>::iterator it) {
+	
+	it->showReservations();
+	pauseScreen();
+	clientMenu(comp, it);
+}
+
+void Menu::OptionClientCancelReservation(Company & comp, vector<Client>::iterator it) {
+	
 	Reservation res;
 	int id, pos;
 	vector<Reservation> reservations_tmp;
+	
+	try {
+		it->showReservations();
+		id = comp.cancelReservation();
+		if (id == 0) clientMenu(comp, it);
 
+		reservations_tmp = it->getReservations();
+		res.setID(id);
+		pos = sequentialSearch<Reservation>(reservations_tmp, res);
+
+		it->deleteReservation(pos);
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenu(comp, it);
+	}
+}
+
+void Menu::OptionClientInformation(Company & comp, vector<Client>::iterator it){
+
+	clearScreen();
+	gotoXY(48, 4); cout << "|| Informacoes de Conta ||" << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Pontos : " << it->getPoints() << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+	pauseScreen();
+	clientMenu(comp, it);
+}
+
+void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
+
+	clearScreen();
 	int menu_item = 0, x = 7;
 	bool running = true;
 
-
-	gotoXY(48, 4); cout << "||" << it->getName() << "||";
-
+	gotoXY(48, 4); cout << "|| " << it->getName() << " ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
-
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Ver Reservas                        ";
 	gotoXY(43, 9);  cout << "   Cancelar Reservas                   ";
-	gotoXY(43, 10); cout << "   Informação de Conta                 ";
+	gotoXY(43, 10); cout << "   Informacao de Conta                 ";
 	gotoXY(43, 11); cout << "   Sair                                ";
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -102,79 +292,16 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 
 			switch (menu_item) {
 			case 0:
-				clearScreen();
-
-				gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
-
-				gotoXY(40, 7); cout << "Local: ";
-				getline(cin, location);
-				if (cin.eof()) throw InvalidInput();
-
-				gotoXY(40, 9); cout << "Data Inicial: ";
-				getline(cin, date);
-				if (!initial_date.getDate(date)) throw InvalidDate();
-
-				gotoXY(40, 10); cout << "Data Final: ";
-				getline(cin, date);
-				if (!final_date.getDate(date)) throw InvalidDate();
-
-				acc = comp.displayOffers(location, initial_date, final_date);
-				if (acc == NULL) break;
-
-
-				comp.addReservationComp(acc, initial_date, final_date, it->getName());
-				//comp.updateDiscounts();
-
-				res.setAccomodation(acc);
-				res.setCheckIN(initial_date);
-				res.setCheckOUT(final_date);
-				res.setID();
-
-				it->addReservation(res);
-
-				clearScreen();
-
-				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-				
-				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
-				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
-				cout << res;
-
-				cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
-				cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
-
-				pauseScreen();
-
-				clientMenu(comp, it);
+				OptionClientAddReservation(comp, it);
 				break;
 			case 1:
-				it->showReservations();
-				pauseScreen();
-				clientMenu(comp, it);
+				OptionClientShowReservations(comp, it);
 				break;
 			case 2:
-				it->showReservations();
-				id = comp.cancelReservation();
-				if (id == 0) break;
-
-				reservations_tmp = it->getReservations();
-				res.setID(id);
-				pos = sequentialSearch<Reservation>(reservations_tmp, res);
-
-				it->deleteReservation(pos);
-				pauseScreen();
-				clientMenu(comp, it);
+				OptionClientCancelReservation(comp, it);
 				break;
 			case 3:
-				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Pontos : " << it->getPoints() << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-				pauseScreen();
-				clientMenu(comp, it);
+				OptionClientInformation(comp, it);
 				break;
 			case 4:
 				novoMenu(comp);
@@ -182,47 +309,248 @@ void Menu::clientMenu(Company & comp, vector<Client>::iterator it) {
 			}
 		}
 	}
+}
 
-	cout << TAB << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
 
+
+// ---------------------------
+//    Inactive Client Menu
+// ---------------------------
+
+void Menu::OptionInaClientAddReservation(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
+
+	try {
+
+		string location, date;
+		Date initial_date, final_date;
+		Accomodation* acc;
+		Reservation res;
+		clearScreen();
+
+		gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
+
+		gotoXY(40, 7); cout << "Local: ";
+		getline(cin, location);
+		if (cin.eof()) throw InvalidInput();
+
+		gotoXY(40, 9); cout << "Data Inicial: ";
+		getline(cin, date);
+		if (!initial_date.getDate(date)) throw InvalidDate();
+
+		gotoXY(40, 10); cout << "Data Final: ";
+		getline(cin, date);
+		if (!final_date.getDate(date)) throw InvalidDate();
+
+		acc = comp.displayOffers(location, initial_date, final_date);
+		if (acc == NULL) clientMenuHash(comp, ith);
+
+		res.setAccomodation(acc);
+		res.setCheckIN(initial_date);
+		res.setCheckOUT(final_date);
+		res.setClient(ith->getName());
+		res.setMarking(getCurrentDate());
+		res.setID();
+
+		comp.addReservationComp(acc, res);
+    
+		clearScreen();
+
+		gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
+
+		cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             PreÃ§o         " << endl;
+		cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << res;
+
+		cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
+		cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
+
+		pauseScreen();
+
+		clientMenuHash(comp, ith);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+}
+
+void Menu::OptionInaClientShowReservations(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
+
+	ith->showReservations();
 	pauseScreen();
+	clientMenuHash(comp, ith);
+}
 
-	clientMenu(comp, it);
+void Menu::OptionInaClientCancelReservation(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
 
+	try {
+		Reservation res;
+		int id, pos;
+		vector<Reservation> reservations_tmp;
+
+		ith->showReservations();
+		pauseScreen();
+		id = comp.cancelReservation();
+		if (id == 0) clientMenuHash(comp, ith);
+
+		reservations_tmp = ith->getReservations();
+		res.setID(id);
+		pos = sequentialSearch<Reservation>(reservations_tmp, res);
+
+		ith = comp.replaceHashClient(ith, pos);
+
+		pauseScreen();
+		clientMenuHash(comp, ith);
+		
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Client." << endl;
+		pauseScreen();
+		clientMenuHash(comp, ith);
+	}
+}
+
+void Menu::OptionInaClientInformation(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
+
+	clearScreen();
+	gotoXY(48, 4); cout << "|| Informacoes de Conta ||" << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << ith->getName() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << ith->getUsername() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Pontos : " << ith->getPoints() << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+	pauseScreen();
+	clientMenuHash(comp, ith);
 
 }
 
 void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::iterator ith) {
 
 	clearScreen();
-
-	// dados para efetuar reserva
-	string location;
-	string date;
-	Date initial_date;
-	Date final_date;
-	Accomodation* acc;
-	Reservation res;
-	int id, pos;
-	vector<Reservation> reservations_tmp;
-	vector<Client>::iterator it;
-
 	int menu_item = 0, x = 7;
 	bool running = true;
 
 
 	gotoXY(48, 4); cout << "|| " << ith->getName() << " ||";
-
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
-
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Ver Reservas                        ";
 	gotoXY(43, 9);  cout << "   Cancelar Reservas                   ";
-	gotoXY(43, 10); cout << "   Informação de Conta                 ";
+	gotoXY(43, 10); cout << "   InformaÃ§Ã£o de Conta                 ";
 	gotoXY(43, 11); cout << "   Sair                                ";
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -256,82 +584,16 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 
 			switch (menu_item) {
 			case 0:
-				clearScreen();
-
-				gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
-
-				gotoXY(40, 7); cout << "Local: ";
-				getline(cin, location);
-				if (cin.eof()) throw InvalidInput();
-
-				gotoXY(40, 9); cout << "Data Inicial: ";
-				getline(cin, date);
-				if (!initial_date.getDate(date)) throw InvalidDate();
-
-				gotoXY(40, 10); cout << "Data Final: ";
-				getline(cin, date);
-				if (!final_date.getDate(date)) throw InvalidDate();
-
-				acc = comp.displayOffers(location, initial_date, final_date);
-				if (acc == NULL) break;
-
-
-				comp.addReservationComp(acc, initial_date, final_date, ith->getName());
-
-				res.setAccomodation(acc);
-				res.setCheckIN(initial_date);
-				res.setCheckOUT(final_date);
-				res.setID();
-
-				it = comp.reservationHash(ith, res);
-
-				clearScreen();
-
-				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-
-				cout << "         ID Reserva             ID Alojamento                Check IN             Check OUT             Preço         " << endl;
-				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
-				cout << res;
-
-				cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
-				cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
-
-				pauseScreen();
-
-				clientMenu(comp, it); // vai ter que passar para menu cliente
-				cout << "nova reserva" << endl;
+				OptionInaClientAddReservation(comp, ith);
 				break;
 			case 1:
-				ith->showReservations();
-				pauseScreen();
-				clientMenuHash(comp, ith);
+				OptionInaClientShowReservations(comp, ith);
 				break;
 			case 2:
-				ith->showReservations();
-				pauseScreen();
-				id = comp.cancelReservation();
-				if (id == 0) break;
-
-				reservations_tmp = ith->getReservations();
-				res.setID(id);
-				pos = sequentialSearch<Reservation>(reservations_tmp, res);
-
-				ith = comp.replaceHashClient(ith, pos);
-
-				pauseScreen();
-				clientMenuHash(comp, ith);
-				cout << "cancelar";
+				OptionInaClientCancelReservation(comp, ith);
 				break;
 			case 3:
-				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << ith->getName() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << ith->getUsername() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Pontos : " << ith->getPoints() << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-				pauseScreen();
-				clientMenuHash(comp, ith);
+				OptionInaClientInformation(comp, ith);
 				break;
 			case 4:
 				novoMenu(comp);
@@ -339,14 +601,608 @@ void Menu::clientMenuHash(Company & comp, unordered_set<Client, hcli, eqcli>::it
 			}
 		}
 	}
-
-	cout << TAB << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
-
-	pauseScreen();
-
-	clientMenuHash(comp, ith);
 }
 
+
+
+// ---------------------------
+//   Suplier Menu
+// ---------------------------
+
+void Menu::writeSuplierMenu(int x) {
+
+	switch (x)
+	{
+	case 7:
+		cout << "   Ver Alojamentos                     ";
+		break;
+	case 8:
+		cout << "   Adicionar Alojamento                ";
+		break;
+	case 9:
+		cout << "   Informacoes de Conta                ";
+		break;
+	case 10:
+		cout << "   Ver Reservas                        ";
+		break;
+	case 11:
+		cout << "   Consultar Taxas de Servico          ";
+		break;
+	case 12:
+		cout << "   Sair                                ";
+		break;
+	}
+}
+
+void Menu::OptionSuplierAddAccomodation(Company & comp, vector<Suplier>::iterator it) {
+
+
+	try
+	{
+		string add;
+
+		add = "s";
+		while (add == "s") {
+
+			Accomodation acc;
+			acc = it->addAccomodation2();
+			comp.updateDiscounts(acc);
+
+
+			cout << endl << TAB << "Adicionar Alojamento (s/n)? ";
+			getline(cin, add);
+
+		}
+
+		if (add != "n") throw InvalidInput();
+
+
+		clearScreen();
+		gotoXY(48, 4); cout << "|| Adicionar Alojamento ||" << endl << endl;
+		gotoXY(35, 10); cout << "Os seus alojamentos foram atualizados com sucesso!" << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu de Fornecedores." << endl;
+		pauseScreen();
+		suplierMenu(comp, it);
+	}
+}
+
+void Menu::OptionSuplierShowAccomodations(Company & comp, vector<Suplier>::iterator it) {
+
+		it->showAccomodations();
+		pauseScreen();
+		suplierMenu(comp, it);
+
+}
+
+void Menu::OptionSuplierInformation(Company & comp, vector<Suplier>::iterator it) {
+
+	clearScreen();
+	gotoXY(48, 4); cout << "|| Informacoes de Conta ||" << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                     NIF : " << it->getNIF() << endl;
+	cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Morada : " << it->getAdress() << endl << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+	pauseScreen();
+	suplierMenu(comp, it);
+
+}
+
+void Menu::OptionSuplierReservations(Company & comp, vector<Suplier>::iterator it) {
+
+	it->showReservations();
+	pauseScreen();
+	suplierMenu(comp, it);
+
+}
+
+void Menu::OptionSuplierShowFees(Company & comp, vector<Suplier>::iterator it) {
+
+	clearScreen();
+	it->showFees();
+	pauseScreen();
+	suplierMenu(comp, it);
+
+}
+
+void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
+
+	clearScreen();
+	int menu_item = 0, x = 7;
+	bool running = true;
+
+	gotoXY(48, 4); cout << "|| " << it->getUsername() << " ||";
+
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Ver Alojamentos                     ";
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	gotoXY(43, 8);  cout << "   Adicionar Alojamento                ";
+	gotoXY(43, 9);  cout << "   Informacoes de Conta                ";
+	gotoXY(43, 10); cout << "   Ver Reservas                        ";
+	gotoXY(43, 11); cout << "   Consultar Taxas de Servico          ";
+	gotoXY(43, 12); cout << "   Sair                                ";
+	gotoXY(43, 15);
+
+	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
+	while (running)
+	{
+
+		gotoXY(43, 15);
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN) && x < 12) //down button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeSuplierMenu(x);
+			x++;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeSuplierMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item++;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeSuplierMenu(x);
+			x--;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeSuplierMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item--;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+
+			clearScreen();
+
+			cout << "entrei";
+
+			switch (menu_item) {
+			case 0:
+				OptionSuplierShowAccomodations(comp, it);
+				break;
+			case 1:
+				OptionSuplierAddAccomodation(comp, it);
+				break;
+			case 2:
+				OptionSuplierInformation(comp, it);
+				break;
+			case 3:
+				OptionSuplierReservations(comp, it);
+				break;
+			case 4:
+				OptionSuplierShowFees(comp, it);
+				break;
+			case 5:
+				novoMenu(comp);
+			}
+		}
+	}
+}
+
+// ---------------------------
+//   Guest Menu
+// ---------------------------
+
+void Menu::writeGuestMenu(int x) {
+
+	switch (x)
+	{
+	case 7:
+		cout << "   Efetuar Reserva                     ";
+		break;
+	case 8:
+		cout << "   Cancelar Reservas                   ";
+		break;
+	case 9:
+		cout << "   Ver Reservas                        ";
+		break;
+	case 10:
+		cout << "   Voltar ao Menu Inicial              ";
+		break;
+	}
+}
+
+void Menu::OptionGuestAddAccomodation(Company & comp) {
+	
+	try {
+
+		string location;
+		string date;
+		Date initial_date;
+		Date final_date;
+		Accomodation* acc;
+		Reservation res;
+
+		clearScreen();
+		gotoXY(48, 4); cout << "|| Efetuar Reserva ||" << endl << endl;
+
+		gotoXY(40, 7); cout << "Local: ";
+		getline(cin, location);
+		if (cin.eof()) throw InvalidInput();
+
+		gotoXY(40, 9); cout << "Data Inicial: ";
+		getline(cin, date);
+		if (!initial_date.getDate(date)) throw InvalidDate();
+
+		gotoXY(40, 10); cout << "Data Final: ";
+		getline(cin, date);
+		if (!final_date.getDate(date)) throw InvalidDate();
+
+		acc = comp.displayOffers(location, initial_date, final_date);
+		if (acc == NULL) guestMenu(comp);
+
+
+		res.setAccomodation(acc);
+		res.setCheckIN(initial_date);
+		res.setCheckOUT(final_date);
+		res.setClient("Nao Registado");
+		res.setMarking(getCurrentDate());
+		res.setID();
+
+
+		comp.addReservationComp(acc, res);
+
+		clearScreen();
+
+		gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
+
+		cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      PreÃ§o     Marcacao   " << endl;
+		cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << res;
+
+		cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
+		cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl << endl;
+
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu  Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O nÃºmero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+
+}
+
+void Menu::OptionGuestCancelReservation(Company & comp) {
+
+	try {
+		comp.cancelReservation();
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu  Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Visitante." << endl;
+		pauseScreen();
+		guestMenu(comp);
+	}
+}
+
+void Menu::OptionGuestShowReservations(Company & comp) {
+
+	comp.showReservation();
+	pauseScreen();
+	guestMenu(comp);
+
+}
+
+void Menu::guestMenu(Company & comp) {
+
+	clearScreen();
+	int menu_item = 0, x = 7;
+	bool running = true;
+
+	gotoXY(48, 4); cout << "|| Menu Visitante ||";
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	gotoXY(43, 8);  cout << "   Cancelar Reservas                   ";
+	gotoXY(43, 9);  cout << "   Ver Reservas                        ";
+	gotoXY(43, 10); cout << "   Voltar ao Menu Inicial              ";
+	gotoXY(43, 15);
+
+	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
+	while (running)
+	{
+
+		gotoXY(43, 15);
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN) && x < 10) //down button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeGuestMenu(x);
+			x++;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeGuestMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item++;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeGuestMenu(x);
+			x--;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeGuestMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item--;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+
+			switch (menu_item) {
+			case 0:
+				OptionGuestAddAccomodation(comp);
+				break;
+			case 1:
+				OptionGuestCancelReservation(comp);
+				break;
+			case 2:
+				OptionGuestShowReservations(comp);
+				break;
+			case 3:
+				novoMenu(comp);
+			}
+		}
+	}
+}
+
+
+
+// ---------------------------
+//   Administrator Menu
+// ---------------------------
+
+void Menu::writeAdminMenu(int x) {
+
+	switch (x)
+	{
+	case 7:
+		cout << "   Aplicar Descontos                   ";
+		break;
+	case 8:
+		cout << "   Lista de Fornecedores               ";
+		break;
+	case 9:
+		cout << "   Lista de Clientes Inativos          ";
+		break;
+	case 10:
+		cout << "   Lista de Clientes Ativos            ";
+		break;
+	case 11:
+		cout << "   Lista de Reservas                   ";
+		break;
+	case 12:
+		cout << "   Moradas para Publicidade            ";
+		break;
+	case 13:
+		cout << "   Atualizar Moradas                   ";
+		break;
+	case 14:
+		cout << "   Voltar ao Menu Inicial              ";
+		break;
+	}
+}
+
+void Menu::adminMenu(Company & comp) {
+
+	clearScreen();
+
+	int menu_item = 0, x = 7;
+	bool running = true;
+
+
+	gotoXY(48, 4); cout << "|| Menu Administrador ||";
+
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Aplicar Descontos                   ";
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	gotoXY(43, 8);  cout << "   Lista de Fornecedores               ";
+	gotoXY(43, 9);  cout << "   Lista de Clientes Inativos          ";
+	gotoXY(43, 10); cout << "   Lista de Clientes Ativos            ";
+	gotoXY(43, 11); cout << "   Lista de Reservas                   ";
+	gotoXY(43, 12); cout << "   Moradas para Publicidade            ";
+	gotoXY(43, 13); cout << "   Atualizar Moradas                   ";
+	gotoXY(43, 14); cout << "   Voltar ao Menu Inicial              ";
+
+	gotoXY(43, 15);
+
+	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
+
+	while (running)
+	{
+
+		gotoXY(43, 15);
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN) && x < 14) //down button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
+			x++;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item++;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
+		{
+			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
+			x--;
+			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			menu_item--;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+
+			switch (menu_item) {
+			case 0:
+				clearScreen();
+				gotoXY(43, 15); cout << "opcao 1";
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 1:
+				clearScreen();
+				comp.showSupliers();
+				adminMenu(comp);
+				break;
+			case 2:
+				clearScreen();
+				comp.showInactiveClients();
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 3:
+				clearScreen();
+				comp.showActiveClients();
+				pauseScreen();
+				adminMenu(comp);
+			case 4:
+				gotoXY(43, 16);
+				comp.showReservations();
+				adminMenu(comp);
+				break;
+			case 5:
+				clearScreen();
+				comp.showInactiveClientsAdresses();
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 6:
+				clearScreen();
+				comp.updateAdresses();
+				pauseScreen();
+				adminMenu(comp);
+				break;
+			case 7:
+				novoMenu(comp);
+			}
+		}
+	}
+
+	gotoXY(43, 21);
+
+
+}
+
+
+// ---------------------------
+//   Main Menu
+// ---------------------------
 
 void Menu::logIn(Company &comp, char user) {
 	clearScreen();
@@ -405,26 +1261,164 @@ void Menu::logIn(Company &comp, char user) {
 
 }
 
-void Menu::mainMenu2(Company & comp, char user) {
-	
-	clearScreen();
+void Menu::OptionRegister(Company &comp, char user) {
 
+	try
+	{
+		if (user == 's') comp.registerSuplier();
+		else comp.registerClient();
+
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introduÃ§Ã£o dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+
+
+	
+}
+
+void Menu::OptionLogin(Company &comp, char user) {
+	
+	try {
+		if (user == 's')  logIn(comp, 's');
+		else logIn(comp, 'c');
+	}
+	catch (WrongOption wp) {
+		cout << wp;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidInput ii) {
+		cout << ii;
+		cin.clear();
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidDate id) {
+		cout << id;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (invalid_argument) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Deve introduzir um numero." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (out_of_range) {
+		cout << endl << TAB_BIG << TAB_BIG << "Erro na introducao dos dados." << endl;
+		cout << TAB_BIG << TAB_BIG << "O numero introduzido ultrapassa os valores suportados." << endl;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidLogIn ili) {
+		cout << ili;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidUsername iu) {
+		cout << iu;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (ErrorOpeningFile eof) {
+		cout << eof;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+	catch (InvalidReservationID iri) {
+		cout << iri;
+		cout << TAB_BIG << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Fornecedor." << endl;
+		pauseScreen();
+		mainMenu(comp, user);
+	}
+}
+
+void Menu::mainMenu(Company & comp, char user) {
+
+	clearScreen();
 	int menu_item = 0, x = 7;
 	bool running = true;
 
 	gotoXY(48, 4);
-
 	if (user == 's') cout << "|| Menu Fornecedor ||";
 	else cout << "|| Menu Cliente ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Registar                    ";
-
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Entrar                      ";
 	gotoXY(43, 9);  cout << "   Voltar ao Menu Inicial      ";
-
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -458,25 +1452,16 @@ void Menu::mainMenu2(Company & comp, char user) {
 
 			switch (menu_item) {
 			case 0:
-				if (user == 's') comp.registerSuplier();
-				else comp.registerClient();
-
-				pauseScreen();
-				mainMenu2(comp, user);
+				OptionRegister(comp, user);
 				break;
 			case 1:
-				if (user == 's')  logIn(comp, 's');
-				else logIn(comp, 'c');
+				OptionLogin(comp, user);
 				break;
 			case 2:
 				novoMenu(comp);
 			}
 		}
 	}
-
-	gotoXY(43, 21);
-
-
 }
 
 void Menu::writeOptionMainMenu(int x) {
@@ -493,450 +1478,6 @@ void Menu::writeOptionMainMenu(int x) {
 		cout << "   Voltar ao Menu Inicial      ";
 		break;
 	}
-}
-
-void Menu::mainMenu(Company & comp, char user) {
-	clearScreen();
-
-	string option_str;
-	unsInt option_int;
-
-
-	if (user == 's') cout << endl << TAB_BIG << "|| Menu Fornecedor ||" << endl << endl;
-	else cout << endl << TAB_BIG << "|| Menu Cliente ||" << endl << endl;
-	cout << endl << TAB << "| 1 |  Registar" << endl;
-	cout << endl << TAB << "| 2 |  Entrar" << endl;
-	cout << endl << TAB << "| 3 |  Voltar ao Menu Inicial" << endl;
-
-	option_int = showOptions(1, 3);
-
-	switch (option_int) {
-	case 1:
-		if (user == 's') comp.registerSuplier();
-		else comp.registerClient();
-
-		pauseScreen();
-		mainMenu(comp, user);
-		break;
-	case 2:
-		if (user == 's')  logIn(comp, 's');
-		else logIn(comp, 'c');
-		break;
-	case 3:
-		start(comp);
-	}
-
-}
-
-void Menu::writeSuplierMenu(int x) {
-
-	switch (x)
-	{
-	case 7:
-		cout << "   Ver Alojamentos                     ";
-		break;
-	case 8:
-		cout << "   Adicionar Alojamento                ";
-		break;
-	case 9:
-		cout << "   Informações de Conta                ";
-		break;
-	case 10:
-		cout << "   Ver Reservas                        ";
-		break;
-	case 11:
-		cout << "   Consultar Taxas de Serviço          ";
-		break;
-	case 12:
-		cout << "   Sair                                ";
-		break;
-	}
-}
-
-void Menu::suplierMenu(Company & comp, vector<Suplier>::iterator it) {
-
-	clearScreen();
-
-	int menu_item = 0, x = 7;
-	bool running = true;
-	string add;
-
-	//cin.clear();
-	//cin.ignore(256, '\n');
-
-
-	gotoXY(48, 4); cout << "|| " << it->getUsername() << " ||";
-
-	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Ver Alojamentos                     ";
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-	gotoXY(43, 8);  cout << "   Adicionar Alojamento                ";
-	gotoXY(43, 9);  cout << "   Informações de Conta                ";
-	gotoXY(43, 10); cout << "   Ver Reservas                        ";
-	gotoXY(43, 11); cout << "   Consultar Taxas de Serviço          ";
-	gotoXY(43, 12); cout << "   Sair                                ";
-	//gotoXY(43, 15);
-
-	system("pause>nul");
-
-	while (running)
-	{
-
-		gotoXY(43, 15);
-
-		system("pause>nul"); // the >nul bit causes it the print no message
-
-		if (GetAsyncKeyState(VK_DOWN) && x < 12) //down button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeSuplierMenu(x);
-			x++;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeSuplierMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item++;
-			continue;
-
-		}
-
-		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeSuplierMenu(x);
-			x--;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeSuplierMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item--;
-			continue;
-		}
-
-		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
-
-			clearScreen();
-
-			cout << "entrei";
-
-			switch (menu_item) {
-			case 0:
-				it->showAccomodations();
-				pauseScreen();
-				//running = false;
-				suplierMenu(comp, it);
-				break;
-			case 1:
-				add = "s";
-				while (add == "s") {
-					Accomodation acc;
-					acc = it->addAccomodation2();
-					cout << "consegui??";
-					comp.updateDiscounts(acc);
-					cout << "cheguei aqui menu1";
-					cout << endl << TAB << "Adicionar Alojamento (s/n)? ";
-					getline(cin, add);
-					cout << "cheguei aqui menu2";
-				}
-
-				cout << "cheguei aqui menu3";
-				if (add != "n") throw InvalidInput();
-
-
-				clearScreen();
-				gotoXY(48, 4); cout << "|| Adicionar Alojamento ||" << endl << endl;
-				gotoXY(35, 10); cout << "Os seus alojamentos foram atualizados com sucesso!" << endl;
-				pauseScreen();
-				suplierMenu(comp, it);
-				break;
-			case 2:
-				clearScreen();
-				gotoXY(48, 4); cout << "|| Informações de Conta ||" << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                    Nome : " << it->getName() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "      Nome de Utilizador : " << it->getUsername() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                     NIF : " << it->getNIF() << endl;
-				cout << TAB_BIG << TAB_BIG << TAB_BIG << "                  Morada : " << it->getAdress() << endl << endl;
-				cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-				pauseScreen();
-				//running = false;
-				suplierMenu(comp, it);
-				break;
-			case 3:
-				it->showReservations();
-				pauseScreen();
-				//running = false;
-				suplierMenu(comp, it);
-				break;
-			case 4:
-				clearScreen();
-				it->showFees();
-				pauseScreen();
-				//running = false;
-				suplierMenu(comp, it);
-				break;
-			case 5:
-				novoMenu(comp);
-				//running = false;
-			}
-		}
-	}
-
-
-}
-
-void Menu::writeGuestMenu(int x) {
-
-	switch (x)
-	{
-	case 7:
-		cout << "   Efetuar Reserva                     ";
-		break;
-	case 8:
-		cout << "   Cancelar Reservas                   ";
-		break;
-	case 9:
-		cout << "   Ver Reservas                        ";
-		break;
-	case 10:
-		cout << "   Voltar ao Menu Inicial              ";
-		break;
-	}
-}
-
-void Menu::guestMenu(Company & comp) {
-
-
-	// dados para efetuar reserva
-	string location;
-	string date;
-	Date initial_date;
-	Date final_date;
-	Accomodation* acc;
-	Reservation res;
-
-	clearScreen();
-
-	int menu_item = 0, x = 7;
-	bool running = true;
-
-
-	gotoXY(48, 4); cout << "|| Menu Visitante ||";
-
-	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Efetuar Reserva                     ";
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-	gotoXY(43, 8);  cout << "   Cancelar Reservas                   ";
-	gotoXY(43, 9);  cout << "   Ver Reservas                        ";
-	gotoXY(43, 10); cout << "   Voltar ao Menu Inicial              ";
-	gotoXY(43, 15);
-
-	system("pause>nul");
-
-	while (running)
-	{
-
-		gotoXY(43, 15);
-
-		system("pause>nul"); // the >nul bit causes it the print no message
-
-		if (GetAsyncKeyState(VK_DOWN) && x < 10) //down button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeGuestMenu(x);
-			x++;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeGuestMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item++;
-			continue;
-
-		}
-
-		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeGuestMenu(x);
-			x--;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeGuestMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item--;
-			continue;
-		}
-
-		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
-
-			switch (menu_item) {
-			case 0:
-
-				clearScreen();
-				gotoXY(48, 4); cout <<  "|| Efetuar Reserva ||" << endl << endl;
-
-				gotoXY(40, 7); cout << "Local: ";
-				getline(cin, location);
-				if (cin.eof()) throw InvalidInput();
-
-				gotoXY(40, 9); cout << "Data Inicial: ";
-				getline(cin, date);
-				if (!initial_date.getDate(date)) throw InvalidDate();
-
-				gotoXY(40, 10); cout << "Data Final: ";
-				getline(cin, date);
-				if (!final_date.getDate(date)) throw InvalidDate();
-
-				acc = comp.displayOffers(location, initial_date, final_date);
-				if (acc == NULL) break;
-
-				comp.addReservationComp(acc, initial_date, final_date, "Não Registado");
-
-				res.setAccomodation(acc);
-				res.setCheckIN(initial_date);
-				res.setCheckOUT(final_date);
-				res.setID();
-
-				clearScreen();
-
-				gotoXY(48, 4); cout << "|| Reserva ||" << endl << endl << endl;
-
-				cout << "    Cliente             ID Reserva     ID Alojamento     Check IN       Check OUT      Preço     Marcação   " << endl;
-				cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
-				cout << res;
-
-				cout << endl << TAB_BIG << "A sua reserva foi criada com sucesso." << endl;
-				cout << TAB_BIG << "Prima qualquer tecla para voltar ao Menu Cliente." << endl << endl;
-			
-				pauseScreen();
-				guestMenu(comp);
-				break;
-			case 1:
-				comp.cancelReservation();
-				pauseScreen();
-				guestMenu(comp);
-				break;
-			case 2:
-				comp.showReservation();
-				pauseScreen();
-				guestMenu(comp);
-				break;
-			case 3:
-				novoMenu(comp);
-			}
-		}
-	}
-
-	
-	cout << TAB << "Prima qualquer tecla para voltar ao Menu." << endl << endl;
-
-	pauseScreen();
-
-	guestMenu(comp);
-
-
-}
-
-void Menu::writeAdminMenu(int x) {
-
-	switch (x)
-	{
-	case 7:
-		cout << "   Aplicar Descontos                   ";
-		break;
-	case 8:
-		cout << "   Lista de Fornecedores               ";
-		break;
-	case 9:
-		cout << "   Lista de Clientes Inativos          ";
-		break;
-	case 10:
-		cout << "   Lista de Clientes Ativos            ";
-		break;
-	case 11:
-		cout << "   Lista de Reservas                   ";
-		break;
-	case 12:
-		cout << "   Voltar ao Menu Inicial              ";
-		break;
-	}
-}
-
-void Menu::adminMenu(Company & comp) {
-
-	clearScreen();
-
-	int menu_item = 0, x = 7;
-	bool running = true;
-
-
-	gotoXY(48, 4); cout << "|| Menu Administrador ||";
-
-	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Aplicar Descontos                   ";
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-	gotoXY(43, 8);  cout << "   Lista de Fornecedores               ";
-	gotoXY(43, 9);  cout << "   Lista de Clientes Inativos          ";
-	gotoXY(43, 10); cout << "   Lista de Clientes Ativos            ";
-	gotoXY(43, 11); cout << "   Lista de Reservas                   ";
-	gotoXY(43, 12); cout << "   Voltar ao Menu Inicial              ";
-	gotoXY(43, 15);
-
-	system("pause>nul");
-
-	while (running)
-	{
-
-		gotoXY(43, 15);
-
-		system("pause>nul"); // the >nul bit causes it the print no message
-
-		if (GetAsyncKeyState(VK_DOWN) && x < 12) //down button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
-			x++;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item++;
-			continue;
-
-		}
-
-		if (GetAsyncKeyState(VK_UP) && x > 7) //up button pressed
-		{
-			gotoXY(41, x); cout << "  "; SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); writeAdminMenu(x);
-			x--;
-			gotoXY(41, x); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  "; writeAdminMenu(x);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			menu_item--;
-			continue;
-		}
-
-		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
-
-			switch (menu_item) {
-			case 0:
-				gotoXY(43, 16);
-				cout << "Opcao 1";
-				break;
-			case 1:
-				gotoXY(43, 16);
-				comp.showSupliers();
-				adminMenu(comp);
-				break;
-			case 2:
-				clearScreen();
-				comp.showInactiveClients();
-				pauseScreen();
-				adminMenu(comp);
-				break;
-			case 3:
-				clearScreen();
-				comp.showActiveClients();
-				pauseScreen();
-				adminMenu(comp);
-			case 4:
-				gotoXY(43, 16);
-				comp.showReservations();
-				adminMenu(comp);
-				break;
-			case 5:
-				novoMenu(comp);
-			}
-		}
-	}
-
-	gotoXY(43, 21);
-
-
 }
 
 void Menu::writeOptionStartMenu(int x) {
@@ -968,8 +1509,6 @@ void Menu::novoMenu(Company & comp){
 	int menu_item = 0, x = 7;
 	bool running = true;
 
-
-
 	gotoXY(48, 4); cout << "|| MENU INICIAL ||";
 	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Menu Fornecedor             ";
 
@@ -981,6 +1520,11 @@ void Menu::novoMenu(Company & comp){
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -1014,10 +1558,10 @@ void Menu::novoMenu(Company & comp){
 
 			switch (menu_item) {
 			case 0:
-				mainMenu2(comp, 's');
+				mainMenu(comp, 's');
 				break;
 			case 1: 
-				mainMenu2(comp, 'c');
+				mainMenu(comp, 'c');
 				break;
 			case 2: 
 				adminMenu(comp);
@@ -1027,56 +1571,10 @@ void Menu::novoMenu(Company & comp){
 				break;
 			case 4: 
 				comp.saveChanges();
-				/*
-				exit = true;
-				running = false;*/
 				exit(1);
 				break;
-
 			}
 		}
 	}
-
 	gotoXY(43, 21);
-
-}
-
-void Menu::start(Company & comp) {
-	string option_str;
-	unsInt option_int;
-
-	clearScreen();
-
-	cout << endl << TAB_BIG << "|| MENU INICIAL ||" << endl << endl;
-	cout << endl << TAB << "| 1 |  Menu Fornecedor" << endl;
-	cout << endl << TAB << "| 2 |  Menu Cliente" << endl;
-	cout << endl << TAB << "| 3 |  Entrar como Visitante" << endl;
-	cout << endl << TAB << "| 4 |  Sair" << endl << endl;
-	/*
-	cout << endl << TAB<< "Opção: ";
-
-	getline(cin, option_str);
-
-	option_int = stoi(option_str);
-
-	if (option_int < 1 || option_int >4) throw WrongOption(1, 4);
-	*/
-	option_int = showOptions(1, 4);
-
-	switch (option_int) {
-	case 1:
-		mainMenu(comp, 's');
-		break;
-	case 2:
-		mainMenu(comp, 'c');
-		break;
-	case 3:
-		guestMenu(comp);
-		break;
-	case 4:
-		comp.saveChanges();
-		//exit = 1;
-	}
-
-
 }

@@ -20,7 +20,7 @@ void User::showReservations()const {
 
 
 	if (reservations.size() == 0) {
-		cout << TAB << "Ainda não possui reservas." << endl;
+		cout << TAB << "Ainda nao possui reservas." << endl;
 		return;
 	}
 	else {
@@ -56,20 +56,20 @@ void askForPrice(float & p_night, float & p_week, float & p_month) {
 	
 	clearScreen();
 
-	gotoXY(48, 4); cout << "|| Mais informação ||";
+	gotoXY(48, 4); cout << "|| Mais informacao ||";
 
-	gotoXY(4, 7); cout << "-> Preçário" << endl;
-	gotoXY(42, 7); cout << "Preço por noite : ";	
+	gotoXY(4, 7); cout << "-> Precario" << endl;
+	gotoXY(42, 7); cout << "Preco por noite : ";	
 	getline(cin, line);
 	p_night = stof(line);
 	if (cin.eof()) throw InvalidInput();
 
-	gotoXY(42, 8); cout << "Preço por semana : ";
+	gotoXY(42, 8); cout << "Preco por semana : ";
 	getline(cin, line);
 	p_week = stof(line);
 	if (cin.eof()) throw InvalidInput();
 
-	gotoXY(42, 9); cout << "Preço por mês : ";
+	gotoXY(42, 9); cout << "Preco por mes : ";
 	getline(cin, line);
 	p_month = stof(line);
 	if (cin.eof()) throw InvalidInput();
@@ -86,7 +86,7 @@ void askForAvailability(vector < pair<Date, Date>>&  unavailable_dates) {
 	int i = 0;
 
 	gotoXY(4, 12); cout << "-> Disponibilidade" << endl;
-	gotoXY(42, 12); cout << "(introduza o intervalo de datas em que o alojamento não estára disponível) ";
+	gotoXY(42, 12); cout << "(introduza o intervalo de datas em que o alojamento não estara disponível) ";
 	gotoXY(42, 13); cout << "(as datas introduzidas devem estar no formato d/m/a)";
 
 
@@ -267,7 +267,6 @@ void Suplier::addAccomodation() {
 
 }
 
-
 void writeBedroomType(int x) {
 
 	switch (x)
@@ -319,7 +318,6 @@ void writeEstabliType(int x) {
 	}
 }
 
-
 bedroomType chooseBedType() {
 
 	clearScreen();
@@ -338,6 +336,11 @@ bedroomType chooseBedType() {
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -389,7 +392,6 @@ bedroomType chooseBedType() {
 	gotoXY(43, 21);
 }
 
-
 establishment chooseEst() {
 
 	clearScreen();
@@ -408,6 +410,11 @@ establishment chooseEst() {
 	gotoXY(43, 15);
 
 	system("pause>nul");
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	while (running)
 	{
@@ -469,7 +476,7 @@ Accomodation Suplier::addAccomodation2() {
 
 	gotoXY(48, 4); cout << "|| Adicionar Alojamento ||" << endl << endl;
 
-	gotoXY(4, 7); cout << "-> Localização" << endl;
+	gotoXY(4, 7); cout << "-> Localizacao" << endl;
 	gotoXY(42, 7); cout << "Cidade: ";
 
 	getline(cin, location);
@@ -478,6 +485,11 @@ Accomodation Suplier::addAccomodation2() {
 	clearScreen();
 	int menu_item = 0, x = 7;
 	bool running = true;
+
+	if (GetAsyncKeyState(VK_RETURN)) {
+
+		gotoXY(43, 15); cout << "  ";
+	}
 
 	gotoXY(48, 4); cout << "|| Tipo de Alojamento ||";
 
@@ -605,7 +617,7 @@ void Suplier::showAccomodations()const {
 	gotoXY(48, 4); cout << "|| Alojamentos ||" << endl << endl;
 
 	if (accomodations.size() == 0) {
-		cout << TAB << "Ainda não possui alojamentos registados." << endl;
+		cout << TAB << "Ainda nao possui alojamentos registados." << endl;
 		return;
 	}
 
@@ -622,7 +634,6 @@ void Suplier::addReservation(Reservation res) {
 	res_vec.push_back(res);
 	setReservations(res_vec);
 }
-
 
 void Suplier::save(ofstream & out) const
 {
@@ -643,7 +654,7 @@ void Suplier::save(ofstream & out) const
 
 void Suplier::showFees()const {
 	
-	gotoXY(48, 4); cout << "|| Taxas de Serviço ||" << endl << endl << endl;
+	gotoXY(48, 4); cout << "|| Taxas de Servico ||" << endl << endl << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "        Quartos        Flats           Apartamentos   " << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "      ------------------------------------------------" << endl;
 	cout << TAB_BIG << TAB_BIG << TAB_BIG <<  "          5%            1%                 15%        \n\n";
@@ -662,7 +673,6 @@ void Suplier::showFees()const {
 	cout << endl;
 
 }
-
 
 bool Suplier::operator<(const Suplier & c) const{
 
@@ -695,9 +705,9 @@ ostream &operator<<(ostream & out, const Suplier & s){
 //    Client
 // -------------------
 
-Client::Client(string username, string password, string name, int points) :User(username, password, name) {
+Client::Client(string username, string password, string name,string adress, int points) :User(username, password, name) {
 	this->points = points;
-
+	this->adress = adress;
 }
 
 void Client::addReservation(Reservation res) {
@@ -716,10 +726,12 @@ void Client::addReservation(Reservation res) {
 
 void Client::save(ofstream & out) const
 {
-	out <<  setw(15)          << getUsername()
+	out << setw(15) << getUsername()
 		<< setw(14) << getPassword()
 		<< setw(20) << getName()
-		<< setw(8) << getPoints();
+		<< setw(8) << getPoints() << " - " 
+		<< setw(40) << getAdress() << " -";
+
 
 	vector<Reservation>::const_iterator it;
 
@@ -735,10 +747,12 @@ void Client::save(ofstream & out) const
 
 ostream &operator<<(ostream & out, const Client  & cli){
 
-	out << setw(20) << cli.getUsername()
-		<< setw(28) << cli.getPassword()
-		<< setw(36) << cli.getName()
-		<< setw(23) << cli.getPoints();
+	out << left << "           ";
+
+	out << setw(28) << cli.getUsername()
+		<< setw(30) << cli.getPassword()
+		<< setw(35) << cli.getName()
+		<< setw(5) << cli.getPoints();
 
 	return out;
 }

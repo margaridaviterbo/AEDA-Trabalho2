@@ -16,6 +16,11 @@ private:
 	int year;
 
 public:
+	
+	/**
+	* @brief default date constructor
+	*
+	*/
 	Date() {};
 
 	/**
@@ -26,12 +31,12 @@ public:
 	*/
 	Date(string date); // data na forma DD/MM/AAA
 
-					   /**
-					   * @brief gets day
-					   *
-					   * @return day
-					   *
-					   */
+	/**
+    * @brief gets day
+	*
+	* @return day
+	*
+	*/
 	int getDay() const;
 
 
@@ -191,4 +196,7 @@ public:
 	*/
 	friend ostream& operator<<(ostream& out, const Date & date);
 };
+
+
+Date getCurrentDate();
 
