@@ -119,10 +119,10 @@ bool Reservation::operator < (const Reservation & res) const{
 	if (client == res.client)
 		return marking < res.marking;
 
-	if (res.client == "Não Registado")
+	if (res.client == "Nao Registado")
 		return true;
 
-	if (client == "Não Registado")
+	if (client == "Nao Registado")
 		return false;
 
 	return client < res.client;

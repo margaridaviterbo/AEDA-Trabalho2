@@ -97,7 +97,7 @@ void Accomodation::print() const {
 void Bedroom::print() const {
 	cout << TAB << "-> Quarto\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Tipo" << setw(20) << "Establecimento" << endl;
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Tipo" << setw(20) << "Establecimento" << endl;
 
 	Accomodation::print();
 
@@ -151,7 +151,7 @@ void Bedroom::print() const {
 void Flat::print() const {
 	cout << TAB << "-> Flat\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
 
 	Accomodation::print();
 
@@ -162,7 +162,7 @@ void Flat::print() const {
 	vector<pair<Date, Date>> undates = getUnavailableDates();
 
 	if (undates.size() != 0) {
-		cout << TAB << "Datas Indisponíveis:" << endl;
+		cout << TAB << "Datas Indisponiveis:" << endl;
 
 		vector<pair<Date, Date>>::const_iterator it;
 
@@ -179,7 +179,7 @@ void Flat::print() const {
 void Apartment::print() const {
 	cout << TAB << "-> Apartamento\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
 
 	Accomodation::print();
 
@@ -193,7 +193,7 @@ void Apartment::print() const {
 	vector<pair<Date, Date>> undates = getUnavailableDates();
 
 	if (undates.size() != 0) {
-		cout << TAB << "Datas Indisponíveis:" << endl;
+		cout << TAB << "Datas Indisponiveis:" << endl;
 
 		vector<pair<Date, Date>>::const_iterator it;
 
