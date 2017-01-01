@@ -2,7 +2,6 @@
 
 void Company::supliersInicialization(string supliersFile)
 {
-
 	ifstream name_supliers;
 	string line_f;
 	unsigned int maxID;
@@ -38,7 +37,7 @@ void Company::supliersInicialization(string supliersFile)
 		{
 
 			stringstream ss; ss.str(line_f);
-			string type, d, w, m, city, date1, date2, next;
+			string type, d, w, m, city, date1, date2, next, time;
 			float daily, weekly, monthly;
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
@@ -69,7 +68,7 @@ void Company::supliersInicialization(string supliersFile)
 
 			getline(ss, time, '-'); trim(time);
 			Date creation_time(time);
-			
+	
 			if (type == "BEDROOM")
 			{
 
@@ -160,6 +159,7 @@ void Company::supliersInicialization(string supliersFile)
 }
 
 void Company::reservationsInicialization(string reservationsFile) {
+
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -1118,6 +1118,8 @@ void Company::updateDiscounts() {
 }
 
 void Company::updateDiscounts(Accomodation acc) {
+
+	cout << "entrei updateDiscounts()\n";
 
 	bool found = false;
 	priority_queue<Accomodation> temp = accomodationsDiscounts;

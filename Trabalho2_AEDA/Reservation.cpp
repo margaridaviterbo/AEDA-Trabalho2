@@ -100,8 +100,7 @@ void Reservation::save(ofstream & out) const
 		<< setw(5) << accomodation->getID()
 		<< setw(12) << checkIN
 		<< setw(12) << checkOUT
-		<< setw(12) << marking;
-		//<< endl;
+		<< setw(12) << marking << endl;
 }
 
 float Reservation::getFee() const {
