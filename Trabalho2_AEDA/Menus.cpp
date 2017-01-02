@@ -1062,7 +1062,7 @@ void Menu::writeAdminMenu(int x) {
 	switch (x)
 	{
 	case 7:
-		cout << "   Aplicar Descontos                   ";
+		cout << "   Ver Descontos                       ";
 		break;
 	case 8:
 		cout << "   Lista de Fornecedores               ";
@@ -1098,7 +1098,7 @@ void Menu::adminMenu(Company & comp) {
 
 	gotoXY(48, 4); cout << "|| Menu Administrador ||";
 
-	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Aplicar Descontos                   ";
+	gotoXY(41, 7); SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); cout << "  " << "   Ver Descontos                   ";
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	gotoXY(43, 8);  cout << "   Lista de Fornecedores               ";
@@ -1151,7 +1151,7 @@ void Menu::adminMenu(Company & comp) {
 			switch (menu_item) {
 			case 0:
 				clearScreen();
-				gotoXY(43, 15); cout << "opcao 1";
+				comp.showDiscounts();
 				pauseScreen();
 				adminMenu(comp);
 				break;

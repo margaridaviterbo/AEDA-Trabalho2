@@ -56,10 +56,37 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 
 
 bool Accomodation::operator<(const Accomodation &acc) const {
+	/*
+	cout << "entrei operador <";
+	
+	bool diff;
+	int timePeriod1, timePeriod2;
+	Date today = getCurrentDate();
 
-	//TODO arranjar outra forma de comparação: o periodo de tempo -> ver infinite book
+	if (lastReservationID == 0)
+		timePeriod1 = diffDays(today, creationDateTime);
+	else
+		timePeriod1 = diffDays(today, creationDateLastReservation);
 
-	return(lastReservationID < acc.lastReservationID);
+	cout << timePeriod1 << "timeperiod1\n";
+
+	if (acc.lastReservationID == 0)
+		timePeriod2 = diffDays(today, acc.creationDateTime);
+	else
+		timePeriod2 = diffDays(today, creationDateLastReservation);
+
+	cout << timePeriod2 << "timeperiod2\n";
+	
+
+	diff = timePeriod1 < timePeriod2;
+	
+
+	cout << diff << "diff\n";
+	
+	*/
+	return true;
+
+	//return diff;
 }
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {
@@ -89,9 +116,14 @@ Apartment::Apartment(unsigned int id, float price_night, float price_week, float
 
 void Accomodation::print() const {
 
-	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
-	
+	if (discount == 0) {
+		cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
+	}
+	else {
+		cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << "DISCOUNT " << discount*100 << "%!!!" << endl << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
+	}
 }
 
 void Bedroom::print() const {

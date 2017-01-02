@@ -15,9 +15,11 @@ enum bedroomType { SINGLE, DOUBLE_R, DOUBLE_EXTRA_BED, TRIPLE };	//tipos de quar
 class Accomodation {
 private:
 	Date creationDateTime;
+	Date creationDateLastReservation;
 	float price_night;
 	float price_week;
 	float price_month;
+	float discount = 0;
 	string location;
 	unsigned int id;
 	static unsigned int lastID;
@@ -112,6 +114,10 @@ public:
 	*/
 	void setID(unsigned int id) { this->id = id; };
 
+	void setDiscount(float discount) { this->discount = discount; };
+
+	float getDiscount() { return discount; };
+
 	/**
 	* @brief virtual fuction to save accomodation on the supliers file
 	*
@@ -185,6 +191,8 @@ public:
 	*
 	*/
 	void setLastReservationID(int id) { lastReservationID = id; }
+
+	void setCreationDateLastReservation(Date dt) { creationDateLastReservation = dt; }
 
 	/**
 	* @brief overload of the the equality operator
