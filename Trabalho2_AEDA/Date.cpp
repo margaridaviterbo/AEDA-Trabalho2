@@ -169,8 +169,6 @@ bool operator == (const Date &d1, const Date &d2) {
 
 int diffDays (Date d1, Date d2) {
 
-	cout << "entrei diffDays()";
-
 	int year, month;
 	int days1, days2;
 
@@ -180,15 +178,11 @@ int diffDays (Date d1, Date d2) {
 		year--, month += 12;
 	days1 = 365 * year + year / 4 - year / 100 + year / 400 + (153 * month - 457) / 5 + d1.getDay() - 306;
 
-	cout << days1 << "days1\n";
-
 	year = d2.getYear();
 	month = d2.getMonth();
 	if (d2.getMonth() < 3)
 		year--, month += 12;
 	days2 = 365 * year + year / 4 - year / 100 + year / 400 + (153 * month - 457) / 5 + d2.getDay() - 306;
-
-	cout << days2 << "days2\n";
 
 	return abs(days1 - days2);
 

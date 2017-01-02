@@ -1,4 +1,4 @@
-   31
+   32
       dolfander            123    Daniel Machado      123123123        - Rua Principal 200 - 
    27   BEDROOM   23   23   23         Porto         -    02/07/2010 10/07/2010        -    03/10/2016    -    SINGLE     HOTEL
 -------
@@ -23,6 +23,7 @@
          kyahra            123       Sofia Alves      999999999        - yo - 
    25      FLAT   34  145  400     Vila Real         -        -    09/12/2016    -
    26   BEDROOM   45  200  600     Mirandela         -    05/06/2017 25/06/2017    25/02/2017 27/02/2017        -    13/09/2016    -    DOUBLE_EXTRA_BED   BED_AND_BREAKFAST
+   32 APARTMENT   35  100  350          Faro         -        -    02/01/2017    -    3        SIM
 -------
            rafa           1234    Rafael Machado      474839274        - Rua das Flores, Porto - 
    29   BEDROOM   20  230 1230         Porto         -    03/05/2017 06/05/2017    04/05/2017 08/05/2017        -    14/04/2016    -    DOUBLE     HOTEL

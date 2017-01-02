@@ -116,7 +116,7 @@ public:
 
 	void setDiscount(float discount) { this->discount = discount; };
 
-	float getDiscount() { return discount; };
+	float getDiscount() const { return discount; };
 
 	/**
 	* @brief virtual fuction to save accomodation on the supliers file
@@ -190,7 +190,9 @@ public:
 	* @param id
 	*
 	*/
-	void setLastReservationID(int id) { lastReservationID = id; }
+	void setLastReservationID(int id) {lastReservationID = id; }
+
+	int getLastReservationID() { return lastReservationID; }
 
 	void setCreationDateLastReservation(Date dt) { creationDateLastReservation = dt; }
 

@@ -57,8 +57,6 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 
 bool Accomodation::operator<(const Accomodation &acc) const {
 	/*
-	cout << "entrei operador <";
-	
 	bool diff;
 	int timePeriod1, timePeriod2;
 	Date today = getCurrentDate();
@@ -68,25 +66,19 @@ bool Accomodation::operator<(const Accomodation &acc) const {
 	else
 		timePeriod1 = diffDays(today, creationDateLastReservation);
 
-	cout << timePeriod1 << "timeperiod1\n";
-
 	if (acc.lastReservationID == 0)
 		timePeriod2 = diffDays(today, acc.creationDateTime);
 	else
 		timePeriod2 = diffDays(today, creationDateLastReservation);
-
-	cout << timePeriod2 << "timeperiod2\n";
 	
-
 	diff = timePeriod1 < timePeriod2;
-	
 
-	cout << diff << "diff\n";
-	
-	*/
-	return true;
-
-	//return diff;
+	cout << "acc1 " << id << "acc2 " << acc.getID() << endl;
+	cout << "Last Reservation ID: " << lastReservationID << endl;
+	cout << "Create time: " << creationDateTime << "<" << acc.creationDateTime << endl;
+	cout << "Last reservation: " << creationDateLastReservation << "<" << acc.creationDateLastReservation << "?" << diff << endl;
+	return diff;*/
+	return id < acc.getID();
 }
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {

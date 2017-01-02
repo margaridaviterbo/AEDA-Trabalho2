@@ -42,8 +42,8 @@ private:
 
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
-
-	priority_queue <Accomodation*> accomodationsDiscounts;
+	vector<Accomodation*> accomodations;
+	priority_queue <Accomodation> accomodationsDiscounts;
 	vector <float> discounts;
 
 	string clientsFile;
