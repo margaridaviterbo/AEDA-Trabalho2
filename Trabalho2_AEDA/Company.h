@@ -12,8 +12,10 @@
 #include <unordered_set>
 #include <algorithm>
 
+
 #include "User.h"
 #include "utils.h"
+#include "Date.h"
 
 
 using namespace std;
@@ -34,14 +36,26 @@ struct hcli {
 };
 
 
+
+struct comp: public std::binary_function<Accomodation*, Accomodation*, bool>
+{
+	bool operator()(const Accomodation* lhs, const Accomodation* rhs) const
+	{
+		return lhs->getLastReservation() > rhs->getLastReservation();
+	}
+};
+
+
 class Company {	//implementar nesta classe as funcionalidades gerais do programa, os metodos para gerir a empresa
 private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
-	//vector<Accomodation> accomodations;
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
-	//static priority_queue <Accomodation> accomodationsDiscounts;
+	priority_queue<Accomodation, vector<Accomodation*>, comp> accomodationsQueue;
+	vector<Accomodation *> accomodations;
+
+
 
 	string clientsFile;
 	string supliersFile;
@@ -114,9 +128,7 @@ public:
 	/**
 	* @brief displays the Company's supliers in alphabetic order
 	*
-	*
 	*/
-
 	void showSupliers();
 
 	/**
@@ -196,24 +208,86 @@ public:
 	*/
 	void saveReservationsChanges() const;
 
-
+	/**
+	* @brief shows all reservations
+	*
+	*/
 	void showReservations() const;
 
+	/**
+	* @brief shows all inactive clients
+	*
+	*/
 	void showInactiveClients() const;
 	
+	/**
+	* @brief shows all active clients
+	*
+	*/
 	void showActiveClients() const;
 
+	/**
+	* @brief shows all active clients
+	*
+	* @param username inactive client username
+	*
+	* @return boolean, whereas the client is inactive
+	*
+	*/
 	bool isClientInactive(string username);
 
+	/**
+	* @brief verifies an inactive client login
+	*
+	* @param username inactive client username
+	*
+	* @param password inactive client password
+	*
+	* @return iterator from the inactive clients hash table
+	*
+	*/
 	unordered_set<Client, hcli, eqcli>::iterator verifyInactiveCliLogin(string username, string password);
 
+	/**
+	* @brief replace an inactive client by the one that is passed by param with one reservation less
+	*
+	* @param iterator from the inactive clients hash table
+	*
+	* @param pos of the reservation that is being deleted
+	*
+	* @return iterator from the inactive clients hash table
+	*
+	*/
 	unordered_set<Client, hcli, eqcli>::iterator replaceHashClient(unordered_set<Client, hcli, eqcli>::iterator ith, int pos);
 
+	/**
+	* @brief adds a reservation to a specific client and he is converted on a active client
+	*
+	* @param iterator from the inactive clients hash table
+	*
+	* @param res the reservation that is added
+	*
+	* @return iterator from the active clients vector
+	*
+	*/
 	vector<Client>::iterator reservationHash(unordered_set<Client, hcli, eqcli>::iterator ith, Reservation res);
   
-  void updateDiscounts();
+	/**
+	* @brief shows all inactive clients adresses
+	*
+	*/
+	void showInactiveClientsAdresses() const;
+  
+	/**
+	* @brief  updates adresses
+	*
+	*/
+	void updateAdresses();
 
-	void updateDiscounts(Accomodation acc);
+
+  void updateDiscounts();
+  void addAccomodation(Accomodation * acc);
+
   
 };
 

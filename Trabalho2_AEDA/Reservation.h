@@ -13,7 +13,6 @@ using namespace std;
 
 class Reservation {
 private:
-	time_t reservationDateTime;
 	static unsigned int lastID;
 	int ID;
 	Accomodation* accomodation;
@@ -39,7 +38,7 @@ public:
 	* @param marking
 	*
 	*/
-	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client, time_t date_time);
+	Reservation(int ID, Accomodation* accomodation, Date checkIN, Date checkOUT, Date marking, string client);
 
 
 	/**
@@ -222,6 +221,13 @@ public:
 	*/
 	friend bool operator == (const Reservation &acc1, const Reservation& acc2);
 
+	/**
+	* @brief compares 2 reservations
+	*
+	* @param res reservation being compared
+	*
+	* @return true if the client name is alphabetically minor, and if the reservation is older than the other
+	*/
 	bool operator < (const Reservation & res) const;
 
 };

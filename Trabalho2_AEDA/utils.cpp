@@ -111,3 +111,32 @@ void gotoXY(int x, int y)
 	CursorPosition.Y = y;
 	SetConsoleCursorPosition(console, CursorPosition);
 }
+
+string insertPassword() {
+	string password;
+	char pass[32];
+	char x;
+	int i = 0;
+
+	for (i = 0;;) {
+		x = _getch();
+		if ((x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || (x >= '0'&& x <= '9')) {
+			pass[i] = x;
+			++i;
+			cout << "*";
+		}
+		if (x == '\b' && i >= 1)
+		{
+			cout << "\b \b";
+			--i;
+		}
+		if (x == '\r' && i >= 5)
+		{
+			pass[i] = '\0';
+			break;
+		}
+	}
+	password = pass;
+	cin.clear();
+	return password;
+}

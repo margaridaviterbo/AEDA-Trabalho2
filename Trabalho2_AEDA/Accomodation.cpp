@@ -17,19 +17,26 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = ++lastID;
-	creationDateTime = time(0);
+
+	
+	lastReservation = Date("0/0/0");
+	
+	
 }
 
-Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time) {
+Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates) {
 	this->price_night = price_night;
 	this->price_week = price_week;
 	this->price_month = price_month;
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = id;
-	creationDateTime = creation_time;
+
+	lastReservation = Date("0/0/0");
+
 
 }
+
 
 bool Accomodation::operator == (const Accomodation &acc) const {
 	return acc.getID() == id;
@@ -55,12 +62,7 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 }
 
 
-bool Accomodation::operator<(const Accomodation &acc) const {
 
-	//TODO arranjar outra forma de comparação: o periodo de tempo -> ver infinite book
-
-	return(lastReservationID < acc.lastReservationID);
-}
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {
 	this->est = est;
@@ -68,7 +70,7 @@ Bedroom::Bedroom(float price_night, float price_week, float price_month, string 
 	setFee(0.05);
 }
 
-Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates) {
 	this->est = est;
 	this->bed_type = bed_type;
 	setFee(0.05);
@@ -81,7 +83,7 @@ Apartment::Apartment(float price_night, float price_week, float price_month, str
 	setFee(0.15);
 }
 
-Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, time_t creation_time, int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates,  int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates) {
 	this->number_bedrooms = n_bed;
 	this->suite = suite;
 	setFee(0.15);
@@ -90,14 +92,14 @@ Apartment::Apartment(unsigned int id, float price_night, float price_week, float
 void Accomodation::print() const {
 
 	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
+	cout << left << "     " << setw(5) << id << setw(28) << location << setw(8) << price_night << setw(8) << price_week << setw(11) << price_month;
 	
 }
 
 void Bedroom::print() const {
 	cout << TAB << "-> Quarto\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Tipo" << setw(20) << "Establecimento" << endl;
+	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Tipo" << setw(15) << "Establecimento" << endl;
 
 	Accomodation::print();
 
@@ -151,8 +153,8 @@ void Bedroom::print() const {
 void Flat::print() const {
 	cout << TAB << "-> Flat\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
-
+	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Inclui" << endl;
+	
 	Accomodation::print();
 
 	cout << setw(50) << "1 Quarto       Cozinha        Casa de Banho" << endl;
@@ -162,7 +164,7 @@ void Flat::print() const {
 	vector<pair<Date, Date>> undates = getUnavailableDates();
 
 	if (undates.size() != 0) {
-		cout << TAB << "Datas Indisponíveis:" << endl;
+		cout << TAB << "Datas Indisponiveis:" << endl;
 
 		vector<pair<Date, Date>>::const_iterator it;
 
@@ -179,11 +181,12 @@ void Flat::print() const {
 void Apartment::print() const {
 	cout << TAB << "-> Apartamento\n" << endl;
 
-	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preço por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Inclui" << endl;
+	//cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
 
 	Accomodation::print();
 
-	cout  << setw(6) << number_bedrooms << " Quarto/s";
+	cout  << setw(1) << number_bedrooms << " Quarto/s";
 	cout << "    Cozinha    Sala de Estar   ";
 	if (suite) cout << "Suite" << endl;
 	else cout << endl;
@@ -193,7 +196,7 @@ void Apartment::print() const {
 	vector<pair<Date, Date>> undates = getUnavailableDates();
 
 	if (undates.size() != 0) {
-		cout << TAB << "Datas Indisponíveis:" << endl;
+		cout << TAB << "Datas Indisponiveis:" << endl;
 
 		vector<pair<Date, Date>>::const_iterator it;
 
@@ -220,10 +223,9 @@ void Accomodation::saveAccomodation(ofstream & out)
 		out << it->first << " " << it->second << "    ";
 	}
 
-	char* dt = ctime(&creationDateTime);
-	string date_time(dt);
+	
 
-	out << "   -" << setw(14) << date_time;
+	out << "   -" ;
 
 }
 void Bedroom::saveAccomodation(ofstream & out)
@@ -294,5 +296,23 @@ void Apartment::saveAccomodation(ofstream & out)
 	else out << setw(11) << "NAO";
 
 	out << endl;
+
+}
+
+
+void Accomodation::updateLastReservation(Date d){
+
+
+	if (d > lastReservation)
+		lastReservation = d;
+
+}
+
+
+void Accomodation::applyDiscount(){
+	
+		price_night = price_night - (price_night *0.1);
+		price_month = price_month - (price_month *0.1);
+		price_week = price_week - (price_week *0.1);
 
 }
