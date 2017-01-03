@@ -60,6 +60,7 @@ public:
 	*
 	* @param unavailable_dates
 	*
+	* @param dateCreationTime
 	*/
 
   
@@ -114,9 +115,19 @@ public:
 	*/
 	void setID(unsigned int id) { this->id = id; };
 
+	/**
+	* @brief sets discount
+	*
+	* @param discount
+	*/
 	void setDiscount(float discount) { this->discount = discount; };
 
-	float getDiscount() const { return discount; };
+	/**
+	* @brief gets discount
+	*
+	* @return discount
+	*/
+	float getDiscount() { return discount; };
 
 	/**
 	* @brief virtual fuction to save accomodation on the supliers file
@@ -192,8 +203,18 @@ public:
 	*/
 	void setLastReservationID(int id) {lastReservationID = id; }
 
-	int getLastReservationID() { return lastReservationID; }
+	/**
+	* @brief gets lastReservationID
+	*
+	* @return lastReservationID
+	*/
+	int getLastReservationID() const { return lastReservationID; }
 
+	/**
+	* @brief sets creationDateLastReservation
+	*
+	* @param dt
+	*/
 	void setCreationDateLastReservation(Date dt) { creationDateLastReservation = dt; }
 
 	/**

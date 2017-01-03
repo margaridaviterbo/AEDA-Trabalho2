@@ -185,60 +185,6 @@ int diffDays (Date d1, Date d2) {
 	days2 = 365 * year + year / 4 - year / 100 + year / 400 + (153 * month - 457) / 5 + d2.getDay() - 306;
 
 	return abs(days1 - days2);
-
-	/*int daysTilEndMonth, daysSinceBeginningMonth, daysBetweenMonths;
-	Date max, min;
-	bool minPar, maxPar;
-
-	if (d1 == d2)
-		return 0;
-	else if (d1.month == d2.month)
-		return d1.day - d2.day;
-	else if (d1 < d2) {
-		min = d1;
-		max = d2;
-	}
-	else {
-		min = d2;
-		max = d1;
-	}
-
-
-	if ((min.month == 1) || (min.month == 3) || (min.month == 5) || (min.month == 7) || (min.month == 8) || (min.month == 10) || (min.month == 12)) {
-		daysTilEndMonth = 31 - min.day;
-		minPar = false;
-	}
-	else if (min.month == 2) {
-		minPar = true;
-		if (min.isLeap)
-			daysTilEndMonth = 29 - min.day;
-		else
-			daysTilEndMonth = 28 - min.day;
-	}
-	else
-		minPar = true;
-		daysTilEndMonth = 30 - min.day;
-
-	daysSinceBeginningMonth = max.day;
-
-	if ((max.month == 1) || (max.month == 3) || (max.month == 5) || (max.month == 7) || (max.month == 8) || (max.month == 10) || (max.month == 12))
-		maxPar = false;
-	else if (d1.month == 2) {
-		maxPar = true;
-		if (d1.isLeap)
-			daysTilEndMonth = 29 - d1.day;
-		else
-			daysTilEndMonth = 28 - d1.day;
-	}
-	else
-		maxPar = true;
-		daysTilEndMonth = 30 - d1.day;
-
-
-
-	return daysTilEndMonth + daysBetweenMonths + daysSinceBeginningMonth;
-
-	//falta fazer a contar com ano*/
 }
 
 

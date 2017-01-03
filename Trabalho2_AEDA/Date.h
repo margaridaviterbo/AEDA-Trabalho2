@@ -199,6 +199,7 @@ public:
 	friend ostream& operator<<(ostream& out, const Date & date);
 };
 
+
 int diffDays(Date d1, Date d2);
 
 Date getCurrentDate();

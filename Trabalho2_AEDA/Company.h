@@ -273,12 +273,30 @@ public:
 	*/
 	void updateAdresses();
 
-
+	/**
+	* @brief  updates discounts
+	*
+	*/
 	void updateDiscounts();
+
+	/**
+	* @brief  overload updateDiscounts
+	*
+	*/
 	void updateDiscounts(Accomodation acc);
 
+
+	/**
+	* @brief  calculates discounts
+	*
+	*/
 	float calculateDiscounts(Accomodation acc);
 
+
+	/**
+	* @brief  displays discounts
+	*
+	*/
 	void showDiscounts();
   
 };

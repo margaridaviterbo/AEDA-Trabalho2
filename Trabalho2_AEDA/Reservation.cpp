@@ -68,7 +68,6 @@ float Reservation::getTotalPrice()const {
 
 	float daily = accomodation->getPriceNight();
 	total = (total + numDays*daily)-(total + numDays*daily)*accomodation->getDiscount();
-
 	return total;
 
 }
