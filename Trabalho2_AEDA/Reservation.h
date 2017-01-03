@@ -2,8 +2,6 @@
 #pragma warning(disable : 4996)
 
 #include <string>
-#include <ctime>
-#include <time.h>
 #include <stdio.h>
 
 #include "Date.h"
@@ -13,6 +11,10 @@ using namespace std;
 
 class Reservation {
 private:
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	static unsigned int lastID;
 	int ID;
 	Accomodation* accomodation;

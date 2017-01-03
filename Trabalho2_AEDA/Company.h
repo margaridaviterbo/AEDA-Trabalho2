@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <time.h>
 #include <queue>
 #include <conio.h>
 #include <windows.h>
@@ -50,12 +51,21 @@ class Company {	//implementar nesta classe as funcionalidades gerais do programa
 private:
 	vector<Suplier> supliers; 
 	vector<Client> clients;
+<<<<<<< HEAD
 	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
 	BST<Reservation> reservationsBST;
 	priority_queue<Accomodation, vector<Accomodation*>, comp> accomodationsQueue;
 	vector<Accomodation *> accomodations;
 
 
+=======
+
+	tr1::unordered_set<Client, hcli, eqcli> inactiveClients;
+	BST<Reservation> reservationsBST;
+	vector<Accomodation*> accomodations;
+	priority_queue <Accomodation> accomodationsDiscounts;
+	vector <float> discounts;
+>>>>>>> origin/master
 
 	string clientsFile;
 	string supliersFile;
@@ -284,10 +294,38 @@ public:
 	*/
 	void updateAdresses();
 
+<<<<<<< HEAD
 
   void updateDiscounts();
   void addAccomodation(Accomodation * acc);
 
+=======
+	/**
+	* @brief  updates discounts
+	*
+	*/
+	void updateDiscounts();
+
+	/**
+	* @brief  overload updateDiscounts
+	*
+	*/
+	void updateDiscounts(Accomodation acc);
+
+
+	/**
+	* @brief  calculates discounts
+	*
+	*/
+	float calculateDiscounts(Accomodation acc);
+
+
+	/**
+	* @brief  displays discounts
+	*
+	*/
+	void showDiscounts();
+>>>>>>> origin/master
   
 };
 

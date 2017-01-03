@@ -1,11 +1,9 @@
 #pragma once
-#pragma warning(disable : 4996)
 
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <ctime>
 
 #include "Date.h"
 
@@ -17,9 +15,15 @@ enum bedroomType { SINGLE, DOUBLE_R, DOUBLE_EXTRA_BED, TRIPLE };	//tipos de quar
 
 class Accomodation {
 private:
+<<<<<<< HEAD
+=======
+	Date creationDateTime;
+	Date creationDateLastReservation;
+>>>>>>> origin/master
 	float price_night;
 	float price_week;
 	float price_month;
+	float discount = 0;
 	string location;
 	unsigned int id;
 	static unsigned int lastID;
@@ -60,13 +64,25 @@ public:
 	*
 	* @param unavailable_dates
 	*
+	* @param dateCreationTime
 	*/
+<<<<<<< HEAD
 	Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> available_dates);
 	
+=======
+
+  
+	Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> available_dates, Date creation_time);
+  
+>>>>>>> origin/master
 	/**
 	* @brief  default accomodation constructor
 	*
 	*/
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	Accomodation() {};
 
 	/**
@@ -110,6 +126,20 @@ public:
 	* @param id
 	*/
 	void setID(unsigned int id) { this->id = id; };
+
+	/**
+	* @brief sets discount
+	*
+	* @param discount
+	*/
+	void setDiscount(float discount) { this->discount = discount; };
+
+	/**
+	* @brief gets discount
+	*
+	* @return discount
+	*/
+	float getDiscount() { return discount; };
 
 	/**
 	* @brief virtual fuction to save accomodation on the supliers file
@@ -183,7 +213,25 @@ public:
 	* @param id
 	*
 	*/
+<<<<<<< HEAD
 	//void setLastReservationID(int id) { lastReservationID = id; }
+=======
+	void setLastReservationID(int id) {lastReservationID = id; }
+
+	/**
+	* @brief gets lastReservationID
+	*
+	* @return lastReservationID
+	*/
+	int getLastReservationID() const { return lastReservationID; }
+
+	/**
+	* @brief sets creationDateLastReservation
+	*
+	* @param dt
+	*/
+	void setCreationDateLastReservation(Date dt) { creationDateLastReservation = dt; }
+>>>>>>> origin/master
 
 	/**
 	* @brief overload of the the equality operator
@@ -201,6 +249,7 @@ public:
 	*
 	* @return true if the period of time since the last reservation is bigger than the other, false otherwise
 	*/
+<<<<<<< HEAD
 
 
 	
@@ -210,6 +259,9 @@ public:
 
 	void applyDiscount();
 
+=======
+	bool operator < (const Accomodation &acc) const;
+>>>>>>> origin/master
 };
 
 class Bedroom : public Accomodation {
@@ -258,7 +310,11 @@ public:
 	* @param bed_type type of bedroom
 	*
 	*/
+<<<<<<< HEAD
 	Bedroom(unsigned int id, float price_night, float price_month, float price_year, string location, vector<pair<Date, Date>> unavailableDates, establishment  est, bedroomType bed_type);
+=======
+	Bedroom(unsigned int id, float price_night, float price_month, float price_year, string location, vector<pair<Date, Date>> unavailableDates, Date creation_time, establishment  est, bedroomType bed_type);
+>>>>>>> origin/master
 
 	/**
 	* @brief prints bedroom on the sreen
@@ -309,7 +365,11 @@ public:
 	* @param unavailable_dates
 	*
 	*/
+<<<<<<< HEAD
 	Flat(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailableDates) : Accomodation(id, price_night, price_week, price_month, location, unavailableDates) { setFee(0.1); };
+=======
+	Flat(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailableDates, Date creation_time) : Accomodation(id, price_night, price_week, price_month, location, unavailableDates, creation_time) { setFee(0.1); };
+>>>>>>> origin/master
 
 	/**
 	* @brief prints flat on the sreen
@@ -363,7 +423,11 @@ public:
 	* @param unavailable_dates
 	*
 	*/
+<<<<<<< HEAD
 	Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates,  int n_bed, bool suite);
+=======
+	Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time, int n_bed, bool suite);
+>>>>>>> origin/master
 
 	/**
 	* @brief prints apartment on the sreen

@@ -16,7 +16,13 @@ Reservation::Reservation(int ID, Accomodation* accomodation, Date checkIN, Date 
 	this->checkOUT = checkOUT;
 	this->marking = marking;
 	this->client = client;
+<<<<<<< HEAD
 	
+=======
+
+	accomodation->setLastReservationID(ID);
+	accomodation->setCreationDateLastReservation(marking);
+>>>>>>> origin/master
 }
 
 
@@ -36,6 +42,11 @@ Reservation::Reservation(Accomodation* accomodation, Date checkIN, Date checkOUT
 
 	ID = ++lastID;
 
+<<<<<<< HEAD
+=======
+	accomodation->setLastReservationID(ID);
+	accomodation->setCreationDateLastReservation(marking);
+>>>>>>> origin/master
 
 }
 
@@ -63,8 +74,7 @@ float Reservation::getTotalPrice()const {
 	}
 
 	float daily = accomodation->getPriceNight();
-	total = total + numDays*daily;
-
+	total = (total + numDays*daily)-(total + numDays*daily)*accomodation->getDiscount();
 	return total;
 
 }
@@ -99,9 +109,13 @@ void Reservation::save(ofstream & out) const
 		<< setw(5) << accomodation->getID()
 		<< setw(12) << checkIN
 		<< setw(12) << checkOUT
+<<<<<<< HEAD
 		<< setw(12) << marking
 		<< endl;
 
+=======
+		<< setw(12) << marking << endl;
+>>>>>>> origin/master
 }
 
 float Reservation::getFee() const {

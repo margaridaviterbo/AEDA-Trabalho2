@@ -549,9 +549,7 @@ Accomodation* Suplier::addAccomodation2() {
 
 			case 1:
 				askForPrice(p_day, p_week, p_month);
-
 				askForAvailability(unavailable_dates);
-
 				acc = new Flat(p_day, p_week, p_month, location, unavailable_dates);
 				running = false;
 				break;
@@ -594,7 +592,12 @@ Accomodation* Suplier::addAccomodation2() {
 	gotoXY(43, 21);
 
 	accomodations.push_back(acc);
+<<<<<<< HEAD
 	return acc;
+=======
+
+	return *acc;
+>>>>>>> origin/master
 }
 
 void Suplier::addAccomodationFile(Accomodation * acc) {
@@ -609,7 +612,11 @@ void Suplier::showAccomodations()const {
 	gotoXY(48, 4); cout << "|| Alojamentos ||" << endl << endl;
 
 	if (accomodations.size() == 0) {
+<<<<<<< HEAD
 		cout << TAB_BIG << TAB_BIG << "Ainda nao possui alojamentos registados." << endl;
+=======
+		cout << TAB << "Ainda nao possui alojamentos registados." << endl;
+>>>>>>> origin/master
 		return;
 	}
 

@@ -167,8 +167,28 @@ bool operator == (const Date &d1, const Date &d2) {
 
 }
 
+int diffDays (Date d1, Date d2) {
 
-Date getCurrentDate(){
+	int year, month;
+	int days1, days2;
+
+	year = d1.getYear();
+	month = d1.getMonth();
+	if (d1.getMonth() < 3)
+		year--, month += 12;
+	days1 = 365 * year + year / 4 - year / 100 + year / 400 + (153 * month - 457) / 5 + d1.getDay() - 306;
+
+	year = d2.getYear();
+	month = d2.getMonth();
+	if (d2.getMonth() < 3)
+		year--, month += 12;
+	days2 = 365 * year + year / 4 - year / 100 + year / 400 + (153 * month - 457) / 5 + d2.getDay() - 306;
+
+	return abs(days1 - days2);
+}
+
+
+Date getCurrentDate() {
 	Date current_date;
 
 	struct tm newtime;

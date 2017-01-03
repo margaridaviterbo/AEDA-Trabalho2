@@ -105,6 +105,7 @@ int showOptions(int first, int last);
 */
 void gotoXY(int x, int y);
 
+<<<<<<< HEAD
 /**
 * @brief enables the user to insert a password *****
 *
@@ -112,6 +113,8 @@ void gotoXY(int x, int y);
 *
 */
 string insertPassword();
+=======
+>>>>>>> origin/master
 
 // -------------------
 //     EXCEPÇÕES

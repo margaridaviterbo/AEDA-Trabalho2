@@ -227,7 +227,11 @@ public:
 	*
 	* @return accomodation
 	*/
+<<<<<<< HEAD
 	Accomodation* addAccomodation2(); 
+=======
+	Accomodation addAccomodation2(); 
+>>>>>>> origin/master
 
 	/**
 	* @brief compares supliers

@@ -8,6 +8,7 @@ void Company::supliersInicialization(string supliersFile)
 
 	name_supliers.open(supliersFile);
 
+
 	if (!name_supliers.is_open()) throw ErrorOpeningFile("Fornecedores");
 
 	getline(name_supliers, line_f);
@@ -36,13 +37,16 @@ void Company::supliersInicialization(string supliersFile)
 		{
 
 			stringstream ss; ss.str(line_f);
-			string type, d, w, m, city, date1, date2, next;
+			string type, d, w, m, city, date1, date2, next, time;
 			float daily, weekly, monthly;
 			pair<Date, Date> pair_dates;
 			vector<pair<Date, Date>> unavailableDates;
 			unsigned int ID;
+<<<<<<< HEAD
 			
 
+=======
+>>>>>>> origin/master
 
 			ss >> ID;
 			ss >> type;
@@ -55,18 +59,27 @@ void Company::supliersInicialization(string supliersFile)
 
 			ss >> date1;
 
+
 			while (date1 != "-")
 			{
+
 				Date d1(date1); pair_dates.first = d1;
-				ss >> date2; Date d2(date2); pair_dates.second = d2;
+				ss >> date2;
+				Date d2(date2); pair_dates.second = d2;
 				unavailableDates.push_back(pair_dates);
 				ss >> date1;
 
 			}
+<<<<<<< HEAD
 			
+=======
+
+			getline(ss, time, '-'); trim(time);
+			Date creation_time(time);
+
+>>>>>>> origin/master
 			if (type == "BEDROOM")
 			{
-
 				string bedroomType2, est;
 				bedroomType bedType;
 
@@ -90,7 +103,6 @@ void Company::supliersInicialization(string supliersFile)
 				}
 
 
-
 				ss >> est;
 				establishment estbl;
 
@@ -107,11 +119,27 @@ void Company::supliersInicialization(string supliersFile)
 					estbl = SHARED_HOUSE;
 				}
 
+<<<<<<< HEAD
 				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, estbl, bedType);
 
 				sup.addAccomodationFile(bed);
 
 				accomodations.push_back(bed);
+=======
+				Bedroom *bed = new Bedroom(ID, daily, weekly, monthly, city, unavailableDates, creation_time, estbl, bedType);
+				
+				bool found = false;
+				for (int i = 0; i < accomodations.size(); i++) {
+					if (*(bed) == *(accomodations.at(i)))
+						found = true;
+				}
+				if (!found) {
+					accomodations.push_back(bed);
+				}
+				sup.addAccomodationFile(bed);
+
+				updateDiscounts(*bed);
+>>>>>>> origin/master
 			}
 
 			if (type == "APARTMENT")
@@ -127,23 +155,53 @@ void Company::supliersInicialization(string supliersFile)
 				if (suite_str != "SIM")
 					suite = false;
 
+<<<<<<< HEAD
 				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, numRooms, suite);
 
 				sup.addAccomodationFile(apart);
 
 				accomodations.push_back(apart);
 
+=======
+				Apartment *apart = new Apartment(ID, daily, weekly, monthly, city, unavailableDates, creation_time, numRooms, suite);
+				bool found = false;
+				for (int i = 0; i < accomodations.size(); i++) {
+					if (*(apart) == *(accomodations.at(i)))
+						found = true;
+				}
+				if (!found) {
+					accomodations.push_back(apart);
+				}
+				sup.addAccomodationFile(apart);
+
+				updateDiscounts(*apart);
+>>>>>>> origin/master
 			}
 
 
 			if (type == "FLAT")
 			{
 
+<<<<<<< HEAD
 				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates);
 
 				sup.addAccomodationFile(flt);
 
 				accomodations.push_back(flt);
+=======
+				Flat *flt = new Flat(ID, daily, weekly, monthly, city, unavailableDates, creation_time);
+				bool found = false;
+				for (int i = 0; i < accomodations.size(); i++) {
+					if (*(flt) == *(accomodations.at(i)))
+						found = true;
+				}
+				if (!found) {
+					accomodations.push_back(flt);
+				}
+				sup.addAccomodationFile(flt);
+
+				updateDiscounts(*flt);
+>>>>>>> origin/master
 
 			}
 
@@ -152,10 +210,10 @@ void Company::supliersInicialization(string supliersFile)
 	}
 
 	name_supliers.close();
-
 }
 
 void Company::reservationsInicialization(string reservationsFile) {
+
 	ifstream name_reservations;
 	string line_r;
 	unsigned int maxID;
@@ -200,8 +258,13 @@ void Company::reservationsInicialization(string reservationsFile) {
 				if ((*it2)->getID() == IDaccomodation)
 				{
 					accomodation = *it2;
+<<<<<<< HEAD
 					accomodation->updateLastReservation(markg);
 					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
+=======
+					Reservation reserv(IDreservation, accomodation, in, out, markg, name);
+					updateDiscounts();
+>>>>>>> origin/master
 					reservationsBST.insert(reserv);
 					it->addReservation(reserv);
 
@@ -213,6 +276,12 @@ void Company::reservationsInicialization(string reservationsFile) {
 	}
 
 	name_reservations.close();
+
+	// TEST
+
+	for (int i = 0; i < accomodations.size(); i++) {
+		accomodations.at(i)->setDiscount(calculateDiscounts(*(accomodations[i])));
+	}
 }
 
 void Company::clientsInicialization(string clientsFile) {
@@ -265,11 +334,19 @@ void Company::clientsInicialization(string clientsFile) {
 
 	name_clients.close();
 
+
+<<<<<<< HEAD
+Company::Company(string clientsFile, string supliersFile, string reservationsFile) : reservationsBST(Reservation()) {
+=======
+	// TEST
+
+	for (int i = 0; i < accomodations.size(); i++) {
+		accomodations.at(i)->setDiscount(calculateDiscounts(*(accomodations[i])));
+	}
 }
+>>>>>>> origin/master
 
 Company::Company(string clientsFile, string supliersFile, string reservationsFile) : reservationsBST(Reservation()) {
-
-	;
 
 	this->clientsFile = clientsFile;
 	this->supliersFile = supliersFile;
@@ -415,7 +492,11 @@ void Company::registerSuplier() {
 
 	NIF = stoul(NIF_str);
 
+<<<<<<< HEAD
 	if( NIF > 999999999 || NIF < 100000000)throw InvalidInput();
+=======
+	if (NIF > 999999999 || NIF < 100000000)throw InvalidInput();
+>>>>>>> origin/master
 
 	gotoXY(42, 9); cout << "Morada: ";
 	getline(cin, adress);
@@ -447,7 +528,12 @@ void Company::registerSuplier() {
 		Accomodation *acc;
 		if (add == "s") {
 			acc = s.addAccomodation2();
+<<<<<<< HEAD
 			//updateDiscounts(acc);
+=======
+			accomodations.push_back(&acc);
+			updateDiscounts(acc);
+>>>>>>> origin/master
 		}
 
 	} while (add == "s");
@@ -463,7 +549,11 @@ void Company::registerSuplier() {
 	gotoXY(35, 7); cout << s.getName() << ", a sua conta foi criada com sucesso!" << endl;
 
 
+<<<<<<< HEAD
 	//updateDiscounts();
+=======
+	updateDiscounts();
+>>>>>>> origin/master
 
 }
 
@@ -561,7 +651,11 @@ void Company::registerClient() {
 	getline(cin, name);
 	if (cin.eof()) throw InvalidInput();
 
+<<<<<<< HEAD
 	gotoXY(42, 8);  cout << "Morada: ";
+=======
+	gotoXY(42, 7);  cout << "Morada: ";
+>>>>>>> origin/master
 	getline(cin, adress);
 	if (cin.eof()) throw InvalidInput();
 
@@ -618,9 +712,9 @@ vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eq
 	vector<Client>::iterator it;
 
 	for (it = clients.begin(); it != clients.end(); it++) {
-	
+
 		if (cli.getUsername() == it->getUsername())
-			return it;	
+			return it;
 	}
 
 }
@@ -631,7 +725,7 @@ vector<Client>::iterator Company::reservationHash(unordered_set<Client, hcli, eq
 //     Reservation
 // -------------------
 
-void Company::addReservationComp(Accomodation *a,Reservation res) {
+void Company::addReservationComp(Accomodation *a, Reservation res) {
 
 	vector<Accomodation *> accomodations_tmp;
 
@@ -655,7 +749,7 @@ void Company::addReservationComp(Accomodation *a,Reservation res) {
 
 	}
 
-	//updateDiscounts();
+	updateDiscounts();
 
 }
 
@@ -716,10 +810,14 @@ Accomodation* Company::displayOffers(string location, Date initial_date, Date fi
 	clearScreen();
 
 	if (accomodations.size() == 0) {
+<<<<<<< HEAD
 		
 		gotoXY(48, 4); cout << "|| Alojamentos ||" << endl << endl << endl << endl;
 		cout << TAB_BIG << TAB_BIG << "Nao existe nenhum alojamento que verifique as condicoes desejadas." << endl;
 		pauseScreen();
+=======
+		cout << TAB << "Nao existe nenhum alojamento que verifique as condicoes desejadas." << endl;
+>>>>>>> origin/master
 		return NULL;
 	}
 
@@ -981,6 +1079,7 @@ void Company::showActiveClients() const {
 }
 
 void Company::showInactiveClientsAdresses() const {
+<<<<<<< HEAD
 
 
 	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
@@ -1071,9 +1170,140 @@ void Company::updateAdresses(){
 	}
 
 
+=======
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	gotoXY(40, 4); cout << "|| Moradas de Clientes Inativos ||" << endl << endl << endl;
+	cout << "           Nome do Cliente                  Username                     Morada                                       " << endl;
+	cout << " ---------------------------------------------------------------------------------------------------------------------" << endl;
+
+
+	while (it != inactiveClients.end()) {
+
+		cout << left << "             ";
+
+		cout << setw(33) << it->getName()
+			<< setw(25) << it->getUsername()
+			<< setw(50) << it->getAdress();
+
+		it++;
+	}
+}
+
+void Company::updateAdresses() {
+
+	int points;
+	string username, adress, name, password;
+	bool exist = false;
+
+	showInactiveClientsAdresses();
+	pauseScreen();
+	clearScreen();
+	gotoXY(40, 4); cout << "|| Atualizar Moradas ||" << endl << endl << endl;
+
+	gotoXY(30, 7); cout << "Nome de utilizador: ";
+	getline(cin, username);
+	if (cin.eof()) throw InvalidInput();
+
+	unordered_set<Client, hcli, eqcli>::iterator it = inactiveClients.begin();
+
+	while (it != inactiveClients.end()) {
+
+		if (username == it->getUsername())
+			exist = true;
+		it++;
+	}
+
+	if (exist) {
+
+		gotoXY(30, 8); cout << "Nova morada: ";
+		getline(cin, adress);
+		if (cin.eof()) throw InvalidInput();
+
+		unordered_set<Client, hcli, eqcli>::iterator itt = inactiveClients.begin();
+		vector<Reservation>reser;
+
+		while (itt != inactiveClients.end()) {
+
+			if (username == itt->getUsername()) {
+
+				password = itt->getPassword();
+				name = itt->getName();
+				points = itt->getPoints();
+				reser = itt->getReservations();
+				break;
+			}
+
+			itt++;
+		}
+
+		Client cli(username, password, name, adress, points);
+
+		vector<Reservation>::iterator itr;
+
+		for (itr = reser.begin(); itr != reser.end(); itr++) {
+
+			cli.addReservation(*itr);
+		}
+
+		inactiveClients.erase(itt);
+
+		inactiveClients.insert(cli);
+
+
+		gotoXY(30, 12); cout << "Morada atualizada com sucesso";
+
+	}
+	else {
+		gotoXY(30, 9); cout << "O nome de utilizador nao e valido!!" << endl;
+	}
+
+
 
 }
 
+void Company::updateDiscounts() {
+
+	/*bool found;
+	BSTItrIn<Reservation> itr(reservationsBST);
+	priority_queue<Accomodation> temp;
+
+	while (!itr.isAtEnd()) {
+
+		found = false;
+		temp = accomodationsDiscounts;
+		for (int j = 0; j < accomodationsDiscounts.size(); j++) {
+
+			if (temp.top() == *(itr.retrieve()).getAccomodation())
+				found = true;
+			temp.pop();
+		}
+		if (!found) {
+
+
+	/*for (int i = 0; i < supliers.size(); i++) {
+		for (int j = 0; j < supliers.at(i).getAccomodations().size(); j++) {
+			if (*(supliers.at(i).getAccomodations().at(j)) == *(itr.retrieve().getAccomodation()))
+				supliers.at(i).getAccomodations().at(j)->setDiscount(calculateDiscounts(*(itr.retrieve().getAccomodation())));
+		}
+	}*/
+	
+	while (!accomodationsDiscounts.empty()) {
+		accomodationsDiscounts.pop();
+	}
+>>>>>>> origin/master
+
+	for (int i = 0; i < accomodations.size(); i++) {
+		accomodationsDiscounts.push(*(accomodations.at(i)));
+		accomodations.at(i)->setDiscount(calculateDiscounts(*(accomodations[i])));
+	}
+	/*}
+	itr.advance();
+}*/
+}
+
+<<<<<<< HEAD
 
 void Company::updateDiscounts() {
 
@@ -1123,6 +1353,103 @@ void Company::updateDiscounts() {
 	}
 
 
+=======
+void Company::updateDiscounts(Accomodation acc) {
+
+	bool found = false;
+	priority_queue<Accomodation> temp = accomodationsDiscounts;
+
+	for (int j = 0; j < accomodationsDiscounts.size(); j++) {
+
+		if (temp.top() == acc)
+			found = true;
+		temp.pop();
+	}
+
+	if (!found) {
+		accomodationsDiscounts.push(acc);
+
+		/*for (int i = 0; i < supliers.size(); i++) {
+			for (int j = 0; j < supliers.at(i).getAccomodations().size(); j++) {
+				cout << supliers.at(i).getAccomodations().at(j)->getID() << " maybe bitch " << acc.getID() << endl;
+				if (*(supliers.at(i).getAccomodations().at(j)) == acc)
+					supliers.at(i).getAccomodations().at(j)->setDiscount(calculateDiscounts(acc));
+			}
+		}*/
+		for (int i = 0; i < accomodations.size(); i++) {
+			accomodations.at(i)->setDiscount(calculateDiscounts(*(accomodations[i])));
+		}
+	}
+}
+
+float Company::calculateDiscounts(Accomodation acc) {
+	priority_queue<Accomodation> temp = accomodationsDiscounts;
+	float res;
+	int first10percent, second10percent, third10percent;
+	discounts.clear();
+
+	first10percent = round(0.1 * accomodationsDiscounts.size());
+	second10percent = 2 * first10percent;
+	third10percent = 3 * first10percent;
+
+	int index = 0;
+	while (!accomodationsDiscounts.empty()) {
+		if (acc == temp.top()) {
+			break;
+		}
+		index++;
+		temp.pop();
+	}
+
+	for (int i = 1; i <= accomodationsDiscounts.size(); i++) {
+		if (i <= first10percent) {
+			discounts.push_back(0.5);
+		}
+		else if (i > first10percent && i <= second10percent) {
+			discounts.push_back(0.25);
+		}
+		else if (i > second10percent && i <= third10percent) {
+			discounts.push_back(0.1);
+		}
+		else {
+			discounts.push_back(0);
+		}
+		/*if (temp.top() == acc) {
+			cout << "accomodationDiscounts.size()=" << accomodationsDiscounts.size() << endl;
+			cout << "[" << first10percent << ", " << second10percent << ", " << third10percent << "]" << endl;
+			cout << temp.top().getID() << "==" << acc.getID() << endl;
+			cout << "Discount=" << discounts.back() << " (i=" << i << ")" << endl;
+			system("pause");
+
+			res = discounts.back();
+		}
+		temp.pop();*/
+	}
+
+	/*cout << "accomodationDiscounts.size()=" << accomodationsDiscounts.size() << endl;
+	cout << "[" << first10percent << ", " << second10percent << ", " << third10percent << "]" << endl;
+	cout << temp.top().getID() << "==" << acc.getID() << endl;
+	cout << "Discount=" << discounts[index] << " (index=" << index << ")" << endl;*/
+	//system("pause");
+	return discounts[index];
+}
+
+void Company::showDiscounts() {
+
+
+	gotoXY(40, 4); cout << "|| Lista de Descontos dos Alojamentos ||" << endl << endl << endl;
+	cout << "            ID Alojamento      Desconto              " << endl;
+	cout << " ----------------------------------------------------" << endl;
+
+	priority_queue<Accomodation> temp = accomodationsDiscounts;
+
+	for (int j = 0; j < accomodationsDiscounts.size(); j++) {
+
+		cout << "              " << setw(5) << temp.top().getID() << setw(17) << discounts[j] << endl;
+
+		temp.pop();
+	}
+>>>>>>> origin/master
 }
 
 

@@ -17,6 +17,7 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 	this->location = location;
 	this->unavailable_dates = unavailable_dates;
 	this->id = ++lastID;
+<<<<<<< HEAD
 
 	
 	lastReservation = Date("0/0/0");
@@ -25,6 +26,12 @@ Accomodation::Accomodation(float price_night, float price_week, float price_mont
 }
 
 Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates) {
+=======
+	creationDateTime = getCurrentDate();
+}
+
+Accomodation::Accomodation(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time) {
+>>>>>>> origin/master
 	this->price_night = price_night;
 	this->price_week = price_week;
 	this->price_month = price_month;
@@ -39,7 +46,8 @@ Accomodation::Accomodation(unsigned int id, float price_night, float price_week,
 
 
 bool Accomodation::operator == (const Accomodation &acc) const {
-	return acc.getID() == id;
+	
+	return (acc.getID() == id);
 
 }
 
@@ -62,7 +70,46 @@ void Accomodation::removeDates(Date checkIN, Date checkOUT) {
 }
 
 
+<<<<<<< HEAD
 
+=======
+bool Accomodation::operator<(const Accomodation &acc) const {
+	/*
+	if (id == acc.getID())
+		return false;
+
+	bool diff;
+	int timePeriod1, timePeriod2;
+	Date today = getCurrentDate();
+
+	//cout << "id1= " << id << " id2= " << acc.getID() << endl;
+	//cout << "diffdays1" << endl;
+	if (lastReservationID == 0)
+		timePeriod1 = diffDays(today, creationDateTime);
+	else
+		timePeriod1 = diffDays(today, creationDateLastReservation);
+	//cout << "diffdays2" << endl;
+	if (acc.lastReservationID == 0)
+		timePeriod2 = diffDays(today, acc.creationDateTime);
+	else
+		timePeriod2 = diffDays(today, creationDateLastReservation);
+	//cout << "timeperiod1 = " << timePeriod1 << "timeperiod2 = " << timePeriod2 << endl;
+	diff = timePeriod1 < timePeriod2;
+
+	return diff;*/
+
+	/*if (creationDateTime.getYear() < acc.creationDateTime.getYear())
+		return true;
+	else if (creationDateTime.getYear() == acc.creationDateTime.getYear() && creationDateTime.getMonth() < acc.creationDateTime.getMonth())
+		return true;
+	else if (creationDateTime.getYear() == acc.creationDateTime.getYear() && creationDateTime.getMonth() == acc.creationDateTime.getMonth() && creationDateTime.getDay() <= acc.creationDateTime.getDay())
+		return true;
+	else
+		return false;*/
+	
+	return creationDateTime.getMonth() < acc.creationDateTime.getMonth();
+}
+>>>>>>> origin/master
 
 Bedroom::Bedroom(float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(price_night, price_week, price_month, location, unavailable_dates) {
 	this->est = est;
@@ -70,7 +117,11 @@ Bedroom::Bedroom(float price_night, float price_week, float price_month, string 
 	setFee(0.05);
 }
 
+<<<<<<< HEAD
 Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates) {
+=======
+Bedroom::Bedroom(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time, establishment  est, bedroomType bed_type) :Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+>>>>>>> origin/master
 	this->est = est;
 	this->bed_type = bed_type;
 	setFee(0.05);
@@ -83,7 +134,11 @@ Apartment::Apartment(float price_night, float price_week, float price_month, str
 	setFee(0.15);
 }
 
+<<<<<<< HEAD
 Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates,  int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates) {
+=======
+Apartment::Apartment(unsigned int id, float price_night, float price_week, float price_month, string location, vector<pair<Date, Date>> unavailable_dates, Date creation_time, int n_bed, bool suite) : Accomodation(id, price_night, price_week, price_month, location, unavailable_dates, creation_time) {
+>>>>>>> origin/master
 	this->number_bedrooms = n_bed;
 	this->suite = suite;
 	setFee(0.15);
@@ -91,15 +146,30 @@ Apartment::Apartment(unsigned int id, float price_night, float price_week, float
 
 void Accomodation::print() const {
 
+<<<<<<< HEAD
 	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
 	cout << left << "     " << setw(5) << id << setw(28) << location << setw(8) << price_night << setw(8) << price_week << setw(11) << price_month;
 	
+=======
+	if (discount == 0) {
+		cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
+	}
+	else {
+		cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+		cout << "DESCONTO " << discount*100 << "%!!!" << endl << setw(5) << id << setw(16) << location << setw(22) << price_night << setw(9) << price_week << setw(6) << price_month;
+	}
+>>>>>>> origin/master
 }
 
 void Bedroom::print() const {
 	cout << TAB << "-> Quarto\n" << endl;
 
+<<<<<<< HEAD
 	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Tipo" << setw(15) << "Establecimento" << endl;
+=======
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Tipo" << setw(20) << "Establecimento" << endl;
+>>>>>>> origin/master
 
 	Accomodation::print();
 
@@ -137,7 +207,7 @@ void Bedroom::print() const {
 	vector<pair<Date, Date>> undates = getUnavailableDates();
 
 	if (undates.size() != 0) {
-		cout << TAB << "Datas Indisponíveis:" << endl;
+		cout << TAB << "Datas IndisponÃ­veis:" << endl;
 
 		vector<pair<Date, Date>>::const_iterator it;
 
@@ -153,8 +223,13 @@ void Bedroom::print() const {
 void Flat::print() const {
 	cout << TAB << "-> Flat\n" << endl;
 
+<<<<<<< HEAD
 	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Inclui" << endl;
 	
+=======
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+
+>>>>>>> origin/master
 	Accomodation::print();
 
 	cout << setw(50) << "1 Quarto       Cozinha        Casa de Banho" << endl;
@@ -181,8 +256,12 @@ void Flat::print() const {
 void Apartment::print() const {
 	cout << TAB << "-> Apartamento\n" << endl;
 
+<<<<<<< HEAD
 	cout << left << "     " << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(30) << "Inclui" << endl;
 	//cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+=======
+	cout << setw(5) << "ID" << setw(15) << "Local" << setw(40) << "Preco por | Noite | Semana | Mes |" << setw(27) << "Inclui" << endl;
+>>>>>>> origin/master
 
 	Accomodation::print();
 
@@ -222,10 +301,16 @@ void Accomodation::saveAccomodation(ofstream & out)
 	{
 		out << it->first << " " << it->second << "    ";
 	}
+	
+	//date_time.erase(date_time.length() - 1);
 
+<<<<<<< HEAD
 	
 
 	out << "   -" ;
+=======
+	out << "    -    " << creationDateTime << "    -";
+>>>>>>> origin/master
 
 }
 void Bedroom::saveAccomodation(ofstream & out)
